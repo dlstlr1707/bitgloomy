@@ -1,0 +1,80 @@
+#detailContainer{
+    width: 1500px;
+    height: auto;
+    padding: 60px;
+    box-sizing: border-box;
+    display: flex;
+}
+#detailImgDiv{
+    width: 720PX;
+    height: 890px;
+}
+#detailContentDiv{
+    width: 660px;
+    height: 1264px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 12px 10px;
+}
+#detailContentDiv >p{
+    height: 40px;
+}
+#detailContentDiv >p:nth-child(3){
+    width: 640px;
+    height: auto;
+    word-break: keep-all;
+}
+#pName{
+    height: 40px;
+    font-size: 20px;
+    font-weight: 700;
+}
+#meterialInfoDiv{
+    box-sizing: border-box;
+    height: 260px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px;
+}
+#meterialInfoDiv >p{
+    font-size: 16px;
+    height: 23px;
+}
+#fabricInfo{
+    box-sizing: border-box;
+    height: 105px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px;
+}
+#fabricInfo >p{
+    font-size: 16px;
+    height: 23px;
+}
+#detailOptionDiv{
+    width: 640px;
+    height: 91px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px;
+}
+#optionBoxDiv{
+    width: 266px;
+    height: 40px;
+    display: flex;
+    padding-left: 10px;
+    gap: 16px;
+}
+.optionBox{
+    width: 40px;
+    height: 40px;
+    box-sizing: border-box;
+    border: 1px solid black;
+    border-radius: 999px;
+    text-align: center;
+    padding-top: 10px;
+}

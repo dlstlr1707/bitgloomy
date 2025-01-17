@@ -12,8 +12,8 @@ function Header() {
             case "Shop":
                 navigate("/Shop");
                 break;
-            case "Gallary":
-                navigate("/Gallary");
+            case "Notice":
+                navigate("/Notice");
                 break;
             case "Logo":
                 navigate("/Shop");
@@ -37,7 +37,7 @@ function Header() {
                 <ul>
                     <li id="Info" onClick={handleClickBtn}>Info</li>
                     <li id="Shop" onClick={handleClickBtn}>Shop</li>
-                    <li id="Gallary" onClick={handleClickBtn}>Gallary</li>
+                    <li id="Notice" onClick={handleClickBtn}>Notice</li>
                 </ul>
             </div>
             <div id="logo">
