@@ -1,0 +1,77 @@
+#InfoContainer >main{
+    width: 1920px;
+    height: 888px;
+ }
+ #opacityDiv{
+     width: 100%;
+     height: 100%;
+     background-color: black;
+     opacity: 70%;
+     z-index: 2;
+     transition-duration: 0.3s;
+ }
+ #opacityDiv >button{
+     width: 80px;
+     height: 80px;
+     border: none;
+     box-shadow: 2px 2px 16px 4px gold;
+     border-radius: 8px;
+     background-color: inherit;
+     transform: skewY(7deg);
+     position: absolute;
+     top: calc(590px + 65px);
+     left: 54px; 
+ }
+ #opacityDiv >button:focus{
+     outline: none;
+ }
+ #imgBackgroundDiv{
+     width: 100%;
+     height: 100%;
+     background-image: url("../../public/img/test1.jpeg");
+     background-repeat: no-repeat;
+     background-size: cover;
+     z-index: 1;
+ }
+ #swtichDiv{
+     width: 100px;
+     height: 100px;
+     background-image: url("../../public/img/switch.png");
+     background-size: cover;
+     border: none;
+     background-color: inherit;
+     position: absolute;
+     top: calc(575px + 65px);
+     left: 35px; 
+ }
+ #aboutDiv{
+     width: 500px;
+     /* height: 650px; */
+     height: 150px;
+     color: white;
+     background-color: inherit;
+     opacity: 100%;
+     position: absolute;
+     /* top: 20%; */
+     top: 700px;
+     left: 880px;
+     text-align: center;
+     z-index: 3;
+     font-size: 16px;
+ }
+ /*
+ #aboutImgDiv{
+     width: 500px;
+     height: 333px;
+     background-image: url("./img/info.jpg");
+     background-size: cover;
+ }
+ #aboutDiv >p:nth-child(2){
+     font-weight: 700;
+     font-size: 32px;
+ }
+ */
+ #aboutDiv >p:nth-child(1){
+     font-weight: 700;
+     font-size: 32px;
+ }

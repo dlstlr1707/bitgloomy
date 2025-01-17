@@ -1,0 +1,40 @@
+#logInContainer{
+    width: 912px;
+    height: 660px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding: 56px 106px;
+    box-sizing: border-box;
+    padding-top: calc(65px + 35px);
+}
+#logInContainer >p{
+    font-size: 24px;
+}
+#logInSubMenu{
+    display: flex;
+    justify-content: space-between;
+}
+#findUserInfo{
+    display: flex;
+    gap: 16px;
+}
+#logInSubMenu >p {
+    font-size: 16px;
+}
+#logInContainer >input,#logInContainer >button{
+    width: 700px;
+    height: 50px;
+    box-sizing: border-box;
+    border: 1px solid #000000;
+    border-radius: 32px;
+}
+#logInContainer >input{
+    font-size: 20px;
+    padding: 0px 20px;
+}
+#logInContainer >button{
+    background-color: #000000;
+    color: #FFFFFF;
+    font-size: 20px;
+}

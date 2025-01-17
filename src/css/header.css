@@ -1,0 +1,39 @@
+header{
+    width: 100%;
+    box-sizing: border-box;
+    height: 65px;
+    display: flex;
+    gap: 224px;
+    padding: 0px 200px;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px solid #c2c2c2;
+    position: fixed;
+    z-index: 5;
+}
+#leftHeaderMenu >ul,#rightHeaderMenu >ul{
+    width: 451px;
+    height: 100%;
+    display: flex;
+    gap: 32px;
+}
+#leftHeaderMenu >ul >li,#rightHeaderMenu >ul >li{
+    width: 129px;
+    height: 42px;
+    box-sizing: border-box;
+    border: 1px solid #000000;
+    border-radius: 40px;
+    font-size: 16px;
+    background-color: #FFFFFF;
+    text-align: center;
+    padding: 10px 0px;
+}
+#logo{
+    width: 170px;
+    height: 43px;
+}
+#logo >img{
+    width: 170px;
+    height: 43px;
+    object-fit: cover;
+}
