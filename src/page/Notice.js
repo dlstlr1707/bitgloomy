@@ -1,6 +1,10 @@
 import Footer from "./Footer";
 import "../css/notice.css";
+import { useEffect } from "react";
 function Notice(){
+    useEffect(()=>{
+        // axios로 서버에 공지사항 전체 조회 요청보냄
+    },[]);
     return(
         <div>
             <main>

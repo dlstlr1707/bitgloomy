@@ -3,6 +3,12 @@ import SideIconMenu from "./SideIconMenu";
 import "../css/productDetail.css";
 
 function ProductDetail(){
+    const requestAddCart = () => {
+        // axios로 서버에 해당 제품 장바구니에 담아달라고 요청함
+    }
+    const requestBuy = () => {
+        // axios로 서버에 해당 제품 구매하겠다고 요청보냄
+    }
     return(
         <div>
             <main>

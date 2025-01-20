@@ -2,12 +2,20 @@ import Footer from "./Footer";
 import SideIconMenu from "./SideIconMenu";
 import "../css/shop.css";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 function Shop () {
     const navigate = useNavigate();
     const handleClick = (e) => {
         navigate("/Detail");
     }
+    const requestProductInfo = () => {
+        // axios로 서버에 선택한제품의 상세 정보 요청 
+        // 반환값을 디테일 페이지로 넘겨서 렌더링해야함
+    }
+    useEffect(()=>{
+        // axios로 서버에 상품목록전체 요청
+    },[]);
     return(
         <div>
             <main>
