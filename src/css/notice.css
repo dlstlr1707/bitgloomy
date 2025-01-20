@@ -1,0 +1,80 @@
+#noticeContainer{
+    width: 1200px;
+    display: flex;
+    flex-direction: column;
+    padding-top: 60px;
+}
+#noticeContainer >p:first-child{
+    font-size: 24px;
+    padding: 16px 0px 32px 0px;
+}
+#noticeTabMenu >ul{
+    display: flex;
+}
+#noticeTabMenu >ul >li{
+    width: 150px;
+    height: 50px;
+    box-sizing: border-box;
+    text-align: center;
+    padding-top: 16px;
+    font-weight: 700;
+}
+.unSelectedTab{
+    border: 1px solid #c2c2c2;
+    color: #c2c2c2;
+}
+.selectedTab{
+    background-color: black;
+    color: #ffffff;
+}
+#noticeContentDiv{
+    width: 1200px;
+    height: 600px;
+    border-top: 4px solid black;
+    border-bottom: 4px solid black;
+}
+#noticeContentDiv >table{
+    width: 100%;
+    height: 550px;
+}
+#noticeContentDiv >table >thead{
+    width: 100%;
+    height: 50px;
+    font-size: 20px;
+    font-weight: 700;
+}
+#noticeContentDiv >table >tbody{
+    width: 100%;
+    height: 500px;
+    font-size: 14px;
+}
+#noticeContentDiv >table >thead tr{
+    border-bottom: 2px solid black;
+}
+#noticeContentDiv >table tr{
+    border-bottom: 2px solid #c2c2c2;
+}
+#noticeContentDiv td:nth-child(1),
+#noticeContentDiv td:nth-child(3){
+    width: 150px;
+    height: 50px;
+    text-align: center;
+    padding: 12px;
+    box-sizing: border-box;
+    padding: 16px;
+}
+#noticeContentDiv td:nth-child(2){
+    width: 900px;
+    height: 50px;
+    padding: 16px;
+    padding-left: 50px;
+    box-sizing: border-box;
+}
+#pagingDiv{
+    height: 50px;
+    box-sizing: border-box;
+    padding-top: 16px;
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}

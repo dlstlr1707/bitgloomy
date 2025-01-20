@@ -1,4 +1,5 @@
 import Footer from "./Footer";
+import SideIconMenu from "./SideIconMenu";
 import "../css/shop.css";
 import { useNavigate } from "react-router-dom";
 
@@ -19,13 +20,7 @@ function Shop () {
                             <li>Acc</li>
                         </ul>
                     </div>
-                    <div id="sideIconMenu">
-                        <img src="img/icon/Expand_top_stop.png" alt=""/>
-                        <img src="img/icon/Expand_down_stop.png" alt=""/>
-                        <div id="channelTalkDiv">
-                            <img src="img/logo.png" alt=""/>
-                        </div>
-                    </div>
+                    <SideIconMenu></SideIconMenu>
                     <div id="productListDiv">
                         <div id="productInfoBox">
                             <div id="productInfoImgBox" onClick={handleClick}>

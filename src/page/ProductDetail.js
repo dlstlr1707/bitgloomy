@@ -1,4 +1,5 @@
 import Footer from "./Footer";
+import SideIconMenu from "./SideIconMenu";
 import "../css/productDetail.css";
 
 function ProductDetail(){
@@ -7,7 +8,33 @@ function ProductDetail(){
             <main>
                 <div id="detailContainer">
                     <div id="detailImgDiv">
-
+                        <div id="detailDisplayImg">
+                            <img src="img/pants1.png" alt=""/>
+                            <img src="img/icon/Expand_left.png" alt=""/>
+                            <img src="img/icon/Expand_right.png" alt=""/>
+                        </div>
+                        <div id="detailBulletDiv">
+                            <input type="radio" name="slide" id="slide1" checked="checked"/>
+                            <input type="radio" name="slide" id="slide2"/>
+                            <input type="radio" name="slide" id="slide3"/>
+                            <input type="radio" name="slide" id="slide4"/>
+                            <input type="radio" name="slide" id="slide5"/>
+                            <input type="radio" name="slide" id="slide6"/>
+                            <input type="radio" name="slide" id="slide7"/>
+                            <input type="radio" name="slide" id="slide8"/>
+                            <input type="radio" name="slide" id="slide9"/>
+                            <div class="bullets">
+                                <label for="slide1">&nbsp;</label>
+                                <label for="slide2">&nbsp;</label>
+                                <label for="slide3">&nbsp;</label>
+                                <label for="slide4">&nbsp;</label>
+                                <label for="slide5">&nbsp;</label>
+                                <label for="slide6">&nbsp;</label>
+                                <label for="slide7">&nbsp;</label>
+                                <label for="slide8">&nbsp;</label>
+                                <label for="slide9">&nbsp;</label>
+                            </div>
+                        </div>
                     </div>
                     <div id="detailContentDiv">
                         <p id="pName">NOMAD CARGO PANTS WOODLAND</p>
@@ -39,7 +66,28 @@ function ProductDetail(){
                                 </div>
                             </div>
                         </div>
+                        <div id="detailTotalDiv">
+                            <p>Total 0</p>
+                            <div id="selectResult">
+
+                            </div>
+                        </div>
+                        <div id="detailBtnDiv">
+                            <button>ADD TO BAG</button>
+                            <button>BUY NOW</button>
+                        </div>
+                        <div id="detailSizeInfoDiv">
+                            <p>SIZE INFO</p>
+                        </div>
+                        <div id="detailAnotherColorDiv">
+                            <p>ANOTHER COLOR ↓</p>
+                            <div id="detailAnotherColorImgDiv">
+                                <img src="img/pants2.png" alt=""/>
+                                <img src="img/pants3.png" alt=""/>
+                            </div>
+                        </div>
                     </div>
+                    <SideIconMenu></SideIconMenu>
                 </div>
             </main>
             <Footer></Footer>
