@@ -8,7 +8,6 @@ const StyledFooter = styled.div `
     justify-content: center;
     position: relative;
     top: calc(100vh - 800px);
-    border-top: 1px solid #c2c2c2;
     padding: 8px 0px;
 
     #policyInfo{
@@ -17,8 +16,8 @@ const StyledFooter = styled.div `
     }
     >p,#policyInfo >p{
     font-size: 12px;
-    font-weight: 400;
-    line-height: 30px;
+    line-height: 20px;
+    letter-spacing: 2px;
     color: #6a6c77;
     }
     >img{

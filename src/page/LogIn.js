@@ -44,6 +44,11 @@ function LogIn (){
                         <p id="join" onClick={handleClickP}>회원가입</p>
                     </div>
                     <button onClick={requestLogin}>LOGIN</button>
+                    <div id="socialLoginDiv">
+                        <img src="img/icon/google.png" alt=""/>
+                        <img src="img/icon/naver.png" alt=""/>
+                        <img src="img/icon/kakao.png" alt=""/>
+                    </div>
                 </div>
             </main>
             <Footer></Footer>

@@ -1,29 +1,31 @@
 #logInContainer{
-    width: 912px;
-    height: 660px;
+    width: 618px;
     display: flex;
     flex-direction: column;
-    gap: 24px;
-    padding: 56px 106px;
+    align-items: center;
+    gap: 16px;
+    padding: 8px;
     box-sizing: border-box;
-    padding-top: calc(65px + 35px);
+    padding-top: 265px;
 }
 #logInContainer >p{
-    font-size: 24px;
+    font-size: 20px;
+    width: 100%;
 }
 #logInSubMenu{
     display: flex;
-    justify-content: space-between;
+    gap: 426px;
 }
 #findUserInfo{
     display: flex;
-    gap: 16px;
+    gap: 8px;
 }
-#logInSubMenu >p {
-    font-size: 16px;
+#logInSubMenu >p ,#findUserInfo >p{
+    font-size: 12px;
+    cursor: pointer;
 }
 #logInContainer >input,#logInContainer >button{
-    width: 700px;
+    width: 602px;
     height: 50px;
     box-sizing: border-box;
     border: 1px solid #000000;
@@ -36,5 +38,17 @@
 #logInContainer >button{
     background-color: #000000;
     color: #FFFFFF;
-    font-size: 20px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+}
+#socialLoginDiv{
+    padding-top: 16px;
+    display: flex;
+    gap: 24px;
+}
+#socialLoginDiv >img{
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
 }
