@@ -84,6 +84,87 @@ function Shop () {
                                 <p>269,000 KRW</p>
                             </div>
                         </div>
+                        <div id="productInfoBox">
+                            <div id="productInfoImgBox" onClick={handleClick}>
+                                <img src="img/pants1.png" alt=""/>
+                            </div>
+                            <div id="productInfoPBox">
+                                <p onClick={handleClick}>NOMAD CARGO PANTS WOODLAND</p>
+                                <p>269,000 KRW</p>
+                            </div>
+                        </div>
+                        <div id="productInfoBox">
+                            <div id="productInfoImgBox" onClick={handleClick}>
+                                <img src="img/pants2.png" alt=""/>
+                            </div>
+                            <div id="productInfoPBox">
+                                <p onClick={handleClick}>NOMAD CARGO PANTS WOODLAND</p>
+                                <p>269,000 KRW</p>
+                            </div>
+                        </div>
+                        <div id="productInfoBox">
+                            <div id="productInfoImgBox" onClick={handleClick}>
+                                <img src="img/pants3.png" alt=""/>
+                            </div>
+                            <div id="productInfoPBox">
+                                <p onClick={handleClick}>NOMAD CARGO PANTS WOODLAND</p>
+                                <p>269,000 KRW</p>
+                            </div>
+                        </div>
+                        <div id="productInfoBox">
+                            <div id="productInfoImgBox" onClick={handleClick}>
+                                <img src="img/pants1.png" alt=""/>
+                            </div>
+                            <div id="productInfoPBox">
+                                <p onClick={handleClick}>NOMAD CARGO PANTS WOODLAND</p>
+                                <p>269,000 KRW</p>
+                            </div>
+                        </div>
+                        <div id="productInfoBox">
+                            <div id="productInfoImgBox" onClick={handleClick}>
+                                <img src="img/pants2.png" alt=""/>
+                            </div>
+                            <div id="productInfoPBox">
+                                <p onClick={handleClick}>NOMAD CARGO PANTS WOODLAND</p>
+                                <p>269,000 KRW</p>
+                            </div>
+                        </div>
+                        <div id="productInfoBox">
+                            <div id="productInfoImgBox" onClick={handleClick}>
+                                <img src="img/pants3.png" alt=""/>
+                            </div>
+                            <div id="productInfoPBox">
+                                <p onClick={handleClick}>NOMAD CARGO PANTS WOODLAND</p>
+                                <p>269,000 KRW</p>
+                            </div>
+                        </div>
+                        <div id="productInfoBox">
+                            <div id="productInfoImgBox" onClick={handleClick}>
+                                <img src="img/pants1.png" alt=""/>
+                            </div>
+                            <div id="productInfoPBox">
+                                <p onClick={handleClick}>NOMAD CARGO PANTS WOODLAND</p>
+                                <p>269,000 KRW</p>
+                            </div>
+                        </div>
+                        <div id="productInfoBox">
+                            <div id="productInfoImgBox" onClick={handleClick}>
+                                <img src="img/pants2.png" alt=""/>
+                            </div>
+                            <div id="productInfoPBox">
+                                <p onClick={handleClick}>NOMAD CARGO PANTS WOODLAND</p>
+                                <p>269,000 KRW</p>
+                            </div>
+                        </div>
+                        <div id="productInfoBox">
+                            <div id="productInfoImgBox" onClick={handleClick}>
+                                <img src="img/pants3.png" alt=""/>
+                            </div>
+                            <div id="productInfoPBox">
+                                <p onClick={handleClick}>NOMAD CARGO PANTS WOODLAND</p>
+                                <p>269,000 KRW</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </main>

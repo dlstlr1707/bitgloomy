@@ -1,36 +1,36 @@
 import styled from 'styled-components';
 
 const SideIconMenuDiv = styled.div `
-    width: 100px;
-    height: 220px;
+    width: 56px;
+    height: 156px;
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 8px;
     flex-direction: column;
     position: fixed;
-    top: 720px;
-    left: 1790px;
-
+    top: 782px;
+    left: 1832px;
     >img{
-    width: 48px;
-    height: 48px;
+    width: 42px;
+    height: 42px;
     border: 1px solid #c2c2c2;
-    border-radius: 8px;
+    border-radius: 999px;
     object-fit: cover;
-    padding: 8px;
+    padding: 4px;
     box-sizing: border-box;
     }
     #channelTalkDiv{
-    width: 100px;
-    height: 100px;
+    width: 56px;
+    height: 56px;
     border: 1px solid #c2c2c2;
     border-radius: 999px;
+    box-sizing: border-box;
     display: flex;
     align-items: center;
     justify-content: center;
     }
     #channelTalkDiv >img{
-        width: 90px;
+        width: 48px;
     }
 `
 

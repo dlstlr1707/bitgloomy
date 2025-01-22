@@ -2,6 +2,7 @@ import Footer from "./Footer";
 import "../css/notice.css";
 import { useEffect } from "react";
 function Notice(){
+    // 관리자 계정의 경우 등록 수정 삭제 관련사항이 있어야함
     useEffect(()=>{
         // axios로 서버에 공지사항 전체 조회 요청보냄
     },[]);

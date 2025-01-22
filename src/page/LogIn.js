@@ -25,6 +25,7 @@ function LogIn (){
     const requestLogin = () => {
         console.log("id is : "+id);
         console.log("password is : "+password);
+        // id,password 가지고 객체에 담아 보냄
         // axios로 서버에 id,password 담아서 보내면됨
         // 반환되는 세션쿠키 받아서 처리 
     }

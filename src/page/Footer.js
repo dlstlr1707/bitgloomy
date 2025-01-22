@@ -20,12 +20,14 @@ const StyledFooter = styled.div `
     letter-spacing: 2px;
     color: #6a6c77;
     }
-    >img{
+    #footerIcons{
+        padding: 4px;
+        display: flex;
+        gap: 8px;
+    }
+    #footerIcons >img{
         width: 30px;
         height: 30px;
-        position: absolute;
-        left: 1865px;
-        top: 10px;
     }
 `
 
@@ -35,13 +37,14 @@ function Footer () {
     }
     return(
         <StyledFooter>
-            <img src="img/icon/instagram.png" alt="instagramIcon" onClick={handleClickIcon}/>
             <div id="policyInfo">
                 <p>privacy</p>
                 <p>terms</p>
                 <p>service</p>
             </div>
-            <br/>
+            <div id="footerIcons">
+                <img src="img/icon/instagram.png" alt="instagramIcon" onClick={handleClickIcon}/>
+            </div>
             <p>빗 글루미</p>
             <p>경기도 양주시 옥정동로 7다길 74 부자로타워6층 6793호</p>
             <p>010-3006-4367 / bitgloomyseoul@gmail.com</p>

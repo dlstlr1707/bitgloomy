@@ -4,8 +4,11 @@
     flex-direction: column;
     gap: 20px;
     position: relative;
-    top: 200px;
+    top: 100px;
     align-items: center;
+}
+#joinContainer input,#joinContainer button,#joinContainer select{
+    border: 2px solid black;
 }
 #joinContainer >p{
     font-size: 20px;
@@ -16,15 +19,23 @@
     flex-direction: column;
     gap: 8px;
 }
-#idInput,#pwInput,#pwCheckInput,#nameInput,#mobileInput,#emailInput,#aggrementInput,#privacyInput{
+#joinForm >div{
     width: 100%;
-    height: 40px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
 }
-#joinForm input{
+#idInput{
+    height: 72px;
+}
+#pwInput,#pwCheckInput,#nameInput,.policyInput{
+    height: 60px;
+}
+#mobileInput,#emailInput{
+    height: 71px;
+}
+#joinForm input,#emailInputDiv :nth-child(4){
     height: 32px;
     border-radius: 16px;
     box-sizing: border-box;
@@ -34,33 +45,37 @@
 #joinForm input[type=text],#joinForm input[type=password]{
     width: 500px;
 }
-#joinForm p{
-    font-size: 16px;
-}
-#mobileInput,#emailInput{
-    height: 71px;
-}
 #mobileInputDiv{
     width: 500px;
     display: flex;
     align-items: center;
     gap: 40.25px;
 }
-#mobileInputDiv >input[type=number]{
+#mobileInputDiv >input[type=text]{
     width: 150px;
     text-align: center;
+    
 }
-/* Chrome, Safari, Edge, Opera */
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+.validation{
+    width: 500px;
+    display: flex;
+    align-items: center;
+    padding-left: 150px;
 }
-/* Firefox  */
-input[type='number'] {
-  -moz-appearance: textfield;
+.validation >p{
+    width: 400px;
+    color: red;
+    font-size: 14px;
 }
-
+.validation >button{
+    color: #ffffff;
+    font-size: 16px;
+    background-color: #000000;
+    border-radius: 16px;
+    width: 100px;
+    height: 32px;
+    cursor: pointer;
+}
 #smsAggrementDiv,#emailAggrementDiv{
     display: flex;
     gap: 8px;
@@ -69,11 +84,12 @@ input[type='number'] {
     padding-left: 475px;
     padding-top: 8px;
 }
-#smsAggrementDiv >input[type=checkbox],#emailAggrementDiv >input[type=checkbox]{
+#smsAggrementDiv >input[type=checkbox],#emailAggrementDiv >input[type=checkbox],.policyInputDiv2 >input[type=checkbox]{
     width: 20px;
     height: 20px;
     border-radius: 4px;
     margin: 0px;
+    cursor: pointer;
 }
 #emailInputDiv{
     width: 500px;
@@ -88,10 +104,38 @@ input[type='number'] {
 #emailInputDiv >input[type=text]{
     width: 150px;
 }
-#emailInputDiv >input[type=text]:nth-child(4){
+#emailInputDiv :nth-child(4){
     width: 162px;
 }
 #emailAggrementDiv{
     width: 188px;
     padding-left: 463px;
+}
+.policyInputDiv1{
+    display: flex;
+    width: 100%;
+    height: 23px;
+    justify-content: space-between;
+}
+.policyInputDiv1 p:nth-child(2){
+    font-size: 12px;
+    cursor: pointer;
+}
+.policyInputDiv2{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    justify-content: flex-end;
+}
+#joinForm >button{
+    width: 100%;
+    height: 50px;
+    box-sizing: border-box;
+    border-radius: 16px;
+    color: #ffffff;
+    background-color: #000000;
+    font-weight: 700;
+    font-size: 16px;
+    cursor: pointer;
 }

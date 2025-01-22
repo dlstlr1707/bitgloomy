@@ -4,9 +4,9 @@ import {useNavigate} from "react-router-dom";
 
 function Header() {
     const [isSearch, setIsSearch] = useState(false);
+    const [searchText,setSearchText] = useState("");
     const navigate = useNavigate();
     const handleClickBtn = (e) => {
-        console.log(e.target.id);
         switch (e.target.id) {
             case "Info":
                 navigate("/Info");
@@ -21,6 +21,8 @@ function Header() {
                 navigate("/Shop");
                 break;
             case "Account":
+                // 세션 확인후 로그인 정보 없으면 로그인페이지
+                // 로그인 정보 있으면 프로필 페이지 출력
                 navigate("/LogIn");
                 break;
             case "Cart":
@@ -49,8 +51,12 @@ function Header() {
             node1.style.setProperty("opacity","100%");
         }
     }
+    const handleChange = (e) => {
+        setSearchText(e.target.value);
+    }
     const excuteSearch = () => {
-        console.log("검색 진행중");
+        // 내용 받아서 axios로 요청보냄
+        console.log("검색 진행중" + searchText);
     }
     return (
         <header>
@@ -75,7 +81,7 @@ function Header() {
             </div>
             <div id="searchDiv">
                 <div id="searchInputDiv">
-                    <input type="text"/>
+                    <input type="text" onChange={handleChange}/>
                     <img src="img/icon/Search_light.png" alt="" onClick={excuteSearch}/>
                 </div>
 

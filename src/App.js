@@ -8,6 +8,7 @@ import LogIn from './page/LogIn';
 import Join from './page/Join';
 import Notice from './page/Notice';
 import Cart from './page/Cart';
+import Profile from './page/Profile';
 
 function App() {
     const handlePreventEvent = (e) =>{
@@ -26,6 +27,7 @@ function App() {
                 <Route path="/LogIn" element={<LogIn/>}></Route>
                 <Route path="/Join" element={<Join/>}></Route>
                 <Route path="/Cart" element={<Cart/>}></Route>
+                <Route path="/Profile" element={<Profile/>}></Route>
 
             </Routes>
         </div>
