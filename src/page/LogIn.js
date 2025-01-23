@@ -1,9 +1,10 @@
 import {useNavigate} from "react-router-dom";
 import Footer from "./Footer";
 import "../css/login.css";
-import { useState } from "react";
+import {useEffect, useRef, useState} from "react";
 
 function LogIn (){
+    const loginBtnRef = useRef(null);
     const [id,setId] = useState("");
     const [password,setPassword] = useState("");
     const navigate = useNavigate();
@@ -29,6 +30,21 @@ function LogIn (){
         // axios로 서버에 id,password 담아서 보내면됨
         // 반환되는 세션쿠키 받아서 처리 
     }
+    const isDisableLoginBtn = () => {
+        let resultId = id !== "";
+        let resultPw = password !== "";
+        if(resultId&&resultPw){
+            loginBtnRef.current.disabled=false;
+        }else{
+            loginBtnRef.current.disabled=true;
+        }
+    }
+    useEffect(()=>{
+            isDisableLoginBtn();
+        },[]);
+        useEffect(()=>{
+            isDisableLoginBtn();
+        },[id,password]);
     return(
         <div>
             <main>
@@ -44,7 +60,7 @@ function LogIn (){
                         </div>
                         <p id="join" onClick={handleClickP}>회원가입</p>
                     </div>
-                    <button onClick={requestLogin}>LOGIN</button>
+                    <button onClick={requestLogin} ref={loginBtnRef}>LOGIN</button>
                     <div id="socialLoginDiv">
                         <img src="img/icon/google.png" alt=""/>
                         <img src="img/icon/naver.png" alt=""/>

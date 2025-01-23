@@ -10,6 +10,9 @@
     gap: 32px;
     padding: 32px;
 }
+#shopMenuList >ul >li{
+    cursor: pointer;
+}
 #productListDiv{
     display: flex;
     flex-wrap: wrap;
@@ -24,6 +27,7 @@
 #productInfoImgBox >img{
     width: 100%;
     height: auto;
+    cursor: pointer;
 }
 #productInfoPBox {
     text-align: center;
@@ -31,4 +35,5 @@
 }
 #productInfoPBox >p{
     font-size: 14px;
+    cursor: pointer;
 }

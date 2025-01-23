@@ -42,6 +42,10 @@
     font-weight: 700;
     cursor: pointer;
 }
+#logInContainer >button:disabled{
+    background-color: #666666;
+    cursor: not-allowed;
+}
 #socialLoginDiv{
     padding-top: 16px;
     display: flex;

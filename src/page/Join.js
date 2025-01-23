@@ -1,9 +1,11 @@
 import Footer from "./Footer";
 import "../css/join.css";
-import {useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import React from "react";
 
 function Join() {
+    const emailRef = useRef(null);
+    const joinBtnRef = useRef(null);
     const initInfo = {
         id: "",
         password: "",
@@ -11,7 +13,8 @@ function Join() {
         name: "",
         phone1: 0,
         phone2: 0,
-        email: "",
+        email1: "",
+        email2: "",
         smsAggrement: false,
         emailAggrement: false,
         policyAggrement: false,
@@ -40,6 +43,8 @@ function Join() {
     const [joinInfo, setJoinInfo] = useState(initInfo);
     const [validationResult, setValidationResult] = useState(initValidationResult);
     const handleJoinInfoChange = (e) => {
+        // 입력한 스트링에 정규식을 이용해 특수문자 일부를 제한 해야함 - 보안상
+        // spring 쓰던가 아니면 직접 하던가 
         switch (e.target.id) {
             case "id":
                 if (e.target.value.length > 2 && e.target.value.length < 20) {
@@ -77,7 +82,7 @@ function Join() {
                 });
                 break;
             case "passwordCheck":
-                if (e.target.value == joinInfo.password) {
+                if (e.target.value === joinInfo.password) {
                     setValidationResult({
                         ...validationResult,
                         pwCheckResult: "success"
@@ -96,7 +101,7 @@ function Join() {
             case "name":
                 const nameRegex = /^[ㄱ-ㅎ|가-힣|a-z|A-Z|]+$/;
                 if (e.target.value.length > 2 && e.target.value.length < 20) {
-                    if (nameRegex.test(e.target.value) == true) {
+                    if (nameRegex.test(e.target.value) === true) {
                         setValidationResult({
                             ...validationResult,
                             nameResult: "length_ok"
@@ -119,32 +124,69 @@ function Join() {
                 });
                 break;
             case "phone1":
-                const phone1Regex = /^[0-9]+$/;
-                console.log(phone1Regex.test(e.target.value));
-                if (phone1Regex.test(e.target.value) == true) {
+                const phone1Regex = /^[0-9|]+$/;
+                if (phone1Regex.test(e.target.value) === true) {
                     setJoinInfo({
                         ...joinInfo,
                         phone1: e.target.value
                     });
-                    console.log(e.target.value);
+                } else {
+                    e.target.value = "";
                 }
-                console.log("phone1 is "+joinInfo.phone1);
                 break;
             case "phone2":
                 const phone2Regex = /^[0-9]+$/;
-                if (phone2Regex.test(e.target.value) == true) {
+                if (phone2Regex.test(e.target.value) === true) {
                     setJoinInfo({
                         ...joinInfo,
                         phone2: e.target.value
                     });
+                } else {
+                    e.target.value = "";
                 }
-                
                 break;
             case "smsAggrement":
                 setJoinInfo({
                     ...joinInfo,
                     smsAggrement: e.target.checked
                 });
+                break;
+            case "email1":
+                const email1Regex1 = /^[a-z|A-Z|0-9]+$/;
+                if(email1Regex1.test(e.target.value) === true){
+                    setJoinInfo({
+                        ...joinInfo,
+                        email1 : e.target.value
+                    });
+                }else{
+                    if(e.target.value === ""){
+                        setJoinInfo({
+                            ...joinInfo,
+                            email1 : ""
+                        });
+                    }else{
+                        e.target.value = joinInfo.email1;
+                    }
+                }
+                break;
+            case "email2":
+                setJoinInfo({
+                    ...joinInfo,
+                    email2 : e.target.value
+                });
+                break;
+            case "email3":
+                if(e.target.value === "Direct_input"){
+                    emailRef.current.disabled=false;
+                    emailRef.current.value = "";
+                }else{
+                    emailRef.current.disabled=true;
+                    emailRef.current.value = e.target.value;
+                    setJoinInfo({
+                        ...joinInfo,
+                        email2 : e.target.value
+                    });
+                }
                 break;
             case "emailAggrement":
                 setJoinInfo({
@@ -164,22 +206,24 @@ function Join() {
                     privacyPolicyAggrement: e.target.checked
                 });
                 break;
+            default:
+                break;
         }
     }
     const renderIdValidationResult = () => {
-        if (validationResult.idResult == "exist_id") {
+        if (validationResult.idResult === "exist_id") {
             return (
                 <p style={{
                         color: "red"
                     }}>{Messages[5]}</p>
             );
-        } else if (isExistId == false && validationResult.idResult == "length_ok") {
+        } else if (isExistId === false && validationResult.idResult === "length_ok") {
             return (
                 <p style={{
                         color: "red"
                     }}>{Messages[4]}</p>
             );
-        } else if (isExistId == true && validationResult.idResult == "length_ok") {
+        } else if (isExistId === true && validationResult.idResult === "length_ok") {
             return (
                 <p style={{
                         color: "green"
@@ -194,7 +238,7 @@ function Join() {
         }
     }
     const renderPwValidationResult = () => {
-        if (validationResult.pwResult == "length_error") {
+        if (validationResult.pwResult === "length_error") {
             return (
                 <p style={{
                         color: "red"
@@ -209,7 +253,7 @@ function Join() {
         }
     }
     const renderPwCheckValidationResult = () => {
-        if (validationResult.pwCheckResult == "success") {
+        if (validationResult.pwCheckResult === "success") {
             return (
                 <p style={{
                         color: "green"
@@ -224,13 +268,13 @@ function Join() {
         }
     }
     const renderNameValidationResult = () => {
-        if (validationResult.nameResult == "length_ok") {
+        if (validationResult.nameResult === "length_ok") {
             return (
                 <p style={{
                         color: "green"
                     }}>{Messages[9]}</p>
             );
-        } else if (validationResult.nameResult == "fail") {
+        } else if (validationResult.nameResult === "fail") {
             return (
                 <p style={{
                         color: "red"
@@ -249,9 +293,34 @@ function Join() {
         e.preventDefault();
         setIsExistId(true);
     }
+    const requestEmailAuth = () => {
+        // 이메일 인증 api 연동 후 처리 하는 함수
+    }
+    const isDisableJoinBtn = () => {
+        let resultId = (validationResult.idResult === "length_ok")&&isExistId;
+        let resultPw = validationResult.pwResult === "length_ok";
+        let resultPwCheck = validationResult.pwCheckResult === "success";
+        let resultName = validationResult.nameResult === "length_ok";
+        let resultPhone = ((joinInfo.phone1!=="")&&(joinInfo.phone1.length===4))&&((joinInfo.phone2!=="")&&(joinInfo.phone2.length===4));
+        let resultEmail = (joinInfo.email1!=="")&&(joinInfo.email2!=="");
+        let resultAggrement = joinInfo.policyAggrement;
+        let resultPolicy = joinInfo.privacyPolicyAggrement;
+        if(resultId&&resultPw&&resultPwCheck&&resultName&&resultPhone&&resultEmail&&resultAggrement&&resultPolicy){
+            joinBtnRef.current.disabled=false;
+        }else{
+            joinBtnRef.current.disabled=true;
+        }
+    }
     const requestJoinToServer = (e) => {
         e.preventDefault();
+        console.log(joinInfo);
     }
+    useEffect(()=>{
+        isDisableJoinBtn();
+    },[]);
+    useEffect(()=>{
+        isDisableJoinBtn();
+    },[joinInfo,isExistId]);
     return (
         <div>
             <main>
@@ -292,9 +361,9 @@ function Join() {
                             <div id="mobileInputDiv">
                                 <p>010</p>
                                 <p>-</p>
-                                <input type="text" id="phone1" maxLength={4}/>
+                                <input type="text" id="phone1" maxLength={4} onChange={handleJoinInfoChange}/>
                                 <p>-</p>
-                                <input type="text" id="phone2" maxLength={4}/>
+                                <input type="text" id="phone2" maxLength={4} onChange={handleJoinInfoChange}/>
                             </div>
                             <div id="smsAggrementDiv">
                                 <p>SMS 수신동의</p>
@@ -305,16 +374,16 @@ function Join() {
                         <div id="emailInput">
                             <p>E-MAIL</p>
                             <div id="emailInputDiv">
-                                <input type="text"/>
+                                <input id="email1" type="text" onChange={handleJoinInfoChange}/>
                                 <p>@</p>
-                                <input id="email1" type="text"/>
-                                <select name="email" id="email2">
+                                <input id="email2" type="text" onChange={handleJoinInfoChange} ref={emailRef}/>
+                                <select defaultValue={"Direct_input"} name="email" id="email3" onChange={handleJoinInfoChange}>
+                                    <option value="Direct_input">직접 입력</option>
                                     <option value="naver.com">naver.com</option>
                                     <option value="gmail.com">gmail.com</option>
                                     <option value="duam.net">duam.net</option>
                                     <option value="nate.com">nate.com</option>
                                     <option value="yahoo.com">yahoo.com</option>
-                                    <option value="Direct_input">직접 입력</option>
                                 </select>
                             </div>
                             <div id="emailAggrementDiv">
@@ -348,7 +417,7 @@ function Join() {
                                 <label for="privacyPolicyAggrement">동의함</label>
                             </div>
                         </div>
-                        <button onClick={requestJoinToServer}>회원가입</button>
+                        <button onClick={requestJoinToServer} ref={joinBtnRef}>회원가입</button>
                     </form>
                 </div>
             </main>

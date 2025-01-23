@@ -20,6 +20,9 @@ const StyledFooter = styled.div `
     letter-spacing: 2px;
     color: #6a6c77;
     }
+    #policyInfo >p{
+        cursor: pointer;
+    }
     #footerIcons{
         padding: 4px;
         display: flex;
@@ -28,6 +31,7 @@ const StyledFooter = styled.div `
     #footerIcons >img{
         width: 30px;
         height: 30px;
+        cursor: pointer;
     }
 `
 

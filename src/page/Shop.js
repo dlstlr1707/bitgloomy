@@ -1,5 +1,5 @@
 import Footer from "./Footer";
-import SideIconMenu from "./SideIconMenu";
+import SideIconMenu from "../component/SideIconMenu";
 import "../css/shop.css";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";

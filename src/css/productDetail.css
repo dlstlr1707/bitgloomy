@@ -31,6 +31,7 @@
     width: 60px;
     height: 60px;
     z-index: 2;
+    cursor: pointer;
 }
 #detailDisplayImg >img:nth-child(1){
     width: 540px;
@@ -204,4 +205,5 @@
 #detailAnotherColorImgDiv >img{
     width: 100px;
     height: auto;
+    cursor: pointer;
 }

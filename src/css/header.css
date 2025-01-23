@@ -57,6 +57,7 @@ header{
     background-color: #FFFFFF;
     text-align: center;
     padding: 10px 0px;
+    cursor: pointer;
 }
 #logo{
     width: 170px;
@@ -66,4 +67,5 @@ header{
     width: 170px;
     height: 43px;
     object-fit: cover;
+    cursor: pointer;
 }
