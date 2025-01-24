@@ -21,8 +21,8 @@ const SideIconMenuDiv = styled.div `
     cursor: pointer;
     }
     #channelTalkDiv{
-    width: 56px;
-    height: 56px;
+    width: 42px;
+    height: 42px;
     border: 1px solid #c2c2c2;
     border-radius: 999px;
     box-sizing: border-box;
@@ -32,7 +32,7 @@ const SideIconMenuDiv = styled.div `
     cursor: pointer;
     }
     #channelTalkDiv >img{
-        width: 48px;
+        width: 42px;
     }
 `
 
@@ -48,7 +48,7 @@ function SideIconMenu(){
             <img src="img/icon/Expand_top_stop.png" alt="" onClick={moveToTop}/>
             <img src="img/icon/Expand_down_stop.png" alt="" onClick={moveToBottom}/>
             <div id="channelTalkDiv">
-                <img src="img/logo.png" alt=""/>
+                <img src="img/bitgloomy_channelTalk.png" alt=""/>
             </div>
         </SideIconMenuDiv>
     );

@@ -3,12 +3,12 @@
     flex-direction: column;
     align-items: center;
     position: relative;
-    top: 75px;
+    top: 100px;
 }
 #shopMenuList >ul{
     display: flex;
     gap: 32px;
-    padding: 32px;
+    padding: 32px 0px 60px;
 }
 #shopMenuList >ul >li{
     cursor: pointer;
@@ -16,17 +16,12 @@
 #productListDiv{
     display: flex;
     flex-wrap: wrap;
-    gap: 16px;
-    width: 1264px;
+    gap: 12px;
+    width: 1198px;
 }
-#productInfoImgBox{
-    width: 240px;
-    height: 262px;
-    overflow: hidden;
-}
+
 #productInfoImgBox >img{
-    width: 100%;
-    height: auto;
+    width: 230px;
     cursor: pointer;
 }
 #productInfoPBox {
@@ -34,6 +29,6 @@
     padding: 0px;
 }
 #productInfoPBox >p{
-    font-size: 14px;
+    font-size: 13.5px;
     cursor: pointer;
 }

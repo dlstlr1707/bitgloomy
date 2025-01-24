@@ -1,0 +1,91 @@
+.modal-overlay {
+    background-color: rgba(0, 0, 0, 0.4);
+    width: 100%;
+    height: 100vh;
+    z-Index: 10;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+.modal-content {
+    position: relative;
+    top: 20%;
+    left: 34%;
+    width: 600px;
+    height: 600px;
+    outline: none;
+    background-color: #ffffff;
+    border-radius: 16px;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+.modal-content >p:nth-child(1){
+    font-weight: 700;
+}
+.modal-content >button{
+    width: 100px;
+    height: 32px;
+    background-color: #000000;
+    color: #ffffff;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+}
+#TermsContent{
+    width: 100%;
+    height: 500px;
+    box-sizing: border-box;
+    overflow-y: scroll;
+    border: 1px solid #c2c2c2;
+    padding: 8px;
+}
+#TermsContent >p{
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 1px;
+    word-break: keep-all;
+}
+#TermsContent table{
+    width: 100%;
+    border: 1px solid #dddddd;
+    text-align: center;
+    font-size: 12px;
+}
+#TermsContent table thead,#TermsContent table tbody{
+    height: 28px;
+}
+#TermsContent table thead tr td{
+    background-color: #d3d3d3;
+}
+#TermsContent table td{
+    vertical-align: middle;
+    border: 1px solid #dddddd;
+}
+#TermsContent #table1 td:nth-child(1){
+    width: 130px;
+}
+#TermsContent #table1 td:nth-child(2){
+    width: 80px;
+}
+#TermsContent #table1 td:nth-child(3){
+    width: 150px;
+}
+#TermsContent #table1 td:nth-child(4){
+    width: 200px;
+}
+#TermsContent #table2{
+    text-align: left;
+}
+#TermsContent #table2 td{
+    padding-left: 8px;
+}
+#TermsContent #table2 td:nth-child(1){
+    width: 60px;
+}
+#TermsContent #table2 td:nth-child(2){
+    width: 200px;
+}

@@ -4,6 +4,8 @@ import "../css/shop.css";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
+//변경전 이미지 사이즈 240임 gap=16
+
 function Shop () {
     const navigate = useNavigate();
     const handleClick = (e) => {

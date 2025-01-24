@@ -1,6 +1,9 @@
 @font-face {
+  font-family: "Source Code Pro";
+  src: url("./font/SourceCodePro-VariableFont_wght.ttf") format("truetype");
+}
+@font-face {
   font-family: "NotoSansKR-VariableFont";
-  font-weight: normal;
   src: url("./font/NotoSansKR-VariableFont_wght.ttf") format("truetype");
 }
 header{
@@ -8,7 +11,7 @@ header{
 }
 body {
   margin: 0;
-  font-family: 'Source Code Pro', 'NotoSansKR-VariableFont', sans-serif;
+  font-family: "Source Code Pro", "NotoSansKR-VariableFont", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -21,7 +24,11 @@ main{
   min-width: 1200px;
   min-height: 888px;
 }
-
+input{
+  font-family: "NotoSansKR-VariableFont";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 [type=checkbox]{
   accent-color: black;
 }

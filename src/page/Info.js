@@ -6,7 +6,7 @@ function Info() {
     const [toggleRenderAbout, setToggleRenderAbout] = useState(false);
     const handleClickBtn = () => {
         const getDiv = document.querySelector("#opacityDiv");
-        if (toggleSwitch == true) {
+        if (toggleSwitch === true) {
             getDiv.style.opacity = "70%";
             setToggleSwitch(false);
             setToggleRenderAbout(false);

@@ -6,12 +6,11 @@ header{
 #mainHeader{
     width: 100%;
     box-sizing: border-box;
-    height: 65px;
+    height: 80px;
     display: flex;
-    gap: 96px;
-    padding: 0px 200px;
+    gap: 60px;
     justify-content: center;
-    align-items: center;
+    align-items: flex-end;
 }
 #searchDiv{
     width: 100%;
@@ -42,10 +41,8 @@ header{
     height: 40px;
 }
 #leftHeaderMenu >ul,#rightHeaderMenu >ul{
-    width: 451px;
-    height: 100%;
     display: flex;
-    gap: 32px;
+    gap: 24px;
 }
 #leftHeaderMenu >ul >li,#rightHeaderMenu >ul >li{
     width: 129px;
@@ -61,11 +58,8 @@ header{
 }
 #logo{
     width: 170px;
-    height: 43px;
 }
 #logo >img{
     width: 170px;
-    height: 43px;
-    object-fit: cover;
     cursor: pointer;
 }

@@ -1,5 +1,7 @@
 import Footer from "./Footer";
 import "../css/join.css";
+import TermsModal from "../component/TermsModal";
+import PrivacyTermsModal from "../component/PrivacyTermsModal";
 import {useEffect, useRef, useState} from "react";
 import React from "react";
 
@@ -42,6 +44,8 @@ function Join() {
     const [isExistId, setIsExistId] = useState(false);
     const [joinInfo, setJoinInfo] = useState(initInfo);
     const [validationResult, setValidationResult] = useState(initValidationResult);
+    const [isTermsModalOpen,setIsTermsModalOpen] = useState(false);
+    const [isPrivacyModalOpen,setIsPrivacyModalOpen] = useState(false);
     const handleJoinInfoChange = (e) => {
         // 입력한 스트링에 정규식을 이용해 특수문자 일부를 제한 해야함 - 보안상
         // spring 쓰던가 아니면 직접 하던가 
@@ -296,6 +300,15 @@ function Join() {
     const requestEmailAuth = () => {
         // 이메일 인증 api 연동 후 처리 하는 함수
     }
+    const handleClickOpenModal = (e) => {
+        if(e.target.id === "policyAggrementModal"){
+            setIsTermsModalOpen(!isTermsModalOpen);
+        }else if(e.target.id === "privacyAggrementModal"){
+            setIsPrivacyModalOpen(!isPrivacyModalOpen);
+        }else{
+            console.log("잘못된 요청입니다.");
+        }
+    }
     const isDisableJoinBtn = () => {
         let resultId = (validationResult.idResult === "length_ok")&&isExistId;
         let resultPw = validationResult.pwResult === "length_ok";
@@ -321,6 +334,9 @@ function Join() {
     useEffect(()=>{
         isDisableJoinBtn();
     },[joinInfo,isExistId]);
+    useEffect(()=>{
+        console.log(isTermsModalOpen);
+    },[isTermsModalOpen]);
     return (
         <div>
             <main>
@@ -395,7 +411,8 @@ function Join() {
                         <div class="policyInput">
                             <div class="policyInputDiv1">
                                 <p>Aggrement</p>
-                                <p>VIEW CONTENT</p>
+                                <p id="policyAggrementModal" onClick={handleClickOpenModal}>VIEW CONTENT</p>
+                                <TermsModal isModalOpen={isTermsModalOpen} changeIsModalOpen={setIsTermsModalOpen}/>
                             </div>
                             <div class="policyInputDiv2">
                                 <p>이용약관에 동의하십니까?</p>
@@ -406,7 +423,8 @@ function Join() {
                         <div class="policyInput">
                             <div class="policyInputDiv1">
                                 <p>Privacy Policy</p>
-                                <p>VIEW CONTENT</p>
+                                <p id="privacyAggrementModal" onClick={handleClickOpenModal}>VIEW CONTENT</p>
+                                <PrivacyTermsModal isModalOpen={isPrivacyModalOpen} changeIsModalOpen={setIsPrivacyModalOpen}/>
                             </div>
                             <div class="policyInputDiv2">
                                 <p>이용약관에 동의하십니까?</p>

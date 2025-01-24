@@ -11,9 +11,6 @@ import Cart from './page/Cart';
 import Profile from './page/Profile';
 
 function App() {
-    const handlePreventEvent = (e) =>{
-        
-    }
     return (
         <div>
             <Header/>

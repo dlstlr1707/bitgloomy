@@ -1,4 +1,7 @@
 import styled from 'styled-components';
+import TermsModal from "../component/TermsModal";
+import PrivacyTermsModal from "../component/PrivacyTermsModal";
+import {useState} from "react";
 
 const StyledFooter = styled.div `
     width: 100%;
@@ -7,7 +10,7 @@ const StyledFooter = styled.div `
     align-items: center;
     justify-content: center;
     position: relative;
-    top: calc(100vh - 800px);
+    top: calc(100vh - 400px);
     padding: 8px 0px;
 
     #policyInfo{
@@ -35,19 +38,39 @@ const StyledFooter = styled.div `
     }
 `
 
-function Footer () {
+function Footer() {
+    const [isTermsModalOpen, setIsTermsModalOpen] = useState(false);
+    const [isPrivacyModalOpen, setIsPrivacyModalOpen] = useState(false);
+    const handleClickOpenModal = (e) => {
+        if (e.target.id === "policyAggrementModal") {
+            setIsTermsModalOpen(!isTermsModalOpen);
+        } else if (e.target.id === "privacyAggrementModal") {
+            setIsPrivacyModalOpen(!isPrivacyModalOpen);
+        } else {
+            console.log("잘못된 요청입니다.");
+        }
+    }
     const handleClickIcon = () => {
         window.open("https://www.instagram.com/bitgloomyseoul/");
     }
-    return(
+    return (
         <StyledFooter>
             <div id="policyInfo">
-                <p>privacy</p>
-                <p>terms</p>
+                <p id="privacyAggrementModal" onClick={handleClickOpenModal}>privacy</p>
+                <PrivacyTermsModal
+                    isModalOpen={isPrivacyModalOpen}
+                    changeIsModalOpen={setIsPrivacyModalOpen}/>
+                <p id="policyAggrementModal" onClick={handleClickOpenModal}>terms</p>
+                <TermsModal
+                    isModalOpen={isTermsModalOpen}
+                    changeIsModalOpen={setIsTermsModalOpen}/>
                 <p>service</p>
             </div>
             <div id="footerIcons">
-                <img src="img/icon/instagram.png" alt="instagramIcon" onClick={handleClickIcon}/>
+                <img
+                    src="img/icon/instagram.png"
+                    alt="instagramIcon"
+                    onClick={handleClickIcon}/>
             </div>
             <p>빗 글루미</p>
             <p>경기도 양주시 옥정동로 7다길 74 부자로타워6층 6793호</p>

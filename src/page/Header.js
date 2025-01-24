@@ -1,10 +1,11 @@
-import {useState} from "react";
+import {useRef, useState} from "react";
 import "../css/header.css";
 import {useNavigate} from "react-router-dom";
 
-function Header() {
+function Header({appDivRef}) {
     const [isSearch, setIsSearch] = useState(false);
     const [searchText,setSearchText] = useState("");
+    const searchDivRef = useRef(null);
     const navigate = useNavigate();
     const handleClickBtn = (e) => {
         switch (e.target.id) {
@@ -36,19 +37,16 @@ function Header() {
         }
     }
     const toggleSearch = () => {
-        if (isSearch==true) {
+        if (isSearch===true) {
             setIsSearch(false);
-            const node2 = document.querySelector("main");
-            node2.style.setProperty("opacity","100%");
-            const node1 = document.querySelector("#searchDiv");
-            node1.style.setProperty("height","0px");
+            const node1 = document.querySelector("main");
+            node1.style.setProperty("opacity","100%");
+            searchDivRef.current.style.setProperty("height","0px");
         } else {
             setIsSearch(true);
-            const node2 = document.querySelector("main");
-            node2.style.setProperty("opacity","30%");
-            const node1 = document.querySelector("#searchDiv");
-            node1.style.setProperty("height","90px");
-            node1.style.setProperty("opacity","100%");
+            const node1 = document.querySelector("main");
+            node1.style.setProperty("opacity","30%");
+            searchDivRef.current.style.setProperty("height","90px");
         }
     }
     const handleChange = (e) => {
@@ -63,23 +61,23 @@ function Header() {
             <div id="mainHeader">
                 <div id="leftHeaderMenu">
                     <ul>
-                        <li id="Info" onClick={handleClickBtn}>Info</li>
-                        <li id="Shop" onClick={handleClickBtn}>Shop</li>
-                        <li id="Notice" onClick={handleClickBtn}>Notice</li>
+                        <li id="Info" onClick={handleClickBtn}>info</li>
+                        <li id="Shop" onClick={handleClickBtn}>shop</li>
+                        <li id="Notice" onClick={handleClickBtn}>notice</li>
                     </ul>
                 </div>
                 <div id="logo">
-                    <img src="img/logo.png" alt="Logo" id="Logo" onClick={handleClickBtn}/>
+                    <img src="img/bitgloomy_logo.png" alt="Logo" id="Logo" onClick={handleClickBtn}/>
                 </div>
                 <div id="rightHeaderMenu">
                     <ul>
-                        <li id="Account" onClick={handleClickBtn}>Account</li>
-                        <li id="Cart" onClick={handleClickBtn}>Cart</li>
-                        <li id="Search" onClick={handleClickBtn}>Search</li>
+                        <li id="Account" onClick={handleClickBtn}>account</li>
+                        <li id="Cart" onClick={handleClickBtn}>cart</li>
+                        <li id="Search" onClick={handleClickBtn}>search</li>
                     </ul>
                 </div>
             </div>
-            <div id="searchDiv">
+            <div id="searchDiv" ref={searchDivRef}>
                 <div id="searchInputDiv">
                     <input type="text" onChange={handleChange}/>
                     <img src="img/icon/Search_light.png" alt="" onClick={excuteSearch}/>
