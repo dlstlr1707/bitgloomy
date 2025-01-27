@@ -13,14 +13,11 @@
     width: 100%;
 }
 #logInSubMenu{
+    width: 100%;
     display: flex;
-    gap: 426px;
+    justify-content: space-between;
 }
-#findUserInfo{
-    display: flex;
-    gap: 8px;
-}
-#logInSubMenu >p ,#findUserInfo >p{
+#logInSubMenu >p{
     font-size: 12px;
     cursor: pointer;
 }

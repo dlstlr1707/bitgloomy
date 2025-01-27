@@ -1,11 +1,11 @@
 import {useRef, useState} from "react";
 import "../css/header.css";
 import {useNavigate} from "react-router-dom";
+import Modal from 'react-modal';
 
-function Header({appDivRef}) {
+function Header({isLogin}) {
     const [isSearch, setIsSearch] = useState(false);
-    const [searchText,setSearchText] = useState("");
-    const searchDivRef = useRef(null);
+    const [searchText, setSearchText] = useState("");
     const navigate = useNavigate();
     const handleClickBtn = (e) => {
         switch (e.target.id) {
@@ -22,12 +22,19 @@ function Header({appDivRef}) {
                 navigate("/Shop");
                 break;
             case "Account":
-                // 세션 확인후 로그인 정보 없으면 로그인페이지
-                // 로그인 정보 있으면 프로필 페이지 출력
-                navigate("/LogIn");
+                // 세션 확인후 로그인 정보 없으면 로그인페이지 로그인 정보 있으면 프로필 페이지 출력
+                if (isLogin == true) {
+                    navigate("/Profile");
+                } else {
+                    navigate("/LogIn");
+                }
                 break;
             case "Cart":
-                navigate("/Cart");
+                if (isLogin == true) {
+                    navigate("/Cart");
+                } else {
+                    navigate("/LogIn");
+                }
                 break;
             case "Search":
                 toggleSearch();
@@ -37,16 +44,10 @@ function Header({appDivRef}) {
         }
     }
     const toggleSearch = () => {
-        if (isSearch===true) {
+        if (isSearch === true) {
             setIsSearch(false);
-            const node1 = document.querySelector("main");
-            node1.style.setProperty("opacity","100%");
-            searchDivRef.current.style.setProperty("height","0px");
         } else {
             setIsSearch(true);
-            const node1 = document.querySelector("main");
-            node1.style.setProperty("opacity","30%");
-            searchDivRef.current.style.setProperty("height","90px");
         }
     }
     const handleChange = (e) => {
@@ -54,7 +55,7 @@ function Header({appDivRef}) {
     }
     const excuteSearch = () => {
         // 내용 받아서 axios로 요청보냄
-        console.log("검색 진행중" + searchText);
+        console.log("검색 진행중 : " + searchText);
     }
     return (
         <header>
@@ -67,7 +68,11 @@ function Header({appDivRef}) {
                     </ul>
                 </div>
                 <div id="logo">
-                    <img src="img/bitgloomy_logo.png" alt="Logo" id="Logo" onClick={handleClickBtn}/>
+                    <img
+                        src="img/bitgloomy_logo.png"
+                        alt="Logo"
+                        id="Logo"
+                        onClick={handleClickBtn}/>
                 </div>
                 <div id="rightHeaderMenu">
                     <ul>
@@ -77,13 +82,14 @@ function Header({appDivRef}) {
                     </ul>
                 </div>
             </div>
-            <div id="searchDiv" ref={searchDivRef}>
-                <div id="searchInputDiv">
-                    <input type="text" onChange={handleChange}/>
-                    <img src="img/icon/Search_light.png" alt="" onClick={excuteSearch}/>
-                </div>
-
-            </div>
+            <Modal isOpen={isSearch} onRequestClose={() => setIsSearch(false)} className="search-modal-content"
+                // 모달 내용에 적용할 클래스명
+                overlayClassName="search-modal-overlay"
+                // 모달 외부에 적용할 클래스명
+                contentLabel="Example Modal">
+                <input type="text" onChange={handleChange}/>
+                <img src="img/icon/Search_light.png" alt="" onClick={excuteSearch}/>
+            </Modal>
         </header>
     );
 }

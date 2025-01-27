@@ -4,8 +4,9 @@ import TermsModal from "../component/TermsModal";
 import PrivacyTermsModal from "../component/PrivacyTermsModal";
 import {useEffect, useRef, useState} from "react";
 import React from "react";
+import axios from "axios";
 
-function Join() {
+function Join({toggleIsLogin}) {
     const emailRef = useRef(null);
     const joinBtnRef = useRef(null);
     const initInfo = {
@@ -13,8 +14,8 @@ function Join() {
         password: "",
         passwordCheck: "",
         name: "",
-        phone1: 0,
-        phone2: 0,
+        phone1: "",
+        phone2: "",
         email1: "",
         email2: "",
         smsAggrement: false,
@@ -44,11 +45,11 @@ function Join() {
     const [isExistId, setIsExistId] = useState(false);
     const [joinInfo, setJoinInfo] = useState(initInfo);
     const [validationResult, setValidationResult] = useState(initValidationResult);
-    const [isTermsModalOpen,setIsTermsModalOpen] = useState(false);
-    const [isPrivacyModalOpen,setIsPrivacyModalOpen] = useState(false);
+    const [checkedID, setCheckedID] = useState("");
+    const [isTermsModalOpen, setIsTermsModalOpen] = useState(false);
+    const [isPrivacyModalOpen, setIsPrivacyModalOpen] = useState(false);
     const handleJoinInfoChange = (e) => {
-        // 입력한 스트링에 정규식을 이용해 특수문자 일부를 제한 해야함 - 보안상
-        // spring 쓰던가 아니면 직접 하던가 
+        // 입력한 스트링에 정규식을 이용해 특수문자 일부를 제한 해야함 - 보안상 spring 쓰던가 아니면 직접 하던가
         switch (e.target.id) {
             case "id":
                 if (e.target.value.length > 2 && e.target.value.length < 20) {
@@ -61,6 +62,9 @@ function Join() {
                         ...validationResult,
                         idResult: "length_error"
                     });
+                    setIsExistId(false);
+                }
+                if((checkedID !== "")&&(checkedID !== e.target.value)){
                     setIsExistId(false);
                 }
                 setJoinInfo({
@@ -157,18 +161,18 @@ function Join() {
                 break;
             case "email1":
                 const email1Regex1 = /^[a-z|A-Z|0-9]+$/;
-                if(email1Regex1.test(e.target.value) === true){
+                if (email1Regex1.test(e.target.value) === true) {
                     setJoinInfo({
                         ...joinInfo,
-                        email1 : e.target.value
+                        email1: e.target.value
                     });
-                }else{
-                    if(e.target.value === ""){
+                } else {
+                    if (e.target.value === "") {
                         setJoinInfo({
                             ...joinInfo,
-                            email1 : ""
+                            email1: ""
                         });
-                    }else{
+                    } else {
                         e.target.value = joinInfo.email1;
                     }
                 }
@@ -176,19 +180,19 @@ function Join() {
             case "email2":
                 setJoinInfo({
                     ...joinInfo,
-                    email2 : e.target.value
+                    email2: e.target.value
                 });
                 break;
             case "email3":
-                if(e.target.value === "Direct_input"){
-                    emailRef.current.disabled=false;
+                if (e.target.value === "Direct_input") {
+                    emailRef.current.disabled = false;
                     emailRef.current.value = "";
-                }else{
-                    emailRef.current.disabled=true;
+                } else {
+                    emailRef.current.disabled = true;
                     emailRef.current.value = e.target.value;
                     setJoinInfo({
                         ...joinInfo,
-                        email2 : e.target.value
+                        email2: e.target.value
                     });
                 }
                 break;
@@ -292,51 +296,94 @@ function Join() {
             );
         }
     }
-    const requestIsExsitId = (e) => {
+    const requestIsExsitId = async(e) => {
         // axios로 서버에 id존재하는지 요청 보냄
         e.preventDefault();
-        setIsExistId(true);
+        await axios.get("http://localhost:8080/checkID/"+joinInfo.id)
+        .then((response) => {
+            //정상 통신후 응답온 부분
+            setCheckedID(joinInfo.id);
+            setIsExistId(true);
+        })
+        .catch((e) => {
+            // 오류 발생시 처리부분
+            setIsExistId(false);
+        });
     }
     const requestEmailAuth = () => {
         // 이메일 인증 api 연동 후 처리 하는 함수
     }
     const handleClickOpenModal = (e) => {
-        if(e.target.id === "policyAggrementModal"){
+        if (e.target.id === "policyAggrementModal") {
             setIsTermsModalOpen(!isTermsModalOpen);
-        }else if(e.target.id === "privacyAggrementModal"){
+        } else if (e.target.id === "privacyAggrementModal") {
             setIsPrivacyModalOpen(!isPrivacyModalOpen);
-        }else{
+        } else {
             console.log("잘못된 요청입니다.");
         }
     }
     const isDisableJoinBtn = () => {
-        let resultId = (validationResult.idResult === "length_ok")&&isExistId;
+        let resultId = (validationResult.idResult === "length_ok") && isExistId;
         let resultPw = validationResult.pwResult === "length_ok";
         let resultPwCheck = validationResult.pwCheckResult === "success";
         let resultName = validationResult.nameResult === "length_ok";
-        let resultPhone = ((joinInfo.phone1!=="")&&(joinInfo.phone1.length===4))&&((joinInfo.phone2!=="")&&(joinInfo.phone2.length===4));
-        let resultEmail = (joinInfo.email1!=="")&&(joinInfo.email2!=="");
+        let resultPhone = ((joinInfo.phone1 !== "") && (joinInfo.phone1.length === 4)) && (
+            (joinInfo.phone2 !== "") && (joinInfo.phone2.length === 4)
+        );
+        let resultEmail = (joinInfo.email1 !== "") && (joinInfo.email2 !== "");
         let resultAggrement = joinInfo.policyAggrement;
         let resultPolicy = joinInfo.privacyPolicyAggrement;
-        if(resultId&&resultPw&&resultPwCheck&&resultName&&resultPhone&&resultEmail&&resultAggrement&&resultPolicy){
-            joinBtnRef.current.disabled=false;
-        }else{
-            joinBtnRef.current.disabled=true;
+        if (resultId && resultPw && resultPwCheck && resultName && resultPhone && resultEmail && resultAggrement && resultPolicy) {
+            joinBtnRef.current.disabled = false;
+        } else {
+            joinBtnRef.current.disabled = true;
         }
     }
-    const requestJoinToServer = (e) => {
+    const requestJoinToServer = async(e) => {
         e.preventDefault();
-        console.log(joinInfo);
+        let smsReception;
+        let emailReception;
+        if(joinInfo.smsAggrement===true){
+            smsReception="y";
+        }else{
+            smsReception="n";
+        }
+        if(joinInfo.emailAggrement===true){
+            emailReception="y";
+        }else{
+            emailReception="n";
+        }
+        const requestJoinInfo = {
+            "id" : joinInfo.id,
+            "password" : joinInfo.password,
+            "name" : joinInfo.name,
+            "phoneNum": "010-"+joinInfo.phone1+"-"+joinInfo.phone2,
+            "smsReception" : smsReception,
+            "email" : joinInfo.email1+"@"+joinInfo.email2,
+            "emailReception" : emailReception
+        };
+        console.log(requestJoinInfo);
+        await axios.post("http://localhost:8080/users",requestJoinInfo,{
+            withCredentials: true  // 쿠키 자동 처리
+        })
+                    .then((response) => {
+                        //정상 통신후 응답온 부분
+                        {toggleIsLogin();}
+                    })
+                    .catch((e) => {
+                        // 오류 발생시 처리부분
+                        console.log(e);
+                    });
     }
-    useEffect(()=>{
+    useEffect(() => {
         isDisableJoinBtn();
-    },[]);
-    useEffect(()=>{
+    }, []);
+    useEffect(() => {
         isDisableJoinBtn();
-    },[joinInfo,isExistId]);
-    useEffect(()=>{
+    }, [joinInfo, isExistId, checkedID]);
+    useEffect(() => {
         console.log(isTermsModalOpen);
-    },[isTermsModalOpen]);
+    }, [isTermsModalOpen]);
     return (
         <div>
             <main>
@@ -393,7 +440,11 @@ function Join() {
                                 <input id="email1" type="text" onChange={handleJoinInfoChange}/>
                                 <p>@</p>
                                 <input id="email2" type="text" onChange={handleJoinInfoChange} ref={emailRef}/>
-                                <select defaultValue={"Direct_input"} name="email" id="email3" onChange={handleJoinInfoChange}>
+                                <select
+                                    defaultValue={"Direct_input"}
+                                    name="email"
+                                    id="email3"
+                                    onChange={handleJoinInfoChange}>
                                     <option value="Direct_input">직접 입력</option>
                                     <option value="naver.com">naver.com</option>
                                     <option value="gmail.com">gmail.com</option>
@@ -412,7 +463,9 @@ function Join() {
                             <div class="policyInputDiv1">
                                 <p>Aggrement</p>
                                 <p id="policyAggrementModal" onClick={handleClickOpenModal}>VIEW CONTENT</p>
-                                <TermsModal isModalOpen={isTermsModalOpen} changeIsModalOpen={setIsTermsModalOpen}/>
+                                <TermsModal
+                                    isModalOpen={isTermsModalOpen}
+                                    changeIsModalOpen={setIsTermsModalOpen}/>
                             </div>
                             <div class="policyInputDiv2">
                                 <p>이용약관에 동의하십니까?</p>
@@ -424,7 +477,9 @@ function Join() {
                             <div class="policyInputDiv1">
                                 <p>Privacy Policy</p>
                                 <p id="privacyAggrementModal" onClick={handleClickOpenModal}>VIEW CONTENT</p>
-                                <PrivacyTermsModal isModalOpen={isPrivacyModalOpen} changeIsModalOpen={setIsPrivacyModalOpen}/>
+                                <PrivacyTermsModal
+                                    isModalOpen={isPrivacyModalOpen}
+                                    changeIsModalOpen={setIsPrivacyModalOpen}/>
                             </div>
                             <div class="policyInputDiv2">
                                 <p>이용약관에 동의하십니까?</p>

@@ -6,7 +6,6 @@ Modal.setAppElement('#root');
 
 function PrivacyTermsModal({isModalOpen,changeIsModalOpen}) {
     useEffect(()=>{
-        console.log("in modal : "+isModalOpen);
     },[isModalOpen]);
     return (
         <Modal

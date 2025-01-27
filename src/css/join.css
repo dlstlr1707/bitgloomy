@@ -49,7 +49,7 @@
     width: 500px;
     display: flex;
     align-items: center;
-    gap: 40.25px;
+    gap: 38.25px;
 }
 #mobileInputDiv >input[type=text]{
     width: 150px;
@@ -63,9 +63,9 @@
     padding-left: 150px;
 }
 .validation >p{
-    width: 400px;
-    color: red;
+    width: 450px;
     font-size: 14px;
+    padding-top : 4px;
 }
 .validation >button{
     color: #ffffff;
@@ -79,9 +79,9 @@
 #smsAggrementDiv,#emailAggrementDiv{
     display: flex;
     gap: 8px;
-    width: 176px;
+    width: 178px;
     height: 23px;
-    padding-left: 475px;
+    padding-left: 473px;
     padding-top: 8px;
 }
 #smsAggrementDiv >input[type=checkbox],#emailAggrementDiv >input[type=checkbox],.policyInputDiv2 >input[type=checkbox]{
@@ -111,8 +111,8 @@
     width: 162px;
 }
 #emailAggrementDiv{
-    width: 188px;
-    padding-left: 463px;
+    width: 193px;
+    padding-left: 458px;
 }
 .policyInputDiv1{
     display: flex;
