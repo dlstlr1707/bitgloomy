@@ -14,10 +14,11 @@ body {
   font-family: "Source Code Pro", "NotoSansKR-VariableFont", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #DBE0DE;
 }
 
 main{
-  padding-top: 100px;
+  padding-top: 150px;
   display: flex;
   justify-content: center;
   width: 100%;

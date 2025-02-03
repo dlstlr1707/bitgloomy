@@ -18,10 +18,10 @@ const StyledFooter = styled.div `
         gap: 24px;
     }
     >p,#policyInfo >p{
-    font-size: 12px;
-    line-height: 20px;
-    letter-spacing: 2px;
-    color: #6a6c77;
+    font-size: 10px;
+    line-height: 13.62px;
+    letter-spacing: 1px;
+    color: #313637;
     }
     #policyInfo >p{
         cursor: pointer;

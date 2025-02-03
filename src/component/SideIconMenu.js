@@ -8,7 +8,7 @@ const SideIconMenuDiv = styled.div `
     gap: 8px;
     flex-direction: column;
     position: fixed;
-    top: 782px;
+    top: 832px;
     left: 1832px;
     >img{
     width: 42px;
@@ -40,13 +40,9 @@ function SideIconMenu(){
     const moveToTop = () =>{
         document.documentElement.scrollTop = 0;
     }
-    const moveToBottom = () =>{
-        document.documentElement.scrollTop = document.documentElement.scrollHeight;
-    }
     return(
         <SideIconMenuDiv>
             <img src="img/icon/Expand_top_stop.png" alt="" onClick={moveToTop}/>
-            <img src="img/icon/Expand_down_stop.png" alt="" onClick={moveToBottom}/>
             <div id="channelTalkDiv">
                 <img src="img/bitgloomy_channelTalk.png" alt=""/>
             </div>

@@ -1,19 +1,19 @@
 header{
     width: 100%;
+    height: 150px;
     position: fixed;
     z-index: 5;
+    padding: 43px 0px;
+    box-sizing: border-box;
 }
 #mainHeader{
-    width: 100%;
-    box-sizing: border-box;
-    height: 80px;
     display: flex;
-    gap: 60px;
+    gap: 50px;
     justify-content: center;
     align-items: flex-end;
 }
 .search-modal-overlay {
-    background-color: #ffffff;
+    background-color: #DBE0DE;
     opacity: 70%;
     width: 100%;
     height: 100vh;
@@ -46,26 +46,34 @@ header{
     width: 40px;
     height: 40px;
 }
-#leftHeaderMenu >ul,#rightHeaderMenu >ul{
+#leftHeaderMenu,#rightHeaderMenu{
+    width: 374px;
+    padding: 16px 0px;
+}
+#leftHeaderMenu >ul{
     display: flex;
-    gap: 24px;
+    gap: 51px;
+    justify-content: flex-end;
+}
+#rightHeaderMenu >ul{
+    display: flex;
+    gap: 51px;
 }
 #leftHeaderMenu >ul >li,#rightHeaderMenu >ul >li{
-    width: 129px;
-    height: 42px;
+    height: 30px;
     box-sizing: border-box;
     border: 1px solid #000000;
-    border-radius: 40px;
-    font-size: 16px;
-    background-color: #FFFFFF;
+    border-radius: 16px;
+    font-size: 13px;
+    background-color: #DBE0DE;
     text-align: center;
-    padding: 10px 0px;
+    padding: 7px 14px;
     cursor: pointer;
 }
 #logo{
-    width: 170px;
+    width: 192px;
 }
 #logo >img{
-    width: 170px;
+    width: 192px;
     cursor: pointer;
 }

@@ -32,6 +32,10 @@ function LogIn ({toggleIsLogin}){
         })
                     .then((response) => {
                         //정상 통신후 응답온 부분
+                        sessionStorage.setItem("userUid",response.data["userUid"]);
+                        sessionStorage.setItem("auth",response.data["auth"]);
+                        console.log("UID is : "+sessionStorage.getItem("userUid"));
+                        console.log("auth is : "+sessionStorage.getItem("auth"));
                         {toggleIsLogin();}
                         navigate("/Shop");
                     })

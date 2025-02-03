@@ -41,8 +41,6 @@ function CartSingleList() {
         console.log(e.target.value);
         if(e.target.value === "ORDER"){
             // 주문페이지 이동
-        }else if(e.target.value === "WISHLIST"){
-            // 찜목록에 추가함
         }else if(e.target.value === "DELETE"){
             // 장바구니에서 삭제
         }else{
@@ -71,7 +69,6 @@ function CartSingleList() {
             <td>
                 <div id="orderDiv">
                     <button onClick={handleOnClickSingleCart} value={"ORDER"}>ORDER</button>
-                    <button onClick={handleOnClickSingleCart} value={"WISHLIST"}>WISHLIST</button>
                     <button onClick={handleOnClickSingleCart} value={"DELETE"}>DELETE</button>
                 </div>
             </td>

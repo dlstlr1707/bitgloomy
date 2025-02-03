@@ -116,22 +116,33 @@
 #productInfoDiv{
     width: 100%;
     display: flex;
-}
-#meterialInfoDiv,#fabricInfo{
-    box-sizing: border-box;
-    width: 314px;
-    height: auto;
-    display: flex;
     flex-direction: column;
     gap: 8px;
 }
-#meterialInfoDiv >p,#fabricInfo >p{
-    font-size: 14px;
-    color: #606060;
+#InfoTabDiv{
+    box-sizing: border-box;
+    width: 100%;
+    height: 16.34px;
+    display: flex;
+    gap: 16px;
 }
-#meterialInfoDiv >p:first-child,#fabricInfo >p:first-child{
-    color: #000000;
-    font-size: 16px;
+#infoDiv{
+    width: 100%;
+    height: 140px;
+    display: flex;
+    flex-direction: column;
+}
+#InfoTabDiv p{
+    font-size: 13px;
+    line-height: 16.34px;
+    font-weight: 600;
+    color: #313637;
+}
+.infoDivP{
+    color: #313637;
+    font-size: 13px;
+    line-height: 20px;
+    font-weight: 500;
 }
 #detailOptionDiv{
     width: 100%;
@@ -176,7 +187,7 @@
     height: 50px;
     border: 1px solid black;
     border-radius: 40px;
-    background-color: white;
+    background-color: #DBE0DE;
     letter-spacing: 1px;
     cursor: pointer;
 }
