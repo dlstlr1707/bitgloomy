@@ -5,8 +5,10 @@ import PrivacyTermsModal from "../component/PrivacyTermsModal";
 import {useEffect, useRef, useState} from "react";
 import React from "react";
 import axios from "axios";
+import {useNavigate} from "react-router-dom";
 
-function Join({toggleIsLogin}) {
+function Join({setIsLogin}) {
+    const navigate = useNavigate();
     const emailRef = useRef(null);
     const joinBtnRef = useRef(null);
     const initInfo = {
@@ -27,6 +29,7 @@ function Join({toggleIsLogin}) {
         idResult: "length_error",
         pwResult: "length_error",
         pwCheckResult: "fail",
+        emailResult: "fail",
         nameResult: "length_error"
     }
     const Messages = [
@@ -46,6 +49,8 @@ function Join({toggleIsLogin}) {
     const [joinInfo, setJoinInfo] = useState(initInfo);
     const [validationResult, setValidationResult] = useState(initValidationResult);
     const [checkedID, setCheckedID] = useState("");
+    const [emailAuthCode,setEmailAuthCode] = useState("");
+    const [isEmailAuth,setIsEmailAuth] = useState(false);
     const [isTermsModalOpen, setIsTermsModalOpen] = useState(false);
     const [isPrivacyModalOpen, setIsPrivacyModalOpen] = useState(false);
     const handleJoinInfoChange = (e) => {
@@ -64,7 +69,7 @@ function Join({toggleIsLogin}) {
                     });
                     setIsExistId(false);
                 }
-                if((checkedID !== "")&&(checkedID !== e.target.value)){
+                if ((checkedID !== "") && (checkedID !== e.target.value)) {
                     setIsExistId(false);
                 }
                 setJoinInfo({
@@ -196,6 +201,9 @@ function Join({toggleIsLogin}) {
                     });
                 }
                 break;
+            case "emailAuthCode":
+                setEmailAuthCode(e.target.value);
+                break;
             case "emailAggrement":
                 setJoinInfo({
                     ...joinInfo,
@@ -296,22 +304,61 @@ function Join({toggleIsLogin}) {
             );
         }
     }
-    const requestIsExsitId = async(e) => {
+    const requestIsExsitId = async (e) => {
         // axios로 서버에 id존재하는지 요청 보냄
         e.preventDefault();
-        await axios.get("http://localhost:8080/checkID/"+joinInfo.id)
-        .then((response) => {
-            //정상 통신후 응답온 부분
-            setCheckedID(joinInfo.id);
-            setIsExistId(true);
-        })
-        .catch((e) => {
-            // 오류 발생시 처리부분
-            setIsExistId(false);
-        });
+        await axios
+            .get("http://localhost:8080/checkID/" + joinInfo.id)
+            .then((response) => {
+                //정상 통신후 응답온 부분
+                setCheckedID(joinInfo.id);
+                setIsExistId(true);
+            })
+            .catch((e) => {
+                // 오류 발생시 처리부분
+                setIsExistId(false);
+            });
     }
-    const requestEmailAuth = () => {
+    const requestEmailAuth = async(e) => {
         // 이메일 인증 api 연동 후 처리 하는 함수
+        e.preventDefault();
+        var email = joinInfo.email1 + "@" + joinInfo.email2;
+        console.log(email);
+        if(e.target.id === "sendEmail"){
+            await axios
+            .get("http://localhost:8080/mailSend/" + email)
+            .then((response) => {
+                //정상 통신후 응답온 부분
+                setIsEmailAuth(true);
+            })
+            .catch((e) => {
+                // 오류 발생시 처리부분
+                alert("존재하지 않는 이메일입니다. 다시 입력해주세요!");
+                setIsEmailAuth(false);
+            });
+        }else if(e.target.id === "sendAuthCode"){
+            await axios
+            .get("http://localhost:8080/mailCheck/" + emailAuthCode)
+            .then((response) => {
+                //정상 통신후 응답온 부분
+                console.log("인증성공");
+                setValidationResult({
+                    ...validationResult,
+                    emailResult: "success"
+                });
+            })
+            .catch((e) => {
+                // 오류 발생시 처리부분
+                console.log("인증실패");
+                setValidationResult({
+                    ...validationResult,
+                    emailResult: "fail"
+                });
+                alert("인증에 실패하였습니다!");
+            });
+        }else{
+            console.log("잘못된 인자 넘어옴!");
+        }
     }
     const handleClickOpenModal = (e) => {
         if (e.target.id === "policyAggrementModal") {
@@ -331,59 +378,65 @@ function Join({toggleIsLogin}) {
             (joinInfo.phone2 !== "") && (joinInfo.phone2.length === 4)
         );
         let resultEmail = (joinInfo.email1 !== "") && (joinInfo.email2 !== "");
+        let resultEmailAuth = validationResult.emailResult === "success";
         let resultAggrement = joinInfo.policyAggrement;
         let resultPolicy = joinInfo.privacyPolicyAggrement;
-        if (resultId && resultPw && resultPwCheck && resultName && resultPhone && resultEmail && resultAggrement && resultPolicy) {
+        if (resultId && resultPw && resultPwCheck && resultName && resultPhone && resultEmail && resultEmailAuth && resultAggrement && resultPolicy) {
             joinBtnRef.current.disabled = false;
         } else {
             joinBtnRef.current.disabled = true;
         }
     }
-    const requestJoinToServer = async(e) => {
+    const requestJoinToServer = async (e) => {
         e.preventDefault();
         let smsReception;
         let emailReception;
-        if(joinInfo.smsAggrement===true){
-            smsReception="y";
-        }else{
-            smsReception="n";
+        if (joinInfo.smsAggrement === true) {
+            smsReception = "y";
+        } else {
+            smsReception = "n";
         }
-        if(joinInfo.emailAggrement===true){
-            emailReception="y";
-        }else{
-            emailReception="n";
+        if (joinInfo.emailAggrement === true) {
+            emailReception = "y";
+        } else {
+            emailReception = "n";
         }
         const requestJoinInfo = {
-            "id" : joinInfo.id,
-            "password" : joinInfo.password,
-            "name" : joinInfo.name,
-            "phoneNum": "010-"+joinInfo.phone1+"-"+joinInfo.phone2,
-            "smsReception" : smsReception,
-            "email" : joinInfo.email1+"@"+joinInfo.email2,
-            "emailReception" : emailReception
+            "id": joinInfo.id,
+            "password": joinInfo.password,
+            "name": joinInfo.name,
+            "phoneNum": "010-" + joinInfo.phone1 + "-" + joinInfo.phone2,
+            "smsReception": smsReception,
+            "email": joinInfo.email1 + "@" + joinInfo.email2,
+            "emailReception": emailReception
         };
         console.log(requestJoinInfo);
-        await axios.post("http://localhost:8080/users",requestJoinInfo,{
-            withCredentials: true  // 쿠키 자동 처리
-        })
-                    .then((response) => {
-                        //정상 통신후 응답온 부분
-                        {toggleIsLogin();}
-                    })
-                    .catch((e) => {
-                        // 오류 발생시 처리부분
-                        console.log(e);
-                    });
+        await axios
+            .post("http://localhost:8080/users", requestJoinInfo, {
+                withCredentials: true // 쿠키 자동 처리
+            })
+            .then((response) => {
+                //정상 통신후 응답온 부분
+                sessionStorage.setItem("userUid",response.data["userUid"]);
+                sessionStorage.setItem("auth",response.data["auth"]);
+                console.log("UID is : "+sessionStorage.getItem("userUid"));
+                console.log("auth is : "+sessionStorage.getItem("auth"));
+                {setIsLogin(true);}
+                navigate("/Shop");
+            })
+            .catch((e) => {
+                // 오류 발생시 처리부분
+                console.log(e);
+            });
     }
     useEffect(() => {
         isDisableJoinBtn();
     }, []);
     useEffect(() => {
         isDisableJoinBtn();
-    }, [joinInfo, isExistId, checkedID]);
+    }, [joinInfo, isExistId, checkedID,validationResult]);
     useEffect(() => {
-        console.log(isTermsModalOpen);
-    }, [isTermsModalOpen]);
+    }, [isTermsModalOpen,emailAuthCode]);
     return (
         <div>
             <main>
@@ -453,10 +506,16 @@ function Join({toggleIsLogin}) {
                                     <option value="yahoo.com">yahoo.com</option>
                                 </select>
                             </div>
-                            <div id="emailAggrementDiv">
-                                <p>이메일 수신동의</p>
-                                <input id="emailAggrement" type="checkbox" onChange={handleJoinInfoChange}/>
-                                <label for="emailAggrement">동의함</label>
+                            <div id="emailInputSub">
+                                <div id="emailCheckDiv">
+                                    <input type="number" onChange={handleJoinInfoChange} id="emailAuthCode"/>
+                                    {isEmailAuth? <button onClick={requestEmailAuth} id="sendAuthCode">인증</button>:<button onClick={requestEmailAuth} id="sendEmail">전송</button>}
+                                </div>
+                                <div id="emailAggrementDiv">
+                                    <p>이메일 수신동의</p>
+                                    <input id="emailAggrement" type="checkbox" onChange={handleJoinInfoChange}/>
+                                    <label for="emailAggrement">동의함</label>
+                                </div>
                             </div>
                         </div>
                         <div class="policyInput">

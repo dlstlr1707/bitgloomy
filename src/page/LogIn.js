@@ -4,7 +4,7 @@ import "../css/login.css";
 import {useEffect, useRef, useState} from "react";
 import axios from "axios";
 
-function LogIn ({toggleIsLogin}){
+function LogIn ({setIsLogin}){
     const loginBtnRef = useRef(null);
     const [id,setId] = useState("");
     const [password,setPassword] = useState("");
@@ -36,7 +36,7 @@ function LogIn ({toggleIsLogin}){
                         sessionStorage.setItem("auth",response.data["auth"]);
                         console.log("UID is : "+sessionStorage.getItem("userUid"));
                         console.log("auth is : "+sessionStorage.getItem("auth"));
-                        {toggleIsLogin();}
+                        {setIsLogin(true);}
                         navigate("/Shop");
                     })
                     .catch((e) => {

@@ -76,7 +76,7 @@
     height: 32px;
     cursor: pointer;
 }
-#smsAggrementDiv,#emailAggrementDiv{
+#smsAggrementDiv{
     display: flex;
     gap: 8px;
     width: 178px;
@@ -110,10 +110,37 @@
 #emailInputDiv :nth-child(4){
     width: 162px;
 }
-#emailAggrementDiv{
-    width: 193px;
-    padding-left: 458px;
+#emailInputSub{
+    display: flex;
+    width: 500px;
+    position: relative;
+    left: 150px;
+    justify-content: flex-end;
+    gap : 40px;
 }
+#emailCheckDiv{
+    display: flex;
+    gap: 36px;
+}
+#emailCheckDiv >input{
+    width: 150px;
+}
+#emailCheckDiv >button{
+    width: 80px;
+    height: 32px;
+    border-radius: 16px;
+    background-color: #000000;
+    color: #ffffff;
+    cursor: pointer;
+}
+#emailAggrementDiv{
+    display: flex;
+    gap: 8px;
+    width: 193px;
+    height: 23px;
+    padding-top: 8px;
+}
+
 .policyInputDiv1{
     display: flex;
     width: 100%;

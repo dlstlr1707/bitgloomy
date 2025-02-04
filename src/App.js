@@ -14,9 +14,7 @@ import FindUserInfo from './page/FindUserInfo';
 import Footer from './page/Footer';
 function App() {
     const [isLogin,setIsLogin] = useState(false);
-    const toggleIsLogin = () => {
-        setIsLogin(!isLogin);
-    }
+    
     useEffect(()=>{
         console.log("isLogin is :"+ isLogin);
     },[isLogin]);
@@ -30,11 +28,11 @@ function App() {
                 <Route path="/Shop" element={<Shop/>}></Route>
                 <Route path="/Detail" element={<ProductDetail/>}></Route>
                 <Route path="/Notice" element={<Notice/>}></Route>
-                <Route path="/LogIn" element={<LogIn toggleIsLogin={toggleIsLogin}/>}></Route>
+                <Route path="/LogIn" element={<LogIn setIsLogin={setIsLogin}/>}></Route>
                 <Route path="/Find" element={<FindUserInfo/>}></Route>
-                <Route path="/Join" element={<Join toggleIsLogin={toggleIsLogin}/>}></Route>
+                <Route path="/Join" element={<Join setIsLogin={setIsLogin}/>}></Route>
                 <Route path="/Cart" element={<Cart/>}></Route>
-                <Route path="/Profile" element={<Profile toggleIsLogin={toggleIsLogin}/>}></Route>
+                <Route path="/Profile" element={<Profile setIsLogin={setIsLogin}/>}></Route>
 
             </Routes>
         </div>

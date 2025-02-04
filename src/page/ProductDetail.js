@@ -2,20 +2,36 @@ import Footer from "./Footer";
 import SideIconMenu from "../component/SideIconMenu";
 import "../css/productDetail.css";
 import { useLocation } from "react-router";
+import {useNavigate} from "react-router-dom";
 import { useEffect, useState } from "react";
+import axios from "axios";
 
 function ProductDetail() {
     const location = useLocation();
+    const navigate = useNavigate();
     const [productInfo,setProductInfo]=useState([]);
     const [materialArr,setMaterialArr]=useState([]);
     const [fabricArr,setFabricArr]=useState([]);
     const [sizeArr,setSizeArr]=useState([]);
     const [currentTab,setCurrentTab] = useState("PRODUCT");
+    const [total,setTotal] = useState([]);
     const requestAddCart = () => {
         // axios로 서버에 해당 제품 장바구니에 담아달라고 요청함
+        if((sessionStorage.getItem("auth") == null)||(sessionStorage.getItem("userUid") == null)){
+            navigate("/LogIn");
+        }else{
+            // total에 있는정보+현재 로그인정보 포함해서 전달
+            console.log("axios로 요청 보냄");
+        }
     }
     const requestBuy = () => {
         // axios로 서버에 해당 제품 구매하겠다고 요청보냄
+        if((sessionStorage.getItem("auth") == null)||(sessionStorage.getItem("userUid") == null)){
+            navigate("/LogIn");
+        }else{
+            // total에 있는정보+현재 로그인정보 포함해서 전달
+            console.log("axios로 요청 보냄");
+        }
     }
     const handleClick = (e) => {
         if(e.target.id === "PRODUCT"){
@@ -25,20 +41,70 @@ function ProductDetail() {
         }else if(e.target.id === "SIZE_INFO"){
             setCurrentTab("SIZE_INFO");
         }else{
-            console.log("잘못된 인자 넘어옴!");
+            // 사이즈 옵션 선택시 처리 코드
+            let updateTotal = [...total];
+            let isEmpty = true;
+            for(var idx=0; idx<total.length;idx++){
+                if(total[idx].size === e.target.id){
+                    updateTotal[idx].count++;
+                    isEmpty = false;
+                    break;
+                }
+            }
+            if(isEmpty){
+                updateTotal.push({
+                    size : e.target.id,
+                    count : 1
+                });
+            }
+            setTotal(Array.from(updateTotal));
+        }
+    }
+    const clickedAmountBtn = (e) => {
+        if(e.target.id === "minus"){
+            let updateTotal = [...total];
+            for(var idx=0; idx<total.length;idx++){
+                if(total[idx].size === e.target.value){
+                    if(updateTotal[idx].count<2){
+                        updateTotal[idx].count=1;
+                    }else{
+                        updateTotal[idx].count--;
+                    }
+                    break;
+                }
+            }
+            setTotal(Array.from(updateTotal));
+        }else if(e.target.id === "plus"){
+            let updateTotal = [...total];
+            for(var idx=0; idx<total.length;idx++){
+                if(total[idx].size === e.target.value){
+                    if(updateTotal[idx].count>=productInfo.quantity){
+                        alert("재고보다 많이 선택 할 수 없습니다!");
+                        updateTotal[idx].count=productInfo.quantity;
+                    }else{
+                        updateTotal[idx].count++;
+                    }
+                    break;
+                }
+            }
+            setTotal(Array.from(updateTotal));
+        }else if(e.target.id === "delete"){
+            setTotal(prevTotal => prevTotal.filter(item => item.size !== e.target.value));
+        }else{
+            console.log("잘못된 인자가 넘어옴!");
         }
     }
     const renderDynamicDiv = () => {
         if(currentTab === "PRODUCT"){
             return (
                 <>
-                    {materialArr==null? "":materialArr.map((item,idx) => (<p key={idx} className="infoDivP">- {item}</p>))}
+                    {Array.isArray(materialArr)&&materialArr.map((item,idx) => (<p key={idx} className="infoDivP">- {item}</p>))}
                 </>
             );
         }else if(currentTab === "FABRIC"){
             return(
                 <>
-                {fabricArr==null? "":fabricArr.map((item,idx) => (<p key={idx} className="infoDivP">- {item}</p>))}
+                {Array.isArray(fabricArr)&&fabricArr.map((item,idx) => (<p key={idx} className="infoDivP">- {item}</p>))}
                 </>
             );
         }else if(currentTab === "SIZE_INFO"){
@@ -48,6 +114,26 @@ function ProductDetail() {
         }else{
             console.log("잘못된 인자 넘어옴!");
         }
+    }
+    const renderTotal = () => {
+        return(
+            <>
+            {Array.isArray(total)&&total.map((item,idx) => (
+                <div key={idx} id="selectResult">
+                    <div id="selectInfo">
+                        <p>{productInfo.pname}</p>
+                        <p>- {item.size}</p>
+                    </div>
+                    <div id="selectAmount">
+                        <p>{item.count}</p>
+                        <button onClick={clickedAmountBtn} id="minus" value={item.size}>-</button>
+                        <button onClick={clickedAmountBtn} id="plus" value={item.size}>+</button>
+                        <button onClick={clickedAmountBtn} id="delete" value={item.size}>x</button>
+                    </div>
+                </div>
+                ))}
+            </>
+        );
     }
     useEffect(()=>{
         setProductInfo(location.state?.productInfo);
@@ -70,15 +156,14 @@ function ProductDetail() {
         }
     },[productInfo]);
     useEffect(()=>{
-        
     },[materialArr,fabricArr,sizeArr]);
     useEffect(()=>{
         renderDynamicDiv();
-    },[currentTab]);
+        renderTotal();
+    },[currentTab,total]);
     return (
         <div>
             <main>
-            <p> 상세페이지 수정 예정</p>
                 <div id="detailContainer">
                     <div id="detailImgDiv">
                         <div id="detailDisplayImg">
@@ -88,27 +173,8 @@ function ProductDetail() {
                                 <img src="img/icon/Expand_right.png" alt=""/>
                             </div>
                         </div>
-                        <div id="detailBulletDiv">
-                            <input type="radio" name="slide" id="slide1" checked="checked"/>
-                            <input type="radio" name="slide" id="slide2"/>
-                            <input type="radio" name="slide" id="slide3"/>
-                            <input type="radio" name="slide" id="slide4"/>
-                            <input type="radio" name="slide" id="slide5"/>
-                            <input type="radio" name="slide" id="slide6"/>
-                            <input type="radio" name="slide" id="slide7"/>
-                            <input type="radio" name="slide" id="slide8"/>
-                            <input type="radio" name="slide" id="slide9"/>
-                            <div class="bullets">
-                                <label for="slide1">&nbsp;</label>
-                                <label for="slide2">&nbsp;</label>
-                                <label for="slide3">&nbsp;</label>
-                                <label for="slide4">&nbsp;</label>
-                                <label for="slide5">&nbsp;</label>
-                                <label for="slide6">&nbsp;</label>
-                                <label for="slide7">&nbsp;</label>
-                                <label for="slide8">&nbsp;</label>
-                                <label for="slide9">&nbsp;</label>
-                            </div>
+                        <div id="imgCountDiv">
+                            <p> 1/10</p>
                         </div>
                         <div id="detailAnotherColorDiv">
                             <p>ANOTHER COLOR ↓</p>
@@ -135,20 +201,20 @@ function ProductDetail() {
                         <div id="detailOptionDiv">
                             <p>Option</p>
                             <div id="optionBoxDiv">
-                            {sizeArr==null? "":sizeArr.map((item,idx) => (
-                                <div class="optionBox" key={idx}>
-                                    <p>{item}</p>
+                            {Array.isArray(sizeArr)&&sizeArr.map((item,idx) => (
+                                <div class="optionBox" key={idx} onClick={handleClick} id={item}>
+                                    <p id={item}>{item}</p>
                                 </div>
                                 ))}
                             </div>
                         </div>
                         <div id="detailTotalDiv">
-                            <p>Total 0</p>
-                            <div id="selectResult"></div>
+                            <p>Total {total.length}</p>
+                            {renderTotal()}
                         </div>
                         <div id="detailBtnDiv">
-                            <button>ADD TO BAG</button>
-                            <button>BUY NOW</button>
+                            <button onClick={requestAddCart}>ADD TO BAG</button>
+                            <button onClick={requestBuy}>BUY NOW</button>
                         </div>
                     </div>
                     <SideIconMenu></SideIconMenu>

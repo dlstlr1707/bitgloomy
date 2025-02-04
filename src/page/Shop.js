@@ -19,6 +19,7 @@ function Shop() {
             .get("http://localhost:8080/products")
             .then((response) => {
                 //정상 통신후 응답온 부분
+                //console.log(response.data);
                 setProductList(response.data);
                 setProductFilterList(response.data);
             })
