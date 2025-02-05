@@ -42,9 +42,9 @@ function SideIconMenu(){
     }
     return(
         <SideIconMenuDiv>
-            <img src="img/icon/Expand_top_stop.png" alt="" onClick={moveToTop}/>
+            <img src={require("../img/icon/Expand_top_stop.png")} alt="" onClick={moveToTop}/>
             <div id="channelTalkDiv">
-                <img src="img/bitgloomy_channelTalk.png" alt=""/>
+                <img src={require("../img/bitgloomy_channelTalk.png")} alt=""/>
             </div>
         </SideIconMenuDiv>
     );

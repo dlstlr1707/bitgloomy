@@ -28,7 +28,7 @@
  #imgBackgroundDiv{
      width: 100%;
      height: 100%;
-     background-image: url("../../public/img/test1.jpeg");
+     background-image: url("../img/test1.jpeg");
      background-repeat: no-repeat;
      background-size: cover;
      z-index: 1;
@@ -36,7 +36,7 @@
  #swtichDiv{
      width: 100px;
      height: 100px;
-     background-image: url("../../public/img/switch.png");
+     background-image: url("../img/switch.png");
      background-size: cover;
      border: none;
      background-color: inherit;

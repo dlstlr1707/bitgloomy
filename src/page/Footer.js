@@ -10,7 +10,7 @@ const StyledFooter = styled.div `
     align-items: center;
     justify-content: center;
     position: relative;
-    top: calc(100vh - 400px);
+    top: calc(100vh - 600px);
     padding: 8px 0px;
 
     #policyInfo{
@@ -68,7 +68,7 @@ function Footer() {
             </div>
             <div id="footerIcons">
                 <img
-                    src="img/icon/instagram.png"
+                    src={require("../img/icon/instagram.png")}
                     alt="instagramIcon"
                     onClick={handleClickIcon}/>
             </div>

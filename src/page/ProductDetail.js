@@ -1,20 +1,23 @@
 import Footer from "./Footer";
 import SideIconMenu from "../component/SideIconMenu";
 import "../css/productDetail.css";
-import { useLocation } from "react-router";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
 function ProductDetail() {
-    const location = useLocation();
+    const params = useParams();
     const navigate = useNavigate();
     const [productInfo,setProductInfo]=useState([]);
     const [materialArr,setMaterialArr]=useState([]);
     const [fabricArr,setFabricArr]=useState([]);
     const [sizeArr,setSizeArr]=useState([]);
+    const [detailImgArr,setDetailImgArr]=useState([]);
+    const [similarNameArr,setSimilarNameArr]=useState([]);
+    const [similarImgArr,setSimilarImgArr]=useState([]);
     const [currentTab,setCurrentTab] = useState("PRODUCT");
     const [total,setTotal] = useState([]);
+    const [imgCount,setImgCount] = useState(1);
     const requestAddCart = () => {
         // axios로 서버에 해당 제품 장바구니에 담아달라고 요청함
         if((sessionStorage.getItem("auth") == null)||(sessionStorage.getItem("userUid") == null)){
@@ -94,6 +97,23 @@ function ProductDetail() {
             console.log("잘못된 인자가 넘어옴!");
         }
     }
+    const clickedArrowIcons = (e) => {
+        if(e.target.id === "leftImg"){
+            if(imgCount<=1){
+                setImgCount(1);
+            }
+            else{
+                setImgCount(imgCount-1);
+            }
+        }else if(e.target.id === "rightImg"){
+            if(imgCount>=detailImgArr.length){
+                setImgCount(detailImgArr.length);
+            }
+            else{
+                setImgCount(imgCount+1);
+            }
+        }
+    }
     const renderDynamicDiv = () => {
         if(currentTab === "PRODUCT"){
             return (
@@ -135,28 +155,70 @@ function ProductDetail() {
             </>
         );
     }
+    const requestProductInfo = async (name) => {
+        await axios
+            .get("http://localhost:8080/detail/"+name)
+            .then((response) => {
+                //정상 통신후 응답온 부분
+                //console.log(response.data);
+                setProductInfo(response.data);
+                let tempImgArr = [];
+                tempImgArr.push(response.data["imgURL"]);
+                tempImgArr.push(response.data["subImgUrl1"]);
+                tempImgArr.push(response.data["subImgUrl2"]);
+                tempImgArr.push(response.data["subImgUrl3"]);
+                tempImgArr.push(response.data["subImgUrl4"]);
+                tempImgArr.push(response.data["subImgUrl5"]);
+                tempImgArr.push(response.data["subImgUrl6"]);
+                tempImgArr.push(response.data["subImgUrl7"]);
+                tempImgArr.push(response.data["subImgUrl8"]);
+                tempImgArr.push(response.data["subImgUrl9"]);
+                tempImgArr.push(response.data["subImgUrl10"]);
+                let updateImgArr=[];
+                for(var idx=0; idx<tempImgArr.length;idx++){
+                    if(tempImgArr[idx] == null){
+                        break;
+                    }
+                    updateImgArr.push(tempImgArr[idx]);
+                }
+                setDetailImgArr(updateImgArr);
+            })
+            .catch((e) => {
+                // 오류 발생시 처리부분
+                console.log("오류 발생!");
+            });
+    }
+    const requsetAnotherProductDetail = (e) => {
+        requestProductInfo(similarNameArr[e.target.id]);
+        setImgCount(1);
+        setTotal([]);
+        setCurrentTab("PRODUCT");
+    }
     useEffect(()=>{
-        setProductInfo(location.state?.productInfo);
+        // axios로 detail/{pname}으로 요청보냄
+        //console.log(params.pname);
+        requestProductInfo(params.pname);
     },[]);
     useEffect(()=>{
         if (productInfo.productMaterial && typeof productInfo.productMaterial === 'string') {
             setMaterialArr(productInfo.productMaterial.split('/'));
-        } else {
-            //console.error("문자열이 정의되지 않았거나 유효하지 않습니다.");
-        }
+        } 
         if (productInfo.fabric && typeof productInfo.fabric === 'string') {
             setFabricArr(productInfo.fabric.split('/'));
-        } else {
-            //console.error("문자열이 정의되지 않았거나 유효하지 않습니다.");
         }
         if (productInfo.size && typeof productInfo.size === 'string') {
             setSizeArr(productInfo.size.split(','));
-        } else {
-            //console.error("문자열이 정의되지 않았거나 유효하지 않습니다.");
         }
+        if (productInfo.similarImgUrl && typeof productInfo.similarImgUrl === 'string') {
+            setSimilarImgArr(productInfo.similarImgUrl.split(','));
+        } 
+        if (productInfo.similarProductName && typeof productInfo.similarProductName === 'string') {
+            setSimilarNameArr(productInfo.similarProductName.split(','));
+        } 
     },[productInfo]);
     useEffect(()=>{
-    },[materialArr,fabricArr,sizeArr]);
+        //console.log(similarNameArr);
+    },[materialArr,fabricArr,sizeArr,similarImgArr,detailImgArr,similarNameArr]);
     useEffect(()=>{
         renderDynamicDiv();
         renderTotal();
@@ -167,20 +229,21 @@ function ProductDetail() {
                 <div id="detailContainer">
                     <div id="detailImgDiv">
                         <div id="detailDisplayImg">
-                            <img src="img/pants1.png" alt=""/>
+                            <img src={detailImgArr[imgCount-1]} alt=""/>
                             <div id="arrowIcons">
-                                <img src="img/icon/Expand_left.png" alt=""/>
-                                <img src="img/icon/Expand_right.png" alt=""/>
+                                <img src={require("../img/icon/Expand_left.png")} id="leftImg" onClick={clickedArrowIcons} alt=""/>
+                                <img src={require("../img/icon/Expand_right.png")} id="rightImg" onClick={clickedArrowIcons} alt=""/>
                             </div>
                         </div>
                         <div id="imgCountDiv">
-                            <p> 1/10</p>
+                            <p> {imgCount}/{detailImgArr.length}</p>
                         </div>
                         <div id="detailAnotherColorDiv">
                             <p>ANOTHER COLOR ↓</p>
                             <div id="detailAnotherColorImgDiv">
-                                <img src="img/pants2.png" alt=""/>
-                                <img src="img/pants3.png" alt=""/>
+                            {Array.isArray(similarImgArr)&&similarImgArr.map((item,idx) => (
+                                <img src={item} alt="" key={idx} id={idx} onClick={requsetAnotherProductDetail}/>
+                                ))}
                             </div>
                         </div>
                     </div>

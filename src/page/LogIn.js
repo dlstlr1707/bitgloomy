@@ -76,9 +76,9 @@ function LogIn ({setIsLogin}){
                     </div>
                     <button onClick={requestLogin} ref={loginBtnRef}>LOGIN</button>
                     <div id="socialLoginDiv">
-                        <img src="img/icon/google.png" alt=""/>
-                        <img src="img/icon/naver.png" alt=""/>
-                        <img src="img/icon/kakao.png" alt=""/>
+                        <img src={require("../img/icon/google.png")} alt=""/>
+                        <img src={require("../img/icon/naver.png")} alt=""/>
+                        <img src={require("../img/icon/kakao.png")} alt=""/>
                     </div>
                 </div>
             </main>

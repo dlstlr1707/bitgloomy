@@ -69,7 +69,7 @@ function Header({isLogin}) {
                 </div>
                 <div id="logo">
                     <img
-                        src="img/bitgloomy_logo.png"
+                        src={require("../img/bitgloomy_logo.png")}
                         alt="Logo"
                         id="Logo"
                         onClick={handleClickBtn}/>
@@ -88,7 +88,7 @@ function Header({isLogin}) {
                 // 모달 외부에 적용할 클래스명
                 contentLabel="Example Modal">
                 <input type="text" onChange={handleChange}/>
-                <img src="img/icon/Search_light.png" alt="" onClick={excuteSearch}/>
+                <img src="../img/icon/Search_light.png" alt="" onClick={excuteSearch}/>
             </Modal>
         </header>
     );
