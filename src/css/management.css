@@ -1,0 +1,54 @@
+#managementContainer{
+    width: 900px;
+    display: flex;
+    flex-direction: column;
+    padding-top: 20px;
+}
+#managementContentDiv{
+    width: 100%;
+    min-height: 600px;
+    border-top: 2px solid black;
+}
+.managementForm{
+    padding: 20px 0px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+}
+.managementInputDiv,.managementTextAreaDiv{
+    display: flex;
+    gap: 40px;
+    width: 640px;
+    align-items: center;
+}
+.managementInputDiv >p{
+    width: 100px;
+}
+.managementInputDiv >input{
+    width: 500px;
+    height: 32px;
+    border-radius: 16px;
+    font-size: 14px;
+}
+.managementTextAreaDiv{
+    flex-direction: column;
+    gap: 8px;
+    align-items: normal;
+}
+.managementTextAreaDiv >textarea{
+    width: 100%;
+    height: 200px;
+    border: 2px solid #000000;
+    resize: none;
+    font-size: 16px;
+}
+.managementForm >button{
+    width: 640px;
+    height: 40px;
+    background-color: #000000;
+    color: #ffffff;
+    border-radius: 16px;
+    margin-top: 20px;
+}

@@ -5,7 +5,6 @@ import "../css/shop.css";
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
-//변경전 이미지 사이즈 240임 gap=16
 
 function Shop() {
     const [productList,setProductList] = useState([]);
@@ -28,8 +27,12 @@ function Shop() {
                 console.log("오류 발생!");
             });
     }
-    const uploadProduct = () => {
-        navigate("/UploadProduct");
+    const managementProduct = () => {
+        if(sessionStorage.getItem("auth") === "role_admin"){
+            navigate("/Management");
+        }else{
+            alert("관리자 전용 페이지입니다!");
+        }
     }
     const clickedTab = (e) => {
         if(e.target.id === "All"){
@@ -70,7 +73,7 @@ function Shop() {
                         </ul>
                         {
                             sessionStorage.getItem("auth") === "role_admin"
-                                ? <button id="uploadProductBtn" onClick={uploadProduct}>상품등록</button>
+                                ? <button id="uploadProductBtn" onClick={managementProduct}>상품관리</button>
                                 : ""
                         }
                     </div>

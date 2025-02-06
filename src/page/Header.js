@@ -1,4 +1,4 @@
-import {useRef, useState} from "react";
+import {useState} from "react";
 import "../css/header.css";
 import {useNavigate} from "react-router-dom";
 import Modal from 'react-modal';
@@ -23,14 +23,14 @@ function Header({isLogin}) {
                 break;
             case "Account":
                 // 세션 확인후 로그인 정보 없으면 로그인페이지 로그인 정보 있으면 프로필 페이지 출력
-                if (isLogin == true) {
+                if (isLogin === true) {
                     navigate("/Profile");
                 } else {
                     navigate("/LogIn");
                 }
                 break;
             case "Cart":
-                if (isLogin == true) {
+                if (isLogin === true) {
                     navigate("/Cart");
                 } else {
                     navigate("/LogIn");

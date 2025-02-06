@@ -9,15 +9,22 @@ import Join from './page/Join';
 import Notice from './page/Notice';
 import Cart from './page/Cart';
 import Profile from './page/Profile';
+import Management from './page/Management';
 import {useEffect, useState} from "react";
 import FindUserInfo from './page/FindUserInfo';
 import Footer from './page/Footer';
 function App() {
-    const [isLogin,setIsLogin] = useState(false);
-    
+    const [isLogin,setIsLogin] = useState();
     useEffect(()=>{
-        console.log("isLogin is :"+ isLogin);
+        //console.log(isLogin);
     },[isLogin]);
+    useEffect(()=>{
+        if(sessionStorage.getItem("userUid") != null){
+            setIsLogin(true);
+        }else{
+            setIsLogin(false);
+        }
+    },[]);
     return (
         <div>
             <Header isLogin={isLogin}/>
@@ -33,7 +40,7 @@ function App() {
                 <Route path="/Join" element={<Join setIsLogin={setIsLogin}/>}></Route>
                 <Route path="/Cart" element={<Cart/>}></Route>
                 <Route path="/Profile" element={<Profile setIsLogin={setIsLogin}/>}></Route>
-
+                <Route path="/Management" element={<Management/>}></Route>
             </Routes>
         </div>
     );
