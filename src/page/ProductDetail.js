@@ -163,17 +163,17 @@ function ProductDetail() {
                 //console.log(response.data);
                 setProductInfo(response.data);
                 let tempImgArr = [];
-                tempImgArr.push(response.data["imgURL"]);
-                tempImgArr.push(response.data["subImgUrl1"]);
-                tempImgArr.push(response.data["subImgUrl2"]);
-                tempImgArr.push(response.data["subImgUrl3"]);
-                tempImgArr.push(response.data["subImgUrl4"]);
-                tempImgArr.push(response.data["subImgUrl5"]);
-                tempImgArr.push(response.data["subImgUrl6"]);
-                tempImgArr.push(response.data["subImgUrl7"]);
-                tempImgArr.push(response.data["subImgUrl8"]);
-                tempImgArr.push(response.data["subImgUrl9"]);
-                tempImgArr.push(response.data["subImgUrl10"]);
+                tempImgArr.push(response.data.productImg["imgURL"]);
+                tempImgArr.push(response.data.productImg["subImgUrl1"]);
+                tempImgArr.push(response.data.productImg["subImgUrl2"]);
+                tempImgArr.push(response.data.productImg["subImgUrl3"]);
+                tempImgArr.push(response.data.productImg["subImgUrl4"]);
+                tempImgArr.push(response.data.productImg["subImgUrl5"]);
+                tempImgArr.push(response.data.productImg["subImgUrl6"]);
+                tempImgArr.push(response.data.productImg["subImgUrl7"]);
+                tempImgArr.push(response.data.productImg["subImgUrl8"]);
+                tempImgArr.push(response.data.productImg["subImgUrl9"]);
+                tempImgArr.push(response.data.productImg["subImgUrl10"]);
                 let updateImgArr=[];
                 for(var idx=0; idx<tempImgArr.length;idx++){
                     if(tempImgArr[idx] == null){
@@ -182,6 +182,14 @@ function ProductDetail() {
                     updateImgArr.push(tempImgArr[idx]);
                 }
                 setDetailImgArr(updateImgArr);
+                let subStrURL = response.data.productImg["similarImgUrl"].substr(1);
+                let subStrName = response.data.productImg["similarProductName"];
+                if (subStrURL && typeof subStrURL === 'string') {
+                    setSimilarImgArr(subStrURL.split(','));
+                } 
+                if (subStrName && typeof subStrName === 'string') {
+                    setSimilarNameArr(subStrName.split(','));
+                }
             })
             .catch((e) => {
                 // 오류 발생시 처리부분
@@ -200,6 +208,7 @@ function ProductDetail() {
         requestProductInfo(params.pname);
     },[]);
     useEffect(()=>{
+        //console.log(productInfo);
         if (productInfo.productMaterial && typeof productInfo.productMaterial === 'string') {
             setMaterialArr(productInfo.productMaterial.split('/'));
         } 
@@ -209,16 +218,10 @@ function ProductDetail() {
         if (productInfo.size && typeof productInfo.size === 'string') {
             setSizeArr(productInfo.size.split(','));
         }
-        if (productInfo.similarImgUrl && typeof productInfo.similarImgUrl === 'string') {
-            setSimilarImgArr(productInfo.similarImgUrl.split(','));
-        } 
-        if (productInfo.similarProductName && typeof productInfo.similarProductName === 'string') {
-            setSimilarNameArr(productInfo.similarProductName.split(','));
-        } 
     },[productInfo]);
     useEffect(()=>{
         //console.log(similarNameArr);
-    },[materialArr,fabricArr,sizeArr,similarImgArr,detailImgArr,similarNameArr]);
+    },[materialArr,fabricArr,sizeArr,similarImgArr,detailImgArr,similarNameArr,imgCount]);
     useEffect(()=>{
         renderDynamicDiv();
         renderTotal();

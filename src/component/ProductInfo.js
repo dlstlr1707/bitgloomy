@@ -9,7 +9,7 @@ function ProductInfo({productInfo}) {
     return (
         <div id="productInfoBox">
             <div id="productInfoImgBox" onClick={handleClick}>
-                <img src={productInfo.imgURL} alt=""/>
+                <img src={productInfo.productImg.imgURL} alt=""/>
             </div>
             <div id="productInfoPBox">
                 <p onClick={handleClick}>{productInfo.pname}</p>
