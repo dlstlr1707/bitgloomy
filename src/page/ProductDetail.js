@@ -18,13 +18,41 @@ function ProductDetail() {
     const [currentTab,setCurrentTab] = useState("PRODUCT");
     const [total,setTotal] = useState([]);
     const [imgCount,setImgCount] = useState(1);
-    const requestAddCart = () => {
+    const requestAddCart = async() => {
         // axios로 서버에 해당 제품 장바구니에 담아달라고 요청함
         if((sessionStorage.getItem("auth") == null)||(sessionStorage.getItem("userUid") == null)){
             navigate("/LogIn");
         }else{
             // total에 있는정보+현재 로그인정보 포함해서 전달
-            console.log("axios로 요청 보냄");
+            //console.log("axios로 요청 보냄");
+            let tempSize = "";
+            let tempCount = "";
+            let tempTotalCount = "";
+            for(var i=0; i<total.length;i++){
+                tempCount = tempCount+","+total[i].count;
+                tempSize = tempSize+","+total[i].size;
+                tempTotalCount = tempTotalCount+","+(total[i].count*productInfo.price).toString();
+            }
+            const cartInfo = {
+                userUid : sessionStorage.getItem("userUid"),
+                productUid : productInfo.uid,
+                productName : productInfo.pname,
+                amount : tempCount.slice(1),
+                price : tempTotalCount.slice(1),
+                size : tempSize.slice(1)
+            }
+            //console.log(cartInfo);
+            await axios.post("http://localhost:8080/cart",cartInfo,{
+                withCredentials: true  // 쿠키 자동 처리
+            })
+                .then((response) => {
+                    //정상 통신후 응답온 부분
+                    //console.log("성공");
+                })
+                .catch((e) => {
+                    // 오류 발생시 처리부분
+                    
+                });
         }
     }
     const requestBuy = () => {
@@ -160,7 +188,7 @@ function ProductDetail() {
             .get("http://localhost:8080/detail/"+name)
             .then((response) => {
                 //정상 통신후 응답온 부분
-                //console.log(response.data);
+                //console.log(response.data["uid"]);
                 setProductInfo(response.data);
                 let tempImgArr = [];
                 tempImgArr.push(response.data.productImg["imgURL"]);

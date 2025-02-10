@@ -61,7 +61,7 @@ function Notice(){
             withCredentials: true  // 쿠키 자동 처리
         }).then((response) => {
             //정상 통신후 응답온 부분
-                console.log("통신 성공");
+                //console.log("통신 성공");
                 //console.log(response.data);
                 for(var i=0;i<response.data["results"].length;i++){
                     response.data["results"][i].writeDate = response.data["results"][i].writeDate.slice(0,10);
@@ -80,11 +80,18 @@ function Notice(){
             displayPageAmount : displayPageAmount,
             type : "event"
         }
-        await axios.post("http://localhost:8080/event",requestPageInfo,{
+        await axios.post("http://localhost:8080/notice",requestPageInfo,{
             withCredentials: true  // 쿠키 자동 처리
         }).then((response) => {
             //정상 통신후 응답온 부분
-                console.log("통신 성공");
+                //console.log("통신 성공");
+                //console.log(response.data);
+                for(var i=0;i<response.data["results"].length;i++){
+                    response.data["results"][i].writeDate = response.data["results"][i].writeDate.slice(0,10);
+                }
+                setNoticeInfoArr(response.data["results"]);
+                setTotalNoticeNum(response.data["total"]);
+                //calculateBtnNum();
             }).catch((e) => {
                 // 오류 발생시 처리부분
                 alert("잘못된 아이디 비밀번호입니다. 아이디 비밀번호를 확인해주세요.");
@@ -103,44 +110,78 @@ function Notice(){
             setStartPageBtnNum(1);
             setEndPageBtnNum(tempEndPageNum);
             setLastPageBtnNum(tempEndPageNum);
-            for(var i=0;i<tempEndPageNum;i++){
-                tempNumArr.push(i+1);
-            }
         }else{
             setEndPageBtnNum(tempEndPageNum);
             setStartPageBtnNum(tempStartBtnNum);
             setLastPageBtnNum(tempLastBtnNum);
-            for(var i=tempStartBtnNum;i<=tempLastBtnNum;i++){
-                tempNumArr.push(i);
-            }
+        }
+        for(var i=0;i<tempEndPageNum;i++){
+            tempNumArr.push(i+1);
         }
         setPageNumArr(tempNumArr);
+        let tempNumArr2 = [];
+        for(var j=0;j<displayBtnAmount;j++){
+            tempNumArr2.push(j+1);
+        }
+        setCurrentPageNumArr(tempNumArr2);
     }
     const onChageCurrentPageNum = (e) => {
-        setCurrentPageNum(e.target.id);
+        setCurrentPageNum(Number(e.target.id));
+        //console.log(e.target);
     }
     const handleClickArrow = (e) => {
         if(e.target.id === "left"){
             if(startPageBtnNum === 1){
                 alert("첫 페이지입니다.");
             }else{
-                setStartPageBtnNum(startPageBtnNum-displayBtnAmount);
-                setLastPageBtnNum(lastPageBtnNum-displayBtnAmount);
+                let tempStartNum = startPageBtnNum-displayBtnAmount;
+                let tempLastNum = lastPageBtnNum-displayBtnAmount;
+                setStartPageBtnNum(tempStartNum);
+                setLastPageBtnNum(tempLastNum);
+                let tempNumArr=[];
+                for(var i=tempStartNum;i<=tempLastNum;i++){
+                    tempNumArr.push(i);
+                }
+                setCurrentPageNumArr(tempNumArr);
             }
         }else if(e.target.id === "right"){
-            if(lastPageBtnNum+displayBtnAmount >= endPageBtnNum){
+            if(((startPageBtnNum+displayBtnAmount)<=endPageBtnNum)&&(endPageBtnNum <=(lastPageBtnNum+displayBtnAmount))){
+                console.log("if 진입");
+                let tempStartNum = startPageBtnNum+displayBtnAmount;
+                let tempLastNum = lastPageBtnNum+displayBtnAmount;
+                setStartPageBtnNum(tempStartNum);
+                setLastPageBtnNum(tempLastNum);
+                let tempNumArr=[];
+                for(var i=tempStartNum;i<=tempLastNum;i++){
+                    if(i>endPageBtnNum){
+                        tempNumArr.push(null);
+                    }else{
+                        tempNumArr.push(i);
+                    }
+                }
+                setCurrentPageNumArr(tempNumArr);
+            }else if((startPageBtnNum+displayBtnAmount)>=endPageBtnNum){
                 alert("마지막 페이지입니다.");
             }else{
-                setStartPageBtnNum(startPageBtnNum+displayBtnAmount);
-                setLastPageBtnNum(lastPageBtnNum+displayBtnAmount);
+                let tempStartNum = startPageBtnNum+displayBtnAmount;
+                let tempLastNum = lastPageBtnNum+displayBtnAmount;
+                setStartPageBtnNum(tempStartNum);
+                setLastPageBtnNum(tempLastNum);
+                let tempNumArr=[];
+                for(var i=tempStartNum;i<=tempLastNum;i++){
+                    tempNumArr.push(i);
+                }
+                setCurrentPageNumArr(tempNumArr);
             }
         }
     }
     const renderPageBtn = () => {
         return(
             <>
-                {Array.isArray(pageNumArr) && pageNumArr.map((item,idx)=>{
-                    return <p key={idx} onClick={onChageCurrentPageNum} id={item}>{item}</p>
+                {Array.isArray(currentPageNumArr) && currentPageNumArr.map((item,idx)=>{
+                    return <p key={idx} onClick={onChageCurrentPageNum} id={item} style={{
+                        fontWeight: item === currentPageNum ? 'bold' : 'normal',
+                      }}>{item}</p>
                 })}
             </>
         );
@@ -149,7 +190,7 @@ function Notice(){
         return(
             <>
                 {Array.isArray(noticeInfoArr) && noticeInfoArr.map((item,idx)=>{
-                    return(<tr key={idx}>
+                    return(<tr key={idx} style={{ height : "50px"}}>
                         <td>{item.uid}</td>
                         <td>{item.title}</td>
                         <td>{item.writeDate}</td>
@@ -165,23 +206,26 @@ function Notice(){
     useEffect(()=>{
         //console.log(currentTab);
         if(currentTab === "noticeTab"){
-            //requestNotice();
+            setCurrentPageNum(1);
+            requestNotice();
         }else if(currentTab === "eventTab"){
-            //requestEvent();
+            setCurrentPageNum(1);
+            requestEvent();
         }
     },[currentTab]);
     useEffect(()=>{
+        // 해당페이지 axios로 요청함
+        requestNotice();
+    },[currentPageNum]);
+    useEffect(()=>{
         //console.log(noticeInfoArr[0]);
-        //console.log(totalNoticeNum);
-        //console.log(currentPageNum);
         calculateBtnNum();
     },[totalNoticeNum]);
     useEffect(()=>{
         //console.log(noticeInfoArr);
-        //console.log(totalNoticeNum);
-        console.log(pageNumArr);
         renderPageBtn();
-    },[currentBtn,noticeInfoArr,pageNumArr,currentPageNum]);
+    },[currentBtn,noticeInfoArr,pageNumArr,currentPageNum,currentPageNumArr]);
+    
     return(
         <div>
             <main>

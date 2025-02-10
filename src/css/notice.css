@@ -1,5 +1,5 @@
 #noticeContainer{
-    width: 1200px;
+    width: 900px;
     display: flex;
     flex-direction: column;
     padding-top: 60px;
@@ -32,7 +32,7 @@
     color: #ffffff;
 }
 #noticeContentDiv{
-    width: 1200px;
+    width: 900px;
     height: 600px;
     border-top: 2px solid black;
     border-bottom: 2px solid black;
@@ -57,6 +57,8 @@
 }
 #noticeContentDiv >table tr{
     border-bottom: 1px solid #c2c2c2;
+    height: 50px;
+    table-layout: fixed;
 }
 #noticeContentDiv td:nth-child(1),
 #noticeContentDiv td:nth-child(3){
@@ -68,7 +70,7 @@
     padding: 16px;
 }
 #noticeContentDiv td:nth-child(2){
-    width: 900px;
+    width: 600px;
     height: 50px;
     padding: 16px;
     padding-left: 50px;

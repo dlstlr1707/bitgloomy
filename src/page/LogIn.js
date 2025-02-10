@@ -56,6 +56,11 @@ function LogIn ({setIsLogin}){
             loginBtnRef.current.disabled=true;
         }
     }
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter') {
+          requestLogin();  // Enter 키가 눌리면 requestLogin 호출
+        }
+      };
     useEffect(()=>{
             isDisableLoginBtn();
         },[]);
@@ -67,19 +72,21 @@ function LogIn ({setIsLogin}){
             <main>
                 <div id="logInContainer">
                     <p>ID</p>
-                    <input type="text" id="userID" onChange={handleIdChange}/>
+                    <input type="text" id="userID" onKeyDown={handleKeyDown} onChange={handleIdChange}/>
                     <p>PW</p>
-                    <input type="password" id="userPW" onChange={handlePasswordChange}/>
+                    <input type="password" id="userPW" onKeyDown={handleKeyDown} onChange={handlePasswordChange}/>
                     <div id="logInSubMenu">
                         <p id="findUser" onClick={handleClickP}>계정찾기</p>
                         <p id="join" onClick={handleClickP}>회원가입</p>
                     </div>
                     <button onClick={requestLogin} ref={loginBtnRef}>LOGIN</button>
+                    {/*
                     <div id="socialLoginDiv">
                         <img src={require("../img/icon/google.png")} alt=""/>
                         <img src={require("../img/icon/naver.png")} alt=""/>
                         <img src={require("../img/icon/kakao.png")} alt=""/>
                     </div>
+                    */}
                 </div>
             </main>
             <Footer></Footer>
