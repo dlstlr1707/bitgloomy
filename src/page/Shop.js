@@ -1,4 +1,3 @@
-import Footer from "./Footer";
 import SideIconMenu from "../component/SideIconMenu";
 import ProductInfo from "../component/ProductInfo";
 import "../css/shop.css";
@@ -61,7 +60,6 @@ function Shop() {
     useEffect(() => {
     },[productFilterList]);
     return (
-        <div>
             <main>
                 <div id="shopContainer">
                     <div id="shopMenuList">
@@ -83,8 +81,6 @@ function Shop() {
                     </div>
                 </div>
             </main>
-            <Footer></Footer>
-        </div>
     );
 }
 

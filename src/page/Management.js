@@ -1,4 +1,3 @@
-import Footer from "./Footer";
 import "../css/management.css";
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
@@ -307,7 +306,6 @@ function Management(){
     useEffect(()=>{
     },[productInfo,currentTab,productImgArr,productMainImg]);
     return(
-        <div>
             <main>
                 <div id="managementContainer">
                     <div id="noticeTabMenu">
@@ -322,8 +320,6 @@ function Management(){
                     </div>
                 </div>
             </main>
-            <Footer></Footer>
-        </div>
     );
 }
 

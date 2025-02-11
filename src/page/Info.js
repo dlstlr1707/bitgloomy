@@ -34,7 +34,6 @@ function Info() {
         );
     }
     return (
-        <div id="InfoContainer">
             < main >
                 <div id="imgBackgroundDiv">
                     <div id="swtichDiv"></div>
@@ -48,7 +47,6 @@ function Info() {
                     }
                 </div>
             </main>
-        </div>
     );
 }
 

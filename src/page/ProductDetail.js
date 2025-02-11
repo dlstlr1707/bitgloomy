@@ -1,4 +1,3 @@
-import Footer from "./Footer";
 import SideIconMenu from "../component/SideIconMenu";
 import "../css/productDetail.css";
 import {useNavigate, useParams} from "react-router-dom";
@@ -255,7 +254,6 @@ function ProductDetail() {
         renderTotal();
     },[currentTab,total]);
     return (
-        <div>
             <main>
                 <div id="detailContainer">
                     <div id="detailImgDiv">
@@ -314,8 +312,6 @@ function ProductDetail() {
                     <SideIconMenu></SideIconMenu>
                 </div>
             </main>
-            <Footer></Footer>
-        </div>
     );
 }
 

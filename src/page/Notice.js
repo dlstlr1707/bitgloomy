@@ -1,4 +1,3 @@
-import Footer from "./Footer";
 import "../css/notice.css";
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
@@ -227,7 +226,6 @@ function Notice(){
     },[currentBtn,noticeInfoArr,pageNumArr,currentPageNum,currentPageNumArr]);
     
     return(
-        <div>
             <main>
                 <div id="noticeContainer">
                     <div id="noticeTabMenu">
@@ -265,8 +263,6 @@ function Notice(){
                     </div>
                 </div>
             </main>
-            <Footer></Footer>
-        </div>
     );
 }
 

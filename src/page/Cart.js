@@ -1,7 +1,6 @@
-import Footer from "./Footer";
 import CartSingleList from "../component/CartSingleList";
 import "../css/cart.css";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 
 function Cart() {
@@ -10,20 +9,55 @@ function Cart() {
     const [checkedCartInfo,setCheckedCartInfo] = useState([]);
     const [totalPrice,setTotalPrice] = useState(0);
     const [reRenderFlag,setReRenderFlag] = useState(false);
+    const checkboxRef = useRef(null);
+    const btnRef = useRef(null);
     const toggleFlag = () => {
         requestCartInfo();
         setReRenderFlag((prev) => !prev);
     }
-    const handleOnClick = (e) => {
-        console.log(e.target.value);
+    const handleOnClick = async(e) => {
+        //console.log(e.target.value);
         switch (e.target.value) {
             case "selectAllCart":
+                if(e.target.type === "submit"){
+                    if(checkboxRef.current.checked === true){
+                        checkboxRef.current.checked=false;
+                        setCheckedCartInfo([]);
+                    }else{
+                        checkboxRef.current.checked=true;
+                        setCheckedCartInfo(cartInfo);
+                    }
+                }else if(e.target.type === "checkbox"){
+                    console.log(checkboxRef.current.checked);
+                    if(checkboxRef.current.checked === true){
+                        setCheckedCartInfo(cartInfo);
+                    }else{
+                        setCheckedCartInfo([]);
+                    }
+                }
                 break;
             case "deleteAllCart":
+                await axios.delete("http://localhost:8080/carts/"+sessionStorage.getItem("userUid"),{
+                    withCredentials: true  // 쿠키 자동 처리
+                })
+                    .then((response) => {
+                        //정상 통신후 응답온 부분
+                        console.log("성공");
+                        toggleFlag();
+                    })
+                    .catch((e) => {
+                        // 오류 발생시 처리부분
+                        alert("실패");
+                    });
                 break;
             case "orderAllCart":
+                setCheckedCartInfo(cartInfo);
+                // axios로 checkedCartInfo를 order 경로로 요청
+                requestOrder();
                 break;
             case "orderSelectedCart":
+                // axios로 checkedCartInfo를 order 경로로 요청
+                requestOrder();
                 break;
             default:
                 break;
@@ -48,10 +82,15 @@ function Cart() {
         return(
             <>
             {Array.isArray(cartInfo)&&cartInfo.map((item,idx)=>(
-                <CartSingleList key={idx} cartInfo={item} toggleFlag={toggleFlag} setCheckedCartInfo={setCheckedCartInfo}/>
+                <CartSingleList key={idx} cartInfo={item} toggleFlag={toggleFlag} setCheckedCartInfo={setCheckedCartInfo} checkedCartInfo={checkedCartInfo}/>
             ))}
             </>
         );
+    }
+    const requestOrder = () => {
+        console.log("주문 실행");
+        console.log(checkedCartInfo);
+        console.log(totalPrice);
     }
     useEffect(()=>{
         requestCartInfo();
@@ -59,28 +98,30 @@ function Cart() {
     useEffect(()=>{
         //console.log(cartInfo);
         let tempTotalPrice = 0;
-        for(let i=0; i<cartInfo.length;i++){
-            tempTotalPrice = tempTotalPrice+cartInfo[i].price;
+        for(let i=0; i<checkedCartInfo.length;i++){
+            tempTotalPrice = tempTotalPrice+checkedCartInfo[i].price;
         }
         setTotalPrice(tempTotalPrice);
-    },[cartInfo,totalPrice]);
+    },[checkedCartInfo,totalPrice]);
     useEffect(()=>{
+    },[cartInfo,checkedCartInfo]);
+    useEffect(()=>{
+        requestCartInfo();
         renderCartInfo();
-    },[reRenderFlag,cartInfo]);
+    },[reRenderFlag]);
     return (
-        <div>
             <main>
                 <div id="cartContainer">
                     <p>Cart</p>
                     <div id="cartTableDiv">
                         <div id="cartTopBtnDiv">
-                            <button onClick={handleOnClick} value={"selectAllCart"}>전체 선택</button>
+                            <button onClick={handleOnClick} value={"selectAllCart"} ref={btnRef}>전체 선택</button>
                             <button onClick={handleOnClick} value={"deleteAllCart"}>전체 삭제</button>
                         </div>
                         <table id="cartTable">
                             <thead>
                                 <tr>
-                                    <td><input type="checkbox"/></td>
+                                    <td><input type="checkbox" onClick={handleOnClick} value={"selectAllCart"} ref={checkboxRef}/></td>
                                     <td>IMAGE</td>
                                     <td>PRODUCT</td>
                                     <td>PRICE</td>
@@ -113,8 +154,6 @@ function Cart() {
                     </div>
                 </div>
             </main>
-            <Footer></Footer>
-        </div>
     );
 }
 

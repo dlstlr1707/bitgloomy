@@ -1,4 +1,3 @@
-import Footer from "./Footer";
 import {useNavigate} from "react-router-dom";
 import "../css/profile.css";
 import axios from "axios";
@@ -48,7 +47,6 @@ function Profile({setIsLogin}){
             });
     }
     return(
-        <div>
             <main>
                 <div id="profileContainer">
                     <p>프로필 임시페이지</p>
@@ -56,8 +54,6 @@ function Profile({setIsLogin}){
                     <button onClick={handleClickedBtn} id="deleteUser">회원탈퇴</button>
                 </div>
             </main>
-            <Footer></Footer>
-        </div>
     );
 }
 

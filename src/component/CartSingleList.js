@@ -1,11 +1,12 @@
 import {useEffect, useRef, useState} from "react";
 import axios from "axios";
 
-function CartSingleList({cartInfo,toggleFlag,setCheckedCartInfo}) {
+function CartSingleList({cartInfo,toggleFlag,setCheckedCartInfo,checkedCartInfo}) {
     const [amount,setAmount] = useState(1);
     const [price,setPrice] = useState(0);
     const [totalAmount,setTotalAmount] = useState(10);
     const inputRef = useRef(null);
+    const checkboxRef = useRef(null);
     const onChangeAmount = (e) => {
         if(e.target.value>=totalAmount){
             inputRef.current.value=totalAmount;
@@ -28,6 +29,24 @@ function CartSingleList({cartInfo,toggleFlag,setCheckedCartInfo}) {
                 inputRef.current.value=amount-1;
                 setAmount(amount-1);
                 requestModifyCartInfo(e);
+                {toggleFlag()}
+                for(var i=0;i<checkedCartInfo.length;i++){
+                    if(checkedCartInfo[i].uid === cartInfo.uid){
+                        let tempArr1 =checkedCartInfo.filter((item)=>
+                            item.uid !== cartInfo.uid
+                        );
+                        let tempInfo = {
+                            ...cartInfo,
+                            amount : amount-1,
+                            price : price - (cartInfo.price/cartInfo.amount)
+                        }
+                        let tempArr2 = [
+                            ...tempArr1,
+                            tempInfo
+                        ];
+                        setCheckedCartInfo(tempArr2);
+                    }
+                }
             }
         } else if (e.target.value === "plus") {
             if(amount>=totalAmount){
@@ -37,6 +56,24 @@ function CartSingleList({cartInfo,toggleFlag,setCheckedCartInfo}) {
                 inputRef.current.value=amount+1;
                 setAmount(amount+1);
                 requestModifyCartInfo(e);
+                {toggleFlag()}
+                for(var i=0;i<checkedCartInfo.length;i++){
+                    if(checkedCartInfo[i].uid === cartInfo.uid){
+                        let tempArr1 =checkedCartInfo.filter((item)=>
+                            item.uid !== cartInfo.uid
+                        );
+                        let tempInfo = {
+                            ...cartInfo,
+                            amount : amount+1,
+                            price : price + (cartInfo.price/cartInfo.amount)
+                        }
+                        let tempArr2 = [
+                            ...tempArr1,
+                            tempInfo
+                        ];
+                        setCheckedCartInfo(tempArr2);
+                    }
+                }
             }
         } else {
             console.log("잘못된 인자가 넘어오고 있음 !!");
@@ -46,11 +83,37 @@ function CartSingleList({cartInfo,toggleFlag,setCheckedCartInfo}) {
         //console.log(e.target.value);
         if(e.target.value === "ORDER"){
             // 주문페이지 이동
+            const tempSingleOrderInfo = {
+                ...cartInfo,
+                amount : amount,
+                price : price,
+            }
+            console.log("개별 상품 주문 실행");
+            console.log(tempSingleOrderInfo);
+            // axios로 주문요청 코드 작성해야함
+
         }else if(e.target.value === "DELETE"){
             // 장바구니에서 삭제
             requestDeleteCartInfo();
         }else{
             console.log("잘못된 인자가 넘어옴 !!");
+        }
+    }
+    const handleCheckboxState = (e) => {
+        if(checkboxRef.current.checked === true){
+            setCheckedCartInfo([...checkedCartInfo,{
+                ...cartInfo,
+                amount : amount,
+                price : price,
+            }]);
+        }else{
+            for(var i=0;i<checkedCartInfo.length;i++){
+                if(checkedCartInfo[i].uid === cartInfo.uid){
+                    setCheckedCartInfo(checkedCartInfo.filter((item)=>
+                        item.uid !== cartInfo.uid
+                    ));
+                }
+            }
         }
     }
     const requestModifyCartInfo = async(e) =>{
@@ -85,6 +148,13 @@ function CartSingleList({cartInfo,toggleFlag,setCheckedCartInfo}) {
             
     }
     const requestDeleteCartInfo = async() => {
+        for(var i=0;i<checkedCartInfo.length;i++){
+            if(checkedCartInfo[i].uid === cartInfo.uid){
+                setCheckedCartInfo(checkedCartInfo.filter((item)=>
+                    item.uid !== cartInfo.uid
+                ));
+            }
+        }
         await axios.delete("http://localhost:8080/cart/"+cartInfo.uid,{
             withCredentials: true  // 쿠키 자동 처리
         })
@@ -101,14 +171,26 @@ function CartSingleList({cartInfo,toggleFlag,setCheckedCartInfo}) {
     useEffect(()=>{
         setAmount(cartInfo.amount);
         setPrice(cartInfo.price);
+        
     },[]);
     useEffect(()=>{
-        //console.log(amount);
-        //console.log(price);
+        //console.log(cartInfo);
     },[amount,price]);
+    useEffect(()=>{
+        console.log(checkedCartInfo);
+        for(var i=0;i<checkedCartInfo.length;i++){
+            if(checkedCartInfo[i].uid === cartInfo.uid){
+                checkboxRef.current.checked = true;
+            }
+        }
+        if(checkedCartInfo.length === 0){
+            checkboxRef.current.checked = false;
+        }
+    },[checkedCartInfo]);
     return (
         <tr>
-            <td><input type="checkbox"/></td>
+            <td>
+                <input type="checkbox" ref={checkboxRef} onClick={handleCheckboxState} value={cartInfo.uid}/></td>
             <td><img src={cartInfo.productImg.imgURL} alt=""/></td>
             <td>
                 <p>{cartInfo.productName}</p>

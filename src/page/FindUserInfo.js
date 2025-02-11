@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import "../css/findUserInfo.css";
-import Footer from "./Footer";
+
 function FindUserInfo() {
     const [selectedTab, setSelectedTab] = useState("findId");
     const handleClickP = (e) => {
@@ -10,7 +10,6 @@ function FindUserInfo() {
         console.log("selectedTab is : " + selectedTab);
     }, [selectedTab]);
     return (
-        <div>
             <main>
                 <div id="findUserContainer">
                     <div id="findUserTab">
@@ -61,8 +60,6 @@ function FindUserInfo() {
                     }
                 </div>
             </main>
-            <Footer/>
-        </div>
     );
 }
 

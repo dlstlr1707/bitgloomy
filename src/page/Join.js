@@ -1,4 +1,3 @@
-import Footer from "./Footer";
 import "../css/join.css";
 import TermsModal from "../component/TermsModal";
 import PrivacyTermsModal from "../component/PrivacyTermsModal";
@@ -438,7 +437,6 @@ function Join({setIsLogin}) {
     useEffect(() => {
     }, [isTermsModalOpen,emailAuthCode]);
     return (
-        <div>
             <main>
                 <div id="joinContainer">
                     <p>CREATE ACCOUNT</p>
@@ -553,8 +551,6 @@ function Join({setIsLogin}) {
                     </form>
                 </div>
             </main>
-            <Footer></Footer>
-        </div>
     );
 }
 

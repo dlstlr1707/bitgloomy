@@ -1,5 +1,4 @@
 import {useNavigate} from "react-router-dom";
-import Footer from "./Footer";
 import "../css/login.css";
 import {useEffect, useRef, useState} from "react";
 import axios from "axios";
@@ -68,7 +67,6 @@ function LogIn ({setIsLogin}){
             isDisableLoginBtn();
         },[id,password]);
     return(
-        <div>
             <main>
                 <div id="logInContainer">
                     <p>ID</p>
@@ -89,8 +87,6 @@ function LogIn ({setIsLogin}){
                     */}
                 </div>
             </main>
-            <Footer></Footer>
-        </div>
     );
 }
 
