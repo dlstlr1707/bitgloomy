@@ -8,7 +8,7 @@ const SideIconMenuDiv = styled.div `
     gap: 8px;
     flex-direction: column;
     position: fixed;
-    top: 832px;
+    top: 800px;
     left: 1832px;
     >img{
     width: 42px;

@@ -10,7 +10,7 @@ const StyledFooter = styled.div `
     align-items: center;
     justify-content: center;
     position: relative;
-    top: calc(100vh - 600px);
+    top: calc(100vh - 800px);
     padding: 8px 0px;
 
     #policyInfo{
@@ -30,6 +30,9 @@ const StyledFooter = styled.div `
         padding: 4px;
         display: flex;
         gap: 8px;
+        position: absolute;
+        top: 80px;
+        left: 96.8%;
     }
     #footerIcons >img{
         width: 30px;
@@ -66,18 +69,19 @@ function Footer() {
                     changeIsModalOpen={setIsTermsModalOpen}/>
                 <p>service</p>
             </div>
-            <div id="footerIcons">
-                <img
-                    src={require("../img/icon/instagram.png")}
-                    alt="instagramIcon"
-                    onClick={handleClickIcon}/>
-            </div>
+            <br/>
             <p>빗 글루미</p>
             <p>경기도 양주시 옥정동로 7다길 74 부자로타워6층 6793호</p>
             <p>010-3006-4367 / bitgloomyseoul@gmail.com</p>
             <p>사업자등록번호 501-68-00634</p>
             <p>통신판매업신고 제2024-경기양주-2016호</p>
             <p>대표 윤준식</p>
+            <div id="footerIcons">
+                <img
+                    src={require("../img/icon/instagram.png")}
+                    alt="instagramIcon"
+                    onClick={handleClickIcon}/>
+            </div>
         </StyledFooter>
     );
 }

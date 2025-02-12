@@ -23,10 +23,15 @@
     width: 100%;
     height: 42px;
     background-color: #000000;
-    border-radius: 16px;
+    border-radius: 32px;
     color: #ffffff;
     font-weight: 700;
     font-size: 16px;
+    border: none;
+}
+#findUserInputDiv >button:disabled{
+    background-color: #666666;
+    cursor: not-allowed;
 }
 .inputBoxDiv{
     width: 100%;
@@ -54,4 +59,5 @@
     position: absolute;
     top: 0px;
     left: 506px;
+    border: none;
 }

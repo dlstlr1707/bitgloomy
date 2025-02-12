@@ -35,7 +35,7 @@ function App() {
             .then((response) => {
                 //정상 통신후 응답온 부분
                 console.log("성공");
-                //console.log(response.data);
+                setWeatherInfo(response.data);
             })
             .catch((e) => {
                 // 오류 발생시 처리부분
@@ -44,8 +44,8 @@ function App() {
 
     }
     useEffect(() => {
-        //console.log(isLogin);
-    }, [isLogin, latitude, longitude]);
+        //console.log(weatherInfo);
+    }, [isLogin, latitude, longitude,weatherInfo]);
     useEffect(() => {
         if (sessionStorage.getItem("userUid") != null) {
             setIsLogin(true);
@@ -66,13 +66,14 @@ function App() {
             enableHighAccuracy: true,
             maximumAge: 30000,
         };
-        geolocation.watchPosition(success, error, options);
+        geolocation.getCurrentPosition(success, error, options);
 
-        requestWeatherApi();
+        //일단 주석 처리 해두고 추후 작업 예정
+        //requestWeatherApi();
     }, []);
     return (
         <div>
-            <Header isLogin={isLogin}/>
+            <Header isLogin={isLogin} weatherInfo={weatherInfo}/>
             <Routes>
                 <Route path="/" element={<Info/>}></Route>
                 <Route path="/Shop" element={<Shop/>}></Route>

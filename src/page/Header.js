@@ -3,7 +3,7 @@ import "../css/header.css";
 import {useNavigate} from "react-router-dom";
 import Modal from 'react-modal';
 
-function Header({isLogin}) {
+function Header({isLogin,weatherInfo}) {
     const [isSearch, setIsSearch] = useState(false);
     const [searchText, setSearchText] = useState("");
     const navigate = useNavigate();

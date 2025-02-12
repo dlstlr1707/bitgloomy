@@ -1,4 +1,37 @@
 #profileContainer{
+   width: 900px;
+}
+#userProfileInfoDiv,#deliveryDiv,#csInfoDiv{
     display: flex;
     flex-direction: column;
+    gap: 20px;
+    padding: 16px 0px;
+    border-top: 1px solid #000000;
+    position: relative;
+}
+#csInfoDiv{
+    border-bottom: 1px solid #000000;
+}
+#userProfileInfoBtnDiv,#addressBtnDiv{
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+}
+#userProfileInfoBtnDiv >button,#addressBtnDiv >button{
+    width: 90px;
+    background-color: #000000;
+    color: #ffffff;
+    border-radius: 16px;
+    border: none;
+    padding: 4px 10px;
+}
+#deliveryDiv >p:nth-child(2){
+    position: absolute;
+}
+#deliveryStatusDiv,#csListDiv{
+    width: 100%;
+    min-height: 500px;
+    box-sizing: border-box;
+    border: 1px solid #c2c2c2;
+    padding: 8px;
 }
