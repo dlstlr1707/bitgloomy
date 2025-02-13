@@ -33,8 +33,9 @@ function LogIn ({setIsLogin}){
                         //정상 통신후 응답온 부분
                         sessionStorage.setItem("userUid",response.data["userUid"]);
                         sessionStorage.setItem("auth",response.data["auth"]);
-                        console.log("UID is : "+sessionStorage.getItem("userUid"));
-                        console.log("auth is : "+sessionStorage.getItem("auth"));
+                        sessionStorage.setItem("name",response.data["name"]);
+                        sessionStorage.setItem("email",response.data["email"]);
+                        sessionStorage.setItem("phoneNum",response.data["phoneNum"]);
                         {setIsLogin(true);}
                         navigate("/Shop");
                     })
