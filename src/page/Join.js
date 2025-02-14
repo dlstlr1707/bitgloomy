@@ -15,6 +15,9 @@ function Join({setIsLogin}) {
         password: "",
         passwordCheck: "",
         name: "",
+        postcode: "",
+        mainAddress: "",
+        subAddress: "",
         phone1: "",
         phone2: "",
         email1: "",
@@ -133,6 +136,24 @@ function Join({setIsLogin}) {
                 setJoinInfo({
                     ...joinInfo,
                     name: e.target.value
+                });
+                break;
+            case "postcode":
+                setJoinInfo({
+                    ...joinInfo,
+                    postcode: e.target.value
+                });
+                break;
+            case "mainAddress":
+                setJoinInfo({
+                    ...joinInfo,
+                    mainAddress: e.target.value
+                });
+                break;
+            case "subAddress":
+                setJoinInfo({
+                    ...joinInfo,
+                    subAddress: e.target.value
                 });
                 break;
             case "phone1":
@@ -372,6 +393,7 @@ function Join({setIsLogin}) {
         let resultId = (validationResult.idResult === "length_ok") && isExistId;
         let resultPw = validationResult.pwResult === "length_ok";
         let resultPwCheck = validationResult.pwCheckResult === "success";
+        let resultAddress = (joinInfo.postcode !== "")&&(joinInfo.mainAddress !== "");
         let resultName = validationResult.nameResult === "length_ok";
         let resultPhone = ((joinInfo.phone1 !== "") && (joinInfo.phone1.length === 4)) && (
             (joinInfo.phone2 !== "") && (joinInfo.phone2.length === 4)
@@ -380,7 +402,7 @@ function Join({setIsLogin}) {
         let resultEmailAuth = validationResult.emailResult === "success";
         let resultAggrement = joinInfo.policyAggrement;
         let resultPolicy = joinInfo.privacyPolicyAggrement;
-        if (resultId && resultPw && resultPwCheck && resultName && resultPhone && resultEmail && resultEmailAuth && resultAggrement && resultPolicy) {
+        if (resultId && resultPw && resultPwCheck && resultName && resultAddress && resultPhone && resultEmail && resultEmailAuth && resultAggrement && resultPolicy) {
             joinBtnRef.current.disabled = false;
         } else {
             joinBtnRef.current.disabled = true;
@@ -404,6 +426,8 @@ function Join({setIsLogin}) {
             "id": joinInfo.id,
             "password": joinInfo.password,
             "name": joinInfo.name,
+            "postcode": joinInfo.postcode,
+            "address": joinInfo.mainAddress + joinInfo.subAddress,
             "phoneNum": "010-" + joinInfo.phone1 + "-" + joinInfo.phone2,
             "smsReception": smsReception,
             "email": joinInfo.email1 + "@" + joinInfo.email2,
@@ -418,8 +442,11 @@ function Join({setIsLogin}) {
                 //정상 통신후 응답온 부분
                 sessionStorage.setItem("userUid",response.data["userUid"]);
                 sessionStorage.setItem("auth",response.data["auth"]);
-                console.log("UID is : "+sessionStorage.getItem("userUid"));
-                console.log("auth is : "+sessionStorage.getItem("auth"));
+                sessionStorage.setItem("name",response.data["name"]);
+                sessionStorage.setItem("email",response.data["email"]);
+                sessionStorage.setItem("phoneNum",response.data["phoneNum"]);
+                sessionStorage.setItem("mainPostcode",response.data["postcode1"]);
+                sessionStorage.setItem("mainAddress",response.data["address1"]);
                 {setIsLogin(true);}
                 navigate("/Shop");
             })
@@ -427,6 +454,26 @@ function Join({setIsLogin}) {
                 // 오류 발생시 처리부분
                 console.log(e);
             });
+    }
+    const requestFindPostcode = async() => {
+        let tmpData = {
+            confmKey : "devU01TX0FVVEgyMDI1MDIxNDE2Mjg0ODExNTQ2OTg=",
+            returnUrl : "http://localhost:3000/Join",
+            resultType	: "4",
+            useDetailAddr : "N"
+        }
+        await axios
+        .post("https://business.juso.go.kr/addrlink/addrLinkUrl.do", tmpData, {
+            withCredentials: true // 쿠키 자동 처리
+        })
+        .then((response) => {
+            //정상 통신후 응답온 부분
+            
+        })
+        .catch((e) => {
+            // 오류 발생시 처리부분
+            console.log(e);
+        });
     }
     useEffect(() => {
         isDisableJoinBtn();
@@ -468,6 +515,17 @@ function Join({setIsLogin}) {
                             <input type="text" onChange={handleJoinInfoChange} id="name"/>
                             <div class="validation">
                                 {renderNameValidationResult()}
+                            </div>
+                        </div>
+                        <div id="addressInput">
+                            <p>ADDRESS</p>
+                            <div id="addressInputDiv">
+                                <div>
+                                    <input type="text" onChange={handleJoinInfoChange} id="postcode"/>
+                                    <button>주소 찾기</button>
+                                </div>
+                                <input type="text" onChange={handleJoinInfoChange} id="mainAddress"/>
+                                <input type="text" onChange={handleJoinInfoChange} id="subAddress"/>
                             </div>
                         </div>
                         <div id="mobileInput">

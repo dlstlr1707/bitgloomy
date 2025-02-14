@@ -36,6 +36,8 @@ function LogIn ({setIsLogin}){
                         sessionStorage.setItem("name",response.data["name"]);
                         sessionStorage.setItem("email",response.data["email"]);
                         sessionStorage.setItem("phoneNum",response.data["phoneNum"]);
+                        sessionStorage.setItem("mainPostcode",response.data["postcode1"]);
+                        sessionStorage.setItem("mainAddress",response.data["address1"]);
                         {setIsLogin(true);}
                         navigate("/Shop");
                     })

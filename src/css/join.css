@@ -35,6 +35,19 @@
 #mobileInput,#emailInput{
     height: 71px;
 }
+#addressInput >p{
+    height: 90%;
+    vertical-align: top;
+}
+#addressInputDiv{
+    width: 500px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+#addressInputDiv #postcode{
+    width: 200px;
+}
 #joinForm input,#emailInputDiv :nth-child(4){
     height: 32px;
     border-radius: 16px;
@@ -67,7 +80,7 @@
     font-size: 14px;
     padding-top : 4px;
 }
-.validation >button{
+.validation >button, #addressInputDiv >div >button{
     color: #ffffff;
     font-size: 16px;
     background-color: #000000;

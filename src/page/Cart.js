@@ -114,7 +114,7 @@ function Cart() {
             pay_method: "card",
             merchant_uid: merchantUid,
             name: tempName,
-            amount: 200,
+            amount: 1,
             buyer_email: sessionStorage.getItem("email"),
             buyer_name: sessionStorage.getItem("name"),
             buyer_tel: sessionStorage.getItem("phoneNum"),
@@ -152,14 +152,14 @@ function Cart() {
             pay_method: "card",
             merchant_uid: merchantUid,
             name: tempName,
-            amount: 200,
+            amount: 1,
             buyer_email: sessionStorage.getItem("email"),
             buyer_name: sessionStorage.getItem("name"),
             buyer_tel: sessionStorage.getItem("phoneNum"),
             buyer_addr: "서울특별시 강남구 신사동",
             buyer_postcode: "01181"
             }
-        axios.post("http://localhost:8080/save/payment", payData)
+        axios.patch("http://localhost:8080/payment", payData)
             .then((orderResponse) => {
                 console.log(orderResponse);
                 if (orderResponse.status === 200) {
@@ -184,7 +184,7 @@ function Cart() {
 
         await axios.post("http://localhost:8080/order/prepare",{
             merchantUid: `${year}.${month}.${day}_${generateRandomNumber()}`, // 가맹점 주문번호
-            totalPrice: 200 // 결제 예정금액
+            totalPrice: 1 // 결제 예정금액
         },{
             withCredentials: true  // 쿠키 자동 처리
         })
@@ -215,10 +215,61 @@ function Cart() {
                 // 구매시 카트에 있던 리스트 서버에 보내서 order테이블에 저장
                 // 이후 카트 목록에서 주문했던거 제거
                 // 이후 재렌더링
+                requestSaveOrderList(imp_uid);
             })
             .catch((e) => {
                 // 오류 발생시 처리부분
                 console.error('사후 검증 실패');
+            });
+    }
+    const requestSaveOrderList = async() => {
+        let tmpRequestData=[];
+        for(var i = 0; i<checkedCartInfo.length; i++){
+            tmpRequestData.push({
+                userUid : sessionStorage.getItem("userUid"),
+                productUid : checkedCartInfo[i].productUid,
+                productName : checkedCartInfo[i].productName,
+                merchantUid : merchantUid,
+                amount : checkedCartInfo[i].amount,
+                price : checkedCartInfo[i].price,
+                size : checkedCartInfo[i].size
+            });
+        }
+        console.log(tmpRequestData);
+        await axios.post("http://localhost:8080/save/order",tmpRequestData,{
+            withCredentials: true  // 쿠키 자동 처리
+        })
+            .then((response) => {
+                //정상 통신후 응답온 부분
+                console.log("통신 성공");
+                requestDeleteCart();
+            })
+            .catch((e) => {
+                // 오류 발생시 처리부분
+                console.error("통신 실패");
+            });
+        
+    }
+    const requestDeleteCart = async() => {
+        let tmpInfo = [];
+        for(var i = 0; i<checkedCartInfo.length; i++){
+            tmpInfo.push({
+                uid : checkedCartInfo[i].uid
+            });
+        }
+        console.log(tmpInfo);
+        await axios.post("http://localhost:8080/delete/carts",tmpInfo,{
+            withCredentials: true  // 쿠키 자동 처리
+        })
+            .then((response) => {
+                //정상 통신후 응답온 부분
+                console.log("성공");
+                setCheckedCartInfo([]);
+                toggleFlag();
+            })
+            .catch((e) => {
+                // 오류 발생시 처리부분
+                alert("실패");
             });
     }
     useEffect(()=>{

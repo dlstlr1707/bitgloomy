@@ -57,7 +57,7 @@ function Profile({setIsLogin}){
     }
     const requestUserProfile = async() => {
         console.log("회원정보 요청함");
-        await axios.post("http://localhost:8080/profile/"+parseInt(sessionStorage.getItem("userUid")),{
+        await axios.post("http://localhost:8080/profile/"+sessionStorage.getItem("userUid"),{
             withCredentials: true  // 쿠키 자동 처리
         })
             .then((response) => {
@@ -66,6 +66,7 @@ function Profile({setIsLogin}){
             })
             .catch((e) => {
                 // 오류 발생시 처리부분
+                console.error(e);
                 alert("오류");
             });
     }
@@ -83,17 +84,19 @@ function Profile({setIsLogin}){
                         <p>ID : {profileInfo.id}</p>
                         <p>E-mail : {profileInfo.email}</p>
                         <p>Phone : {profileInfo.phoneNum}</p>
-                        <p>Point : {profileInfo.point}</p>
+                        <p>기본 배송지 : {profileInfo.address1}</p>
                         <div id="userProfileInfoBtnDiv">
-                            <button onClick={handleClickedBtn} id="modifyUser">정보수정</button>
-                            <button onClick={handleClickedBtn} id="logout">로그아웃</button>
-                            <button onClick={handleClickedBtn} id="deleteUser">회원탈퇴</button>
+                            <div id="addressBtnDiv">
+                                <button onClick={handleClickedBtn} id="modifyUser">정보수정</button>
+                                <button onClick={handleClickedBtn} id="modifyAddress">배송지관리</button>
+                            </div>
+                            <div id="outBtnDiv">
+                                <button onClick={handleClickedBtn} id="logout">로그아웃</button>
+                                <button onClick={handleClickedBtn} id="deleteUser">회원탈퇴</button>
+                            </div>
                         </div>
                     </div>
                     <div id="deliveryDiv">
-                        <div id="addressBtnDiv">
-                            <button onClick={handleClickedBtn} id="modifyAddress">배송지관리</button>
-                        </div>
                         <p>배송현황</p>
                         <div id="deliveryStatusDiv">
                             <p>배송 조회 api 결과 여기에 나올 예정</p>
