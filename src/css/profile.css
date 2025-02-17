@@ -1,5 +1,6 @@
 #profileContainer{
    width: 900px;
+   padding-top: 30px;
 }
 #userProfileInfoDiv,#deliveryDiv,#csInfoDiv{
     display: flex;
@@ -9,7 +10,7 @@
     border-top: 1px solid #000000;
     position: relative;
 }
-#csInfoDiv{
+#deliveryDiv{
     border-bottom: 1px solid #000000;
 }
 #userProfileInfoBtnDiv{
@@ -30,8 +31,26 @@
 }
 #deliveryStatusDiv,#csListDiv{
     width: 100%;
-    min-height: 500px;
+    min-height: 200px;
     box-sizing: border-box;
     border: 1px solid #c2c2c2;
     padding: 8px;
+} 
+table{
+    width: 900px;
+}
+tr{
+    display: flex;
+    align-items: center;
+}
+table td{
+    width: 128px;
+    text-align: center;
+}
+table img{
+    width: 100px;
+}
+thead >tr{
+    height: 40px;
+    border-bottom: 1px solid #c2c2c2;
 }

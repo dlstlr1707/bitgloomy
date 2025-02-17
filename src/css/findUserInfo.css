@@ -47,6 +47,7 @@
     box-sizing: border-box;
     border: 1px solid #000000;
     border-radius: 16px;
+    padding-left: 10px;
 }
 #emailInputBoxDiv >button{
     width: 52px;

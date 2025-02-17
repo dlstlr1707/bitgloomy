@@ -4,7 +4,6 @@
     flex-direction: column;
     gap: 20px;
     position: relative;
-    top: 100px;
     align-items: center;
 }
 #joinContainer input,#joinContainer button,#joinContainer select{
@@ -43,6 +42,10 @@
     width: 500px;
     display: flex;
     flex-direction: column;
+    gap: 8px;
+}
+#addressInputDiv >div{
+    display: flex;
     gap: 8px;
 }
 #addressInputDiv #postcode{

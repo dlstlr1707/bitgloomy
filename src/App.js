@@ -69,7 +69,7 @@ function App() {
         geolocation.getCurrentPosition(success, error, options);
 
         //일단 주석 처리 해두고 추후 작업 예정
-        //requestWeatherApi();
+        requestWeatherApi();
     }, []);
     return (
         <div>

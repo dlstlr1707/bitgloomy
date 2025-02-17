@@ -35,16 +35,9 @@ function Info() {
     }
     return (
             < main >
-                <div id="imgBackgroundDiv">
-                    <div id="swtichDiv"></div>
-                    <div id="opacityDiv">
-                        <button onClick={handleClickBtn}></button>
-                    </div>
-                    {
-                        toggleRenderAbout
-                            ? renderAbout()
-                            : console.log("렌더 함수 실행 안됨")
-                    }
+                <div id="InfoContainer">
+                    <img src={require("../img/info.jpg")} alt=""/>
+                    {renderAbout()}
                 </div>
             </main>
     );

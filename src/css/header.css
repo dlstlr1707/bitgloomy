@@ -23,7 +23,7 @@ header{
     left: 0;
 }
 .search-modal-content {
-    width: 450px;
+    width: 350px;
     height: 50px;
     position: relative;
     top: 100px;
@@ -33,7 +33,7 @@ header{
     outline: none;
 }
 .search-modal-content >input{
-    width: 400px;
+    width: 300px;
     height: 40px;
     padding-top: 4px;
     border: none;
@@ -76,4 +76,20 @@ header{
 #logo >img{
     width: 192px;
     cursor: pointer;
+}
+#weatherDiv{
+    position: absolute;
+    top: 40%;
+    left: 90%;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+#weatherDiv >img{
+    width: 32px;
+    height: 32px;
+    background-color: inherit;
+}
+#weatherDiv >p{
+    font-size: 20px;
 }

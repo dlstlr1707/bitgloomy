@@ -1,6 +1,7 @@
 import "../css/join.css";
 import TermsModal from "../component/TermsModal";
 import PrivacyTermsModal from "../component/PrivacyTermsModal";
+import DaumPostCode from "../component/DaumPostCode";
 import {useEffect, useRef, useState} from "react";
 import React from "react";
 import axios from "axios";
@@ -10,6 +11,7 @@ function Join({setIsLogin}) {
     const navigate = useNavigate();
     const emailRef = useRef(null);
     const joinBtnRef = useRef(null);
+    const addressRef = useRef(null);
     const initInfo = {
         id: "",
         password: "",
@@ -52,14 +54,20 @@ function Join({setIsLogin}) {
     const [validationResult, setValidationResult] = useState(initValidationResult);
     const [checkedID, setCheckedID] = useState("");
     const [emailAuthCode,setEmailAuthCode] = useState("");
+    const [addressInput,setAddressInput] = useState({
+        mainAddress : "",
+        subAddress : "",
+        postcode : "" 
+    });
     const [isEmailAuth,setIsEmailAuth] = useState(false);
     const [isTermsModalOpen, setIsTermsModalOpen] = useState(false);
     const [isPrivacyModalOpen, setIsPrivacyModalOpen] = useState(false);
+    const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
     const handleJoinInfoChange = (e) => {
         // 입력한 스트링에 정규식을 이용해 특수문자 일부를 제한 해야함 - 보안상 spring 쓰던가 아니면 직접 하던가
         switch (e.target.id) {
             case "id":
-                if (e.target.value.length > 2 && e.target.value.length < 20) {
+                if (e.target.value.length >= 2 && e.target.value.length <= 20) {
                     setValidationResult({
                         ...validationResult,
                         idResult: "length_ok"
@@ -80,7 +88,7 @@ function Join({setIsLogin}) {
                 });
                 break;
             case "password":
-                if (e.target.value.length > 8 && e.target.value.length < 20) {
+                if (e.target.value.length >= 8 && e.target.value.length <= 20) {
                     setValidationResult({
                         ...validationResult,
                         pwResult: "length_ok"
@@ -115,7 +123,7 @@ function Join({setIsLogin}) {
                 break;
             case "name":
                 const nameRegex = /^[ㄱ-ㅎ|가-힣|a-z|A-Z|]+$/;
-                if (e.target.value.length > 2 && e.target.value.length < 20) {
+                if (e.target.value.length >= 2 && e.target.value.length <= 20) {
                     if (nameRegex.test(e.target.value) === true) {
                         setValidationResult({
                             ...validationResult,
@@ -143,17 +151,29 @@ function Join({setIsLogin}) {
                     ...joinInfo,
                     postcode: e.target.value
                 });
+                setAddressInput({
+                    ...addressInput,
+                    postcode : e.target.value
+                });
                 break;
             case "mainAddress":
                 setJoinInfo({
                     ...joinInfo,
                     mainAddress: e.target.value
                 });
+                setAddressInput({
+                    ...addressInput,
+                    mainAddress : e.target.value
+                });
                 break;
             case "subAddress":
                 setJoinInfo({
                     ...joinInfo,
                     subAddress: e.target.value
+                });
+                setAddressInput({
+                    ...addressInput,
+                    subAddress : e.target.value
                 });
                 break;
             case "phone1":
@@ -343,7 +363,7 @@ function Join({setIsLogin}) {
         // 이메일 인증 api 연동 후 처리 하는 함수
         e.preventDefault();
         var email = joinInfo.email1 + "@" + joinInfo.email2;
-        console.log(email);
+        //console.log(email);
         if(e.target.id === "sendEmail"){
             await axios
             .get("http://localhost:8080/mailSend/" + email)
@@ -381,15 +401,19 @@ function Join({setIsLogin}) {
         }
     }
     const handleClickOpenModal = (e) => {
+        e.preventDefault();
         if (e.target.id === "policyAggrementModal") {
             setIsTermsModalOpen(!isTermsModalOpen);
         } else if (e.target.id === "privacyAggrementModal") {
             setIsPrivacyModalOpen(!isPrivacyModalOpen);
+        } else if(e.target.id === "addressModal"){
+            setIsAddressModalOpen(!isAddressModalOpen);
         } else {
             console.log("잘못된 요청입니다.");
         }
     }
     const isDisableJoinBtn = () => {
+        //console.log(joinInfo);
         let resultId = (validationResult.idResult === "length_ok") && isExistId;
         let resultPw = validationResult.pwResult === "length_ok";
         let resultPwCheck = validationResult.pwCheckResult === "success";
@@ -402,6 +426,9 @@ function Join({setIsLogin}) {
         let resultEmailAuth = validationResult.emailResult === "success";
         let resultAggrement = joinInfo.policyAggrement;
         let resultPolicy = joinInfo.privacyPolicyAggrement;
+
+        //console.log(resultAddress);
+
         if (resultId && resultPw && resultPwCheck && resultName && resultAddress && resultPhone && resultEmail && resultEmailAuth && resultAggrement && resultPolicy) {
             joinBtnRef.current.disabled = false;
         } else {
@@ -427,7 +454,7 @@ function Join({setIsLogin}) {
             "password": joinInfo.password,
             "name": joinInfo.name,
             "postcode": joinInfo.postcode,
-            "address": joinInfo.mainAddress + joinInfo.subAddress,
+            "address": joinInfo.mainAddress +" "+ joinInfo.subAddress,
             "phoneNum": "010-" + joinInfo.phone1 + "-" + joinInfo.phone2,
             "smsReception": smsReception,
             "email": joinInfo.email1 + "@" + joinInfo.email2,
@@ -455,34 +482,23 @@ function Join({setIsLogin}) {
                 console.log(e);
             });
     }
-    const requestFindPostcode = async() => {
-        let tmpData = {
-            confmKey : "devU01TX0FVVEgyMDI1MDIxNDE2Mjg0ODExNTQ2OTg=",
-            returnUrl : "http://localhost:3000/Join",
-            resultType	: "4",
-            useDetailAddr : "N"
-        }
-        await axios
-        .post("https://business.juso.go.kr/addrlink/addrLinkUrl.do", tmpData, {
-            withCredentials: true // 쿠키 자동 처리
-        })
-        .then((response) => {
-            //정상 통신후 응답온 부분
-            
-        })
-        .catch((e) => {
-            // 오류 발생시 처리부분
-            console.log(e);
-        });
-    }
     useEffect(() => {
         isDisableJoinBtn();
     }, []);
     useEffect(() => {
         isDisableJoinBtn();
-    }, [joinInfo, isExistId, checkedID,validationResult]);
+    }, [joinInfo, isExistId, checkedID,validationResult,addressInput]);
     useEffect(() => {
+        console.log(addressInput);
+        
     }, [isTermsModalOpen,emailAuthCode]);
+    useEffect(()=>{
+        setJoinInfo({
+            ...joinInfo,
+            mainAddress : addressInput.mainAddress,
+            postcode : addressInput.postcode
+        });
+    },[isAddressModalOpen]);
     return (
             <main>
                 <div id="joinContainer">
@@ -521,10 +537,17 @@ function Join({setIsLogin}) {
                             <p>ADDRESS</p>
                             <div id="addressInputDiv">
                                 <div>
-                                    <input type="text" onChange={handleJoinInfoChange} id="postcode"/>
-                                    <button>주소 찾기</button>
+                                    <input ref={addressRef} type="text" onChange={handleJoinInfoChange} id="postcode" value={addressInput.postcode} disabled/>
+                                    <button onClick={handleClickOpenModal} id="addressModal">주소 찾기</button>
+                                    <DaumPostCode 
+                                        isModalOpen={isAddressModalOpen}
+                                        addressInput = {addressInput}
+                                        changeIsModalOpen={setIsAddressModalOpen}
+                                        setAddressInput = {setAddressInput}
+                                        ref={addressRef}
+                                        />
                                 </div>
-                                <input type="text" onChange={handleJoinInfoChange} id="mainAddress"/>
+                                <input ref={addressRef} type="text" onChange={handleJoinInfoChange} id="mainAddress" value={addressInput.mainAddress} disabled/>
                                 <input type="text" onChange={handleJoinInfoChange} id="subAddress"/>
                             </div>
                         </div>

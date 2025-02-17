@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import "../css/header.css";
 import {useNavigate} from "react-router-dom";
 import Modal from 'react-modal';
@@ -57,6 +57,18 @@ function Header({isLogin,weatherInfo}) {
         // 내용 받아서 axios로 요청보냄
         console.log("검색 진행중 : " + searchText);
     }
+    const renderWeatherDiv = () =>{
+        console.log(weatherInfo);
+        return(
+            <div id="weatherDiv">
+                <img src={require("../img/icon/sunny-unscreen.gif")} alt=""/>
+                <p>{weatherInfo.tmp}</p>
+            </div>
+        );
+    }
+    useEffect(()=>{
+        renderWeatherDiv();
+    },[]);
     return (
         <header>
             <div id="mainHeader">
@@ -81,6 +93,7 @@ function Header({isLogin,weatherInfo}) {
                         <li id="Search" onClick={handleClickBtn}>search</li>
                     </ul>
                 </div>
+                {renderWeatherDiv()}
             </div>
             <Modal isOpen={isSearch} onRequestClose={() => setIsSearch(false)} className="search-modal-content"
                 // 모달 내용에 적용할 클래스명
@@ -88,7 +101,7 @@ function Header({isLogin,weatherInfo}) {
                 // 모달 외부에 적용할 클래스명
                 contentLabel="Example Modal">
                 <input type="text" onChange={handleChange}/>
-                <img src="../img/icon/Search_light.png" alt="" onClick={excuteSearch}/>
+                <img src={require("../img/icon/Search_light.png")} alt="" onClick={excuteSearch}/>
             </Modal>
         </header>
     );
