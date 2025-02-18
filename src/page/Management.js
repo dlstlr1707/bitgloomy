@@ -1,10 +1,13 @@
 import "../css/management.css";
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
+import {useNavigate} from "react-router-dom";
+
 function Management(){
     const uploadRef = useRef(null);
     const modifyRef = useRef(null);
     const deleteRef = useRef(null);
+    const navigate = useNavigate();
     const initProductInfo = {
         pname : "",
         modifyPname : "",
@@ -287,6 +290,8 @@ function Management(){
             , formData
         ).then(res => {
             console.log(res);
+            alert("상품 등록이 완료 되었습니다.");
+            navigate("/Shop");
         }).catch(err => {
             alert('등록을 실패하였습니다.');
         });

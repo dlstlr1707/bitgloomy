@@ -2,7 +2,7 @@ import SideIconMenu from "../component/SideIconMenu";
 import ProductInfo from "../component/ProductInfo";
 import "../css/shop.css";
 import {useEffect, useState} from "react";
-import {useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import axios from "axios";
 
 function Shop() {
@@ -10,6 +10,7 @@ function Shop() {
     const [productFilterList,setProductFilterList] = useState([]);
     const [currentTab,setCurrentTab] = useState("All");
     const navigate = useNavigate();
+    const {state} = useLocation();
     const requestProductList = async () => {
         // axios로 서버에 상품목록전체 요청
         // 이미지 가져오는 부분 추가 해야함
@@ -52,13 +53,27 @@ function Shop() {
             setProductFilterList(productList);
         }
     }
+    const renderProductList = () => {
+        return(
+            <div id="productListDiv">
+                {productFilterList.map((product,idx) => (<ProductInfo key={idx} productInfo={product} />))}
+            </div>
+        );
+    }
     useEffect(() => {
-        requestProductList();
+        console.log(state);
+        if(state == null || state.length===0){
+            requestProductList();
+        }else{
+            setProductList(state);
+            setProductFilterList(state);
+        }
     },[]);
     useEffect(() => {
-    },[productList]);
+        renderProductList();
+    },[productList,productFilterList]);
     useEffect(() => {
-    },[productFilterList]);
+    },[state]);
     return (
             <main>
                 <div id="shopContainer">
@@ -76,9 +91,7 @@ function Shop() {
                         }
                     </div>
                     <SideIconMenu></SideIconMenu>
-                    <div id="productListDiv">
-                        {productFilterList.map((product,idx) => (<ProductInfo key={idx} productInfo={product} />))}
-                    </div>
+                    {renderProductList()}
                 </div>
             </main>
     );

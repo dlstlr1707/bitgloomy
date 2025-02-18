@@ -36,21 +36,52 @@
     border: 1px solid #c2c2c2;
     padding: 8px;
 } 
-table{
+#deliveryStatusDiv{
     width: 900px;
 }
 tr{
     display: flex;
     align-items: center;
 }
-table td{
+#deliveryStatusDiv td{
     width: 128px;
     text-align: center;
 }
-table img{
+#deliveryStatusDiv img{
     width: 100px;
 }
-thead >tr{
+#deliveryStatusDiv thead >tr{
     height: 40px;
     border-bottom: 1px solid #c2c2c2;
+}
+.additionalAddressDiv{
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+.additionalAddressInputDiv >input{
+    width: 200px;
+    height: 24px;
+    border-radius: 16px;
+    border: 1px solid #000000;
+    padding-left: 10px;
+
+}
+.additionalAddressInputDiv >input:nth-child(1){
+    width: 100px;
+}
+.additionalAddressInputDiv ,.additionalAddressBtnDiv{
+    display: flex;
+    gap: 4px;
+}
+.additionalAddressBtnDiv {
+    padding-left: 140px;
+}
+.additionalAddressBtnDiv >button{
+    width: 60px;
+    height: 28px;
+    border-radius: 16px;
+    border: none;
+    background-color: #000000;
+    color: #ffffff;
 }

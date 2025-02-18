@@ -353,6 +353,19 @@ function Join({setIsLogin}) {
                 //정상 통신후 응답온 부분
                 setCheckedID(joinInfo.id);
                 setIsExistId(true);
+                if(response.data === "해당 ID가 이미 존재합니다."){
+                    setValidationResult({
+                        ...validationResult,
+                        idResult: "exist_id"
+                    });
+                    alert(response.data);
+                }else{
+                    setValidationResult({
+                        ...validationResult,
+                        idResult: "length_ok"
+                    });
+                    alert(response.data);
+                }
             })
             .catch((e) => {
                 // 오류 발생시 처리부분

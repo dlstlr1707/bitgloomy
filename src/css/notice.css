@@ -2,7 +2,7 @@
     width: 900px;
     display: flex;
     flex-direction: column;
-    padding-top: 60px;
+    padding-top: 120px;
 }
 #noticeContainer >p:first-child{
     font-size: 24px;
@@ -31,37 +31,40 @@
     background-color: black;
     color: #ffffff;
 }
-#noticeContentDiv{
+.noticeContentDiv{
     width: 900px;
     height: 600px;
     border-top: 2px solid black;
     border-bottom: 2px solid black;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
-#noticeContentDiv >table{
+.noticeContentDiv >table{
     width: 100%;
     height: 550px;
 }
-#noticeContentDiv >table >thead{
+.noticeContentDiv >table >thead{
     width: 100%;
     height: 50px;
     font-size: 20px;
     font-weight: 700;
 }
-#noticeContentDiv >table >tbody{
+.noticeContentDiv >table >tbody{
     width: 100%;
     height: 500px;
     font-size: 14px;
 }
-#noticeContentDiv >table >thead tr{
+.noticeContentDiv >table >thead tr{
     border-bottom: 1px solid black;
 }
-#noticeContentDiv >table tr{
+.noticeContentDiv >table tr{
     border-bottom: 1px solid #c2c2c2;
     height: 50px;
     table-layout: fixed;
 }
-#noticeContentDiv td:nth-child(1),
-#noticeContentDiv td:nth-child(3){
+.noticeContentDiv td:nth-child(1),
+.noticeContentDiv td:nth-child(3){
     width: 150px;
     height: 50px;
     text-align: center;
@@ -69,7 +72,7 @@
     box-sizing: border-box;
     padding: 16px;
 }
-#noticeContentDiv td:nth-child(2){
+.noticeContentDiv td:nth-child(2){
     width: 600px;
     height: 50px;
     padding: 16px;
@@ -107,4 +110,88 @@
     color: #ffffff;
     border: none;
     font-weight: 700;
+}
+
+.noticeContentDiv >Form{
+    padding: 20px 0px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+}
+.titleInputDiv,.typeInputDiv{
+    display: flex;
+    gap: 40px;
+    width: 640px;
+    align-items: center;
+}
+.titleInputDiv >p,.typeInputDiv >p{
+    width: 100px;
+}
+.contentInputDiv >p{
+    height: 30px;
+}
+.titleInputDiv >input,.typeInputDiv >input{
+    width: 500px;
+    height: 32px;
+    border-radius: 16px;
+    font-size: 14px;
+    border: 1px solid #000000;
+    padding-left: 12px;
+    outline: none;
+}
+.contentInputDiv >textarea{
+    width: 630px;
+    height: 200px;
+    border: 1px solid #000000;
+    resize: none;
+    font-size: 16px;
+    outline: none;
+    padding: 8px;
+}
+.noticeContentDiv >Form >button{
+    width: 640px;
+    height: 40px;
+    box-sizing: border-box;
+    border: none;
+    background-color: #000000;
+    color: #ffffff;
+    border-radius: 16px;
+    margin-top: 20px;
+}
+
+#noticeDetailDiv{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    border-top: 2px solid #000000;
+    border-bottom: 2px solid #000000;
+    padding: 40px 0px;
+}
+#titleDiv{
+    width: 640px;
+}
+#titleDiv >p:first-child{
+    font-size: 20px;
+    height: 50px;
+}
+#subInfoDiv{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+#subInfoDivP{
+    display: flex;
+    gap: 40px;
+    font-size: 13px;
+}
+#contentDiv{
+    width: 640px;
+    min-height: 300px;
+    border: 1px solid #c2c2c2;
+    padding: 8px;
 }

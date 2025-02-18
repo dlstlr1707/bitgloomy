@@ -31,6 +31,8 @@
     height: 32px;
     border-radius: 16px;
     font-size: 14px;
+    padding-left: 10px;
+    outline: none;
 }
 .managementTextAreaDiv{
     flex-direction: column;
@@ -43,6 +45,7 @@
     border: 2px solid #000000;
     resize: none;
     font-size: 16px;
+    outline: none;
 }
 .managementForm >button{
     width: 640px;

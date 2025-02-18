@@ -1,25 +1,38 @@
 import {useEffect, useState} from "react";
 import "../css/header.css";
-import {useNavigate} from "react-router-dom";
+import {useNavigate,useLocation } from "react-router-dom";
 import Modal from 'react-modal';
+import axios from "axios";
 
 function Header({isLogin,weatherInfo}) {
     const [isSearch, setIsSearch] = useState(false);
     const [searchText, setSearchText] = useState("");
+    const [searchResultArr,setSearchResultArr] = useState([]);
     const navigate = useNavigate();
+    const location = useLocation();
     const handleClickBtn = (e) => {
         switch (e.target.id) {
             case "Info":
                 navigate("/Info");
                 break;
             case "Shop":
-                navigate("/Shop");
+                if(location.pathname === "/Shop"){
+                    navigate(0);
+                }else{
+                    navigate("/Shop");
+                }
+                setSearchResultArr([]);
                 break;
             case "Notice":
                 navigate("/Notice");
                 break;
             case "Logo":
-                navigate("/Shop");
+                if(location.pathname === "/Shop"){
+                    navigate(0);
+                }else{
+                    navigate("/Shop");
+                }
+                setSearchResultArr([]);
                 break;
             case "Account":
                 // 세션 확인후 로그인 정보 없으면 로그인페이지 로그인 정보 있으면 프로필 페이지 출력
@@ -53,22 +66,146 @@ function Header({isLogin,weatherInfo}) {
     const handleChange = (e) => {
         setSearchText(e.target.value);
     }
-    const excuteSearch = () => {
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter') {
+          excuteSearch();  // Enter 키가 눌리면 excuteSearch 호출
+        }
+      };
+    const excuteSearch = async() => {
         // 내용 받아서 axios로 요청보냄
         console.log("검색 진행중 : " + searchText);
+        await axios.get("http://localhost:8080/search/"+searchText)
+            .then((response) => {
+            //정상 통신후 응답온 부분
+                console.log("통신 성공");
+                console.log(response.data);
+                setSearchResultArr(response.data);
+                setIsSearch(false);
+                if(location.pathname === "/Shop"){
+                    navigate(0,{state : response.data});
+                }
+            }).catch((e) => {
+                // 오류 발생시 처리부분
+                alert("검색에 실패하였습니다.");
+            });
     }
     const renderWeatherDiv = () =>{
-        console.log(weatherInfo);
-        return(
-            <div id="weatherDiv">
-                <img src={require("../img/icon/sunny-unscreen.gif")} alt=""/>
-                <p>{weatherInfo.tmp}</p>
-            </div>
-        );
+        if(weatherInfo.sky === "맑음"){
+            if(weatherInfo.pty === "없음"){
+                if(parseFloat(weatherInfo.wsd.slice(0,3)) < 4){
+                    return(
+                        <div id="weatherDiv">
+                            <img src={require("../img/icon/sunny.gif")} alt=""/>
+                            <p>{weatherInfo.tmp}</p>
+                        </div>
+                    );
+                }else if(parseFloat(weatherInfo.wsd.slice(0,3)) >= 4){
+                    return(
+                        <div id="weatherDiv">
+                            <img src={require("../img/icon/wind.gif")} alt=""/>
+                            <p>{weatherInfo.tmp}</p>
+                        </div>
+                    );
+                }
+            }else if(weatherInfo.pty === "비" || weatherInfo.pty === "비/눈" || weatherInfo.pty === "소나기"){
+                return(
+                    <div id="weatherDiv">
+                        <img src={require("../img/icon/cloud_little_rain.gif")} alt=""/>
+                        <p>{weatherInfo.tmp}</p>
+                    </div>
+                );
+            }else if(weatherInfo.pty === "눈"){
+                return(
+                    <div id="weatherDiv">
+                        <img src={require("../img/icon/snow.gif")} alt=""/>
+                        <p>{weatherInfo.tmp}</p>
+                    </div>
+                );
+            }
+        }else if(weatherInfo.sky === "구름조금" || weatherInfo.sky === "구름많음"){
+            if(weatherInfo.pty === "없음"){
+                return(
+                    <div id="weatherDiv">
+                        <img src={require("../img/icon/cloud.gif")} alt=""/>
+                        <p>{weatherInfo.tmp}</p>
+                    </div>
+                );
+            }else if(weatherInfo.pty === "비" || weatherInfo.pty === "비/눈" || weatherInfo.pty === "소나기"){
+                return(
+                    <div id="weatherDiv">
+                        <img src={require("../img/icon/cloud_little_rain.gif")} alt=""/>
+                        <p>{weatherInfo.tmp}</p>
+                    </div>
+                );
+            }else if(weatherInfo.pty === "눈"){
+                return(
+                    <div id="weatherDiv">
+                        <img src={require("../img/icon/snow.gif")} alt=""/>
+                        <p>{weatherInfo.tmp}</p>
+                    </div>
+                );
+            }
+        }else if(weatherInfo.sky === "흐림"){
+            if(weatherInfo.pty === "없음"){
+                if(parseFloat(weatherInfo.wsd.slice(0,3)) < 4){
+                    return(
+                        <div id="weatherDiv">
+                            <img src={require("../img/icon/cloud.gif")} alt=""/>
+                            <p>{weatherInfo.tmp}</p>
+                        </div>
+                    );
+                }else if(parseFloat(weatherInfo.wsd.slice(0,3)) >= 4){
+                    return(
+                        <div id="weatherDiv">
+                            <img src={require("../img/icon/wind_cloud.gif")} alt=""/>
+                            <p>{weatherInfo.tmp}</p>
+                        </div>
+                    );
+                }
+            }else if(weatherInfo.pty === "비" || weatherInfo.pty === "비/눈" || weatherInfo.pty === "소나기"){
+                if(parseFloat(weatherInfo.wsd.slice(0,3)) < 4){
+                    return(
+                        <div id="weatherDiv">
+                            <img src={require("../img/icon/rain.gif")} alt=""/>
+                            <p>{weatherInfo.tmp}</p>
+                        </div>
+                    );
+                }else if(parseFloat(weatherInfo.wsd.slice(0,3)) >= 4){
+                    return(
+                        <div id="weatherDiv">
+                            <img src={require("../img/icon/storm.gif")} alt=""/>
+                            <p>{weatherInfo.tmp}</p>
+                        </div>
+                    );
+                }
+            }else if(weatherInfo.pty === "눈"){
+                if(parseFloat(weatherInfo.wsd.slice(0,3)) < 4){
+                    return(
+                        <div id="weatherDiv">
+                            <img src={require("../img/icon/snow.gif")} alt=""/>
+                            <p>{weatherInfo.tmp}</p>
+                        </div>
+                    );
+                }else if(parseFloat(weatherInfo.wsd.slice(0,3)) >= 4){
+                    return(
+                        <div id="weatherDiv">
+                            <img src={require("../img/icon/snow_storm.gif")} alt=""/>
+                            <p>{weatherInfo.tmp}</p>
+                        </div>
+                    );
+                }
+            }
+        }else{
+            console.log("기상 데이터 없음");
+        }
     }
     useEffect(()=>{
         renderWeatherDiv();
     },[]);
+    useEffect(()=>{
+        console.log(searchResultArr);
+        navigate("/Shop",{state:searchResultArr});
+    },[searchResultArr]);
     return (
         <header>
             <div id="mainHeader">
@@ -100,8 +237,8 @@ function Header({isLogin,weatherInfo}) {
                 overlayClassName="search-modal-overlay"
                 // 모달 외부에 적용할 클래스명
                 contentLabel="Example Modal">
-                <input type="text" onChange={handleChange}/>
-                <img src={require("../img/icon/Search_light.png")} alt="" onClick={excuteSearch}/>
+                <input type="text" onChange={handleChange} onKeyDown={handleKeyDown}/>
+                <img src={require("../img/icon/Search_light.png")} alt="" onClick={excuteSearch} />
             </Modal>
         </header>
     );
