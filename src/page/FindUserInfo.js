@@ -41,7 +41,6 @@ function FindUserInfo() {
     }
     const requestEmailAuth = async(e) => {
         e.preventDefault();
-        console.log("이메일 인증 요청함");
         const regexEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
         if(e.target.id === "sendEmail"){
             if(regexEmail.test(email) === true && email !== ""){
@@ -50,6 +49,7 @@ function FindUserInfo() {
                 .then((response) => {
                     //정상 통신후 응답온 부분
                     setAuthStatus(true);
+                    alert("인증코드를 전송했습니다. 메일을 확인해주세요.");
                 })
                 .catch((e) => {
                     // 오류 발생시 처리부분
@@ -62,8 +62,8 @@ function FindUserInfo() {
             .get("http://localhost:8080/mailCheck/" + authCode)
             .then((response) => {
                 //정상 통신후 응답온 부분
-                console.log("인증성공");
                 setIsAuth(true);
+                alert("인증에 성공 하였습니다.");
             })
             .catch((e) => {
                 // 오류 발생시 처리부분
@@ -110,7 +110,9 @@ function FindUserInfo() {
                 //정상 통신후 응답온 부분
                 console.log("인증성공");
                 setIsAuth(true);
+                alert("성공적으로 변경하였습니다!");
                 navigate("/LogIn");
+                
             })
             .catch((e) => {
                 // 오류 발생시 처리부분
@@ -120,7 +122,6 @@ function FindUserInfo() {
         }
     }
     useEffect(() => {
-        //console.log("selectedTab is : " + selectedTab);
         if(selectedTab === "findId"){
             if(name === "" || email === "" || authCode === "" || isAuth === false){
                 btnRef.current.disabled = true;

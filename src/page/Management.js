@@ -10,7 +10,6 @@ function Management(){
     const navigate = useNavigate();
     const initProductInfo = {
         pname : "",
-        modifyPname : "",
         contents : "",
         productMaterial : "",
         fabric : "",
@@ -24,8 +23,9 @@ function Management(){
     const [productInfo,setProductInfo] = useState(initProductInfo);
     const [productMainImg,setProductMainImg] = useState();
     const [productImgArr,setProductImgArr] = useState();
+    const [modifyPname,setModifyPname] = useState("");
+    const [deletePname,setDeletePname] = useState("");
     const handleClickedTab = (e) => {
-        //console.log(uploadRef.current.style.className);
         if(e.target.id === "uploadProduct"){
             uploadRef.current.style.setProperty('background-color', '#000000');
             uploadRef.current.style.setProperty('border', 'none');
@@ -137,12 +137,8 @@ function Management(){
             }
         }
         if(e.target.id === "mainImg"){
-            console.log("메인사진");
-            console.log(e.target.files);
             setProductMainImg(e.target.files);
         }else if(e.target.id === "subImg"){
-            console.log("서브사진");
-            console.log(e.target.files);
             setProductImgArr(e.target.files);
         }else{
             alert("파일업로드 실패!");
@@ -208,7 +204,9 @@ function Management(){
                     </div>
                     <div className="managementInputDiv">
                         <p>변경 상품명</p>
-                        <input type="text" id="ModifyPname" onChange={handleOnchange}/>
+                        <input type="text" id="ModifyPname" onChange={(e)=>{
+                            setModifyPname(e.target.value);
+                        }}/>
                     </div>
                     <div className="managementInputDiv">
                         <p>연관된 상품명</p>
@@ -261,7 +259,9 @@ function Management(){
                 <form className="managementForm">
                     <div className="managementInputDiv">
                         <p>삭제할 상품명</p>
-                        <input type="text" id="pname" onChange={handleOnchange}/>
+                        <input type="text" id="pname" onChange={(e)=>{
+                            setDeletePname(e.target.value);
+                        }}/>
                     </div>
                     
                     <button onClick={requestDelete}>삭제</button>
@@ -274,42 +274,68 @@ function Management(){
     const requestUpload = async(e) => {
         // 이미지는 form-data로 정보는 json으로 전달
         e.preventDefault();
-        
+        if(productImgArr == null || productMainImg == null){
+            alert("사진을 최소 1장 선택해주세요.");
+        }else{
+            const formData = new FormData();
+            formData.append('mainImg', productMainImg[0]);
+            for(var idx=0; idx<productImgArr.length;idx++){
+                formData.append('subImg', productImgArr[idx]);
+            }
+            formData.append('productInfo', new Blob([JSON.stringify(productInfo)], {
+                type: "application/json"
+            }));
+    
+            await axios.post('http://localhost:8080/product'
+                , formData
+            ).then(res => {
+                alert("상품 등록이 완료 되었습니다.");
+                navigate("/Shop");
+            }).catch(err => {
+                alert('등록을 실패하였습니다.');
+            });
+        }
+    }
+    const requestModify = async(e) => {
+        // 이미지는 form-data로 정보는 json으로 전달
+        // 사진 수정 어떻게 처리할지 정해야함
+        e.preventDefault();
+        let tmpData={
+            ...productInfo,
+            modifyPname : modifyPname,
+        };
         const formData = new FormData();
         formData.append('mainImg', productMainImg[0]);
         for(var idx=0; idx<productImgArr.length;idx++){
             formData.append('subImg', productImgArr[idx]);
         }
-        formData.append('productInfo', new Blob([JSON.stringify(productInfo)], {
+        formData.append('modifyPInfo', new Blob([JSON.stringify(tmpData)], {
             type: "application/json"
         }));
-        
-        //console.log(productImgArr);
 
-        await axios.post('http://localhost:8080/product'
+        await axios.patch('http://localhost:8080/product'
             , formData
         ).then(res => {
-            console.log(res);
-            alert("상품 등록이 완료 되었습니다.");
+            alert("상품 수정이 완료 되었습니다.");
             navigate("/Shop");
         }).catch(err => {
-            alert('등록을 실패하였습니다.');
+            alert('수정 실패하였습니다.');
         });
     }
-    const requestModify = (e) => {
+    const requestDelete = async(e) => {
         // 이미지는 form-data로 정보는 json으로 전달
         // 사진 수정 어떻게 처리할지 정해야함
         e.preventDefault();
-        
-    }
-    const requestDelete = (e) => {
-        // 이미지는 form-data로 정보는 json으로 전달
-        // 사진 수정 어떻게 처리할지 정해야함
-        e.preventDefault();
-        
+        await axios.delete('http://localhost:8080/product/'+deletePname)
+        .then(res => {
+            alert("상품 삭제가 완료 되었습니다.");
+            navigate("/Shop");
+        }).catch(err => {
+            alert('삭제 실패하였습니다.');
+        });
     }
     useEffect(()=>{
-    },[productInfo,currentTab,productImgArr,productMainImg]);
+    },[productInfo,currentTab,productImgArr,productMainImg,modifyPname,deletePname]);
     return(
             <main>
                 <div id="managementContainer">

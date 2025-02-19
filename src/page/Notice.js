@@ -28,7 +28,6 @@ function Notice(){
     const [currentPageNumArr,setCurrentPageNumArr] = useState([]);
 
     const handleClickedTab = (e) => {
-        //console.log(uploadRef.current.style.className);
         setIsManagement(false);
         setIsDetail(false);
         if(e.target.id === "noticeTab"){
@@ -63,14 +62,11 @@ function Notice(){
             withCredentials: true  // 쿠키 자동 처리
         }).then((response) => {
             //정상 통신후 응답온 부분
-                //console.log("통신 성공");
-                //console.log(response.data);
                 for(var i=0;i<response.data["results"].length;i++){
                     response.data["results"][i].writeDate = response.data["results"][i].writeDate.slice(0,10);
                 }
                 setNoticeInfoArr(response.data["results"]);
                 setTotalNoticeNum(response.data["total"]);
-                //calculateBtnNum();
             }).catch((e) => {
                 // 오류 발생시 처리부분
                 console.error(e);
@@ -87,14 +83,11 @@ function Notice(){
             withCredentials: true  // 쿠키 자동 처리
         }).then((response) => {
             //정상 통신후 응답온 부분
-                //console.log("통신 성공");
-                //console.log(response.data);
                 for(var i=0;i<response.data["results"].length;i++){
                     response.data["results"][i].writeDate = response.data["results"][i].writeDate.slice(0,10);
                 }
                 setNoticeInfoArr(response.data["results"]);
                 setTotalNoticeNum(response.data["total"]);
-                //calculateBtnNum();
             }).catch((e) => {
                 // 오류 발생시 처리부분
                 alert("잘못된 아이디 비밀번호입니다. 아이디 비밀번호를 확인해주세요.");
@@ -104,9 +97,6 @@ function Notice(){
         let tempEndPageNum = Math.ceil(totalNoticeNum/displayPageAmount);
         let tempLastBtnNum = Math.ceil(currentPageNum/displayBtnAmount)*displayBtnAmount;
         let tempStartBtnNum = tempLastBtnNum-displayBtnAmount+1;
-        //console.log(tempEndPageNum);
-        //console.log(tempStartBtnNum);
-        //console.log(tempLastBtnNum);
         let tempNumArr = [];
 
         if(tempEndPageNum<=displayBtnAmount){
@@ -130,7 +120,6 @@ function Notice(){
     }
     const onChageCurrentPageNum = (e) => {
         setCurrentPageNum(Number(e.target.id));
-        //console.log(e.target);
     }
     const handleOnChange = (e) =>{
         if(e.target.id === "title"){
@@ -138,20 +127,16 @@ function Notice(){
         }else if(e.target.id === "noticeNumber"){
             setNoticeNumber(e.target.value);
         }else if(e.target.id === "noticeContent"){
-            console.log(e.target.value);
             setContent(e.target.value);
         }else if(e.target.id === "type"){
             setType(e.target.value);
         }
     }
     const requestNoticeDetail = async(e) => {
-        console.log(e.target.id);
         if(currentTab === "noticeTab"){
             await axios.get("http://localhost:8080/notice/notice/"+e.target.id)
             .then((response) => {
             //정상 통신후 응답온 부분
-                console.log("공지 조회 성공");
-                console.log(response.data);
                 setNoticeInfo(response.data);
                 setIsDetail(true);
             }).catch((e) => {
@@ -163,8 +148,6 @@ function Notice(){
             await axios.get("http://localhost:8080/notice/event/"+e.target.id)
             .then((response) => {
             //정상 통신후 응답온 부분
-                console.log("이벤트 조회 성공");
-                console.log(response.data);
                 setNoticeInfo(response.data);
                 setIsDetail(true);
             }).catch((e) => {
@@ -177,7 +160,6 @@ function Notice(){
     }
     const requestNoticeManagement = async(e) => {
         e.preventDefault();
-        console.log("요청함수 실행");
         if(sessionStorage.getItem("auth") === "role_admin"){
             if(e.target.id === "uploadNotice"){
                 const requestNoticeInfo = {
@@ -185,7 +167,6 @@ function Notice(){
                     title : title,
                     content : content
                 }
-                console.log(content);
                 await axios.post("http://localhost:8080/notice",requestNoticeInfo,{
                     withCredentials: true  // 쿠키 자동 처리
                 }).then((response) => {
@@ -243,7 +224,7 @@ function Notice(){
             }
         }else if(e.target.id === "right"){
             if(((startPageBtnNum+displayBtnAmount)<=endPageBtnNum)&&(endPageBtnNum <=(lastPageBtnNum+displayBtnAmount))){
-                console.log("if 진입");
+                
                 let tempStartNum = startPageBtnNum+displayBtnAmount;
                 let tempLastNum = lastPageBtnNum+displayBtnAmount;
                 setStartPageBtnNum(tempStartNum);
@@ -410,7 +391,6 @@ function Notice(){
         requestNotice();
     },[]);
     useEffect(()=>{
-        //console.log(currentTab);
         if(currentTab === "noticeTab"){
             setCurrentPageNum(1);
             requestNotice();
@@ -424,11 +404,9 @@ function Notice(){
         requestNotice();
     },[currentPageNum]);
     useEffect(()=>{
-        //console.log(noticeInfoArr[0]);
         calculateBtnNum();
     },[totalNoticeNum]);
     useEffect(()=>{
-        //console.log(noticeInfoArr);
         renderPageBtn();
     },[currentBtn,noticeInfoArr,pageNumArr,currentPageNum,currentPageNumArr]);
     useEffect(()=>{

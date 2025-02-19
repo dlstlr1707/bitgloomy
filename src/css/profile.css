@@ -58,6 +58,7 @@ tr{
     display: flex;
     gap: 8px;
     align-items: center;
+    justify-content: space-between;
 }
 .additionalAddressInputDiv >input{
     width: 200px;
@@ -73,9 +74,7 @@ tr{
 .additionalAddressInputDiv ,.additionalAddressBtnDiv{
     display: flex;
     gap: 4px;
-}
-.additionalAddressBtnDiv {
-    padding-left: 140px;
+    align-items: center;
 }
 .additionalAddressBtnDiv >button{
     width: 60px;

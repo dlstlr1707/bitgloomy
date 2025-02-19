@@ -17,13 +17,16 @@ function ProductDetail() {
     const [currentTab,setCurrentTab] = useState("PRODUCT");
     const [total,setTotal] = useState([]);
     const [imgCount,setImgCount] = useState(1);
+
+    const [isOrder,setIsOrder] = useState(false);
+    const [merchantUid, setMerchantUid] = useState(null);
+    const [totalPrice,setTotalPrice] = useState(0);
+
     const requestAddCart = async() => {
         // axios로 서버에 해당 제품 장바구니에 담아달라고 요청함
         if((sessionStorage.getItem("auth") == null)||(sessionStorage.getItem("userUid") == null)){
             navigate("/LogIn");
         }else{
-            // total에 있는정보+현재 로그인정보 포함해서 전달
-            //console.log("axios로 요청 보냄");
             let tempSize = "";
             let tempCount = "";
             let tempTotalCount = "";
@@ -40,20 +43,24 @@ function ProductDetail() {
                 price : tempTotalCount.slice(1),
                 size : tempSize.slice(1)
             }
-            //console.log(cartInfo);
             await axios.post("http://localhost:8080/cart",cartInfo,{
                 withCredentials: true  // 쿠키 자동 처리
             })
                 .then((response) => {
                     //정상 통신후 응답온 부분
-                    //console.log("성공");
+                    alert("상품이 cart에 담겼습니다.");
                 })
                 .catch((e) => {
                     // 오류 발생시 처리부분
-                    
+                    alert("상품을 cart에 담는중 오류가 발생했습니다.");
                 });
         }
     }
+
+    // 임의의 6자리 숫자를 생성하는 함수
+    const generateRandomNumber = () => {
+        return Math.floor(100000 + Math.random() * 900000).toString();
+    };
     const requestBuy = () => {
         // axios로 서버에 해당 제품 구매하겠다고 요청보냄
         if((sessionStorage.getItem("auth") == null)||(sessionStorage.getItem("userUid") == null)){
@@ -61,8 +68,168 @@ function ProductDetail() {
         }else{
             // total에 있는정보+현재 로그인정보 포함해서 전달
             console.log("axios로 요청 보냄");
+            setIsOrder(true);
         }
     }
+    const requestOrder = () => {
+        const payData = {
+            pg: "html5_inicis",
+            pay_method: "card",
+            merchant_uid: merchantUid,
+            name: productInfo.pname,
+            amount: 1,
+            buyer_email: sessionStorage.getItem("email"),
+            buyer_name: sessionStorage.getItem("name"),
+            buyer_tel: sessionStorage.getItem("phoneNum"),
+            buyer_addr: sessionStorage.getItem("mainAddress"),
+            buyer_postcode: sessionStorage.getItem("mainPostcode")
+            }
+            window.IMP.request_pay(payData, rsp => {
+            if (rsp.success) {
+                // 결제 성공 시 로직
+                createOrder(rsp.imp_uid);
+            } else {
+              // 결제 실패 시 로직
+              setIsOrder(false);
+              // 추가로 실행할 로직을 여기에 작성
+
+              // spring서버에 다시 주문한 상품의 정보를 전달해서 DB에 저장
+            }
+          });
+    }
+    // Axios POST 요청 함수 (주문 생성)
+    const createOrder = (imp_uid) => {
+        const payData = {
+            pg: "html5_inicis",
+            pay_method: "card",
+            merchant_uid: merchantUid,
+            name: productInfo.pname,
+            amount: 1,
+            buyer_email: sessionStorage.getItem("email"),
+            buyer_name: sessionStorage.getItem("name"),
+            buyer_tel: sessionStorage.getItem("phoneNum"),
+            buyer_addr: sessionStorage.getItem("mainAddress"),
+            buyer_postcode: sessionStorage.getItem("mainPostcode")
+            }
+        axios.patch("http://localhost:8080/payment", payData)
+            .then((orderResponse) => {
+                if (orderResponse.status === 200) {
+                console.log('주문이 성공적으로 생성되었습니다.');
+                // 성공한 경우 사후 검증 API 호출
+                sendPostVerificationRequest(imp_uid);
+                } else {
+                    console.error('주문 생성 실패');
+                }
+            })
+            .catch((error) => {
+                console.error('주문 생성 요청 오류', error);
+            });
+    }
+
+    // Axios POST 요청 함수 (사전 검증)
+    const sendPreVerificationRequest = async () => {
+        const currentDate = new Date();
+        const year = currentDate.getFullYear();
+        const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+        const day = currentDate.getDate().toString().padStart(2, '0');
+
+        await axios.post("http://localhost:8080/order/prepare",{
+            merchantUid: `${year}.${month}.${day}_${generateRandomNumber()}`, // 가맹점 주문번호
+            totalPrice: 1 // 결제 예정금액
+        },{
+            withCredentials: true  // 쿠키 자동 처리
+        })
+            .then((response) => {
+                //정상 통신후 응답온 부분
+                setMerchantUid(response.data);
+            })
+            .catch((e) => {
+                // 오류 발생시 처리부분
+                console.error('사전 검증 실패');
+            });
+        
+    }
+
+    // Axios POST 요청 함수 (사후 검증)
+    const sendPostVerificationRequest = async (imp_uid) => {
+        await axios.post("http://localhost:8080/order/validate",{
+            merchantUid : merchantUid,
+            impUid : imp_uid
+        },{
+            withCredentials: true  // 쿠키 자동 처리
+        })
+            .then((response) => {
+                //정상 통신후 응답온 부분
+                requestSaveOrderList(imp_uid);
+            })
+            .catch((e) => {
+                // 오류 발생시 처리부분
+                console.error('사후 검증 실패');
+            });
+    }
+    const requestSaveOrderList = async() => {
+        let tmpRequestData=[];
+        for(var i = 0; i<total.length; i++){
+            tmpRequestData.push({
+                userUid : sessionStorage.getItem("userUid"),
+                productUid : productInfo.uid,
+                productName : productInfo.pname,
+                merchantUid : merchantUid,
+                amount : total[i].count,
+                price : total[i].count*productInfo.price,
+                size : total[i].size
+            });
+        }
+        console.log(tmpRequestData);
+        await axios.post("http://localhost:8080/save/order",tmpRequestData,{
+            withCredentials: true  // 쿠키 자동 처리
+        })
+            .then((response) => {
+                //정상 통신후 응답온 부분
+                alert("구매에 성공 하였습니다.")
+            })
+            .catch((e) => {
+                // 오류 발생시 처리부분
+                console.error("통신 실패");
+            });
+        
+    }
+    useEffect(() => {
+        // 외부 스크립트 로드 함수
+        const loadScript = (src, callback) => {
+          const script = document.createElement('script');
+          script.type = 'text/javascript';
+          script.src = src;
+          script.onload = callback;
+          document.head.appendChild(script);
+        };
+    
+        // 스크립트 로드 후 실행
+        loadScript('https://code.jquery.com/jquery-1.12.4.min.js', () => {
+          loadScript('https://cdn.iamport.kr/js/iamport.payment-1.2.0.js', () => {
+            const IMP = window.IMP;
+            // 가맹점 식별코드
+            IMP.init("imp82833256");
+          });
+        });
+    
+        // 컴포넌트가 언마운트될 때 스크립트를 제거하기 위한 정리 함수
+        return () => {
+          const scripts = document.querySelectorAll('script[src^="https://"]');
+          scripts.forEach((script) => script.remove());
+        };
+    }, []);
+    useEffect(() => {
+        // 컴포넌트가 마운트될 때 사전 검증 API 호출
+        sendPreVerificationRequest();
+    }, []);
+    useEffect(()=>{
+        console.log("isOrder바뀜");
+        if(isOrder === true){
+            requestOrder();
+        }
+    },[isOrder]);
+
     const handleClick = (e) => {
         if(e.target.id === "PRODUCT"){
             setCurrentTab("PRODUCT");
@@ -187,7 +354,6 @@ function ProductDetail() {
             .get("http://localhost:8080/detail/"+name)
             .then((response) => {
                 //정상 통신후 응답온 부분
-                //console.log(response.data["uid"]);
                 setProductInfo(response.data);
                 let tempImgArr = [];
                 tempImgArr.push(response.data.productImg["imgURL"]);
@@ -230,12 +396,9 @@ function ProductDetail() {
         setCurrentTab("PRODUCT");
     }
     useEffect(()=>{
-        // axios로 detail/{pname}으로 요청보냄
-        //console.log(params.pname);
         requestProductInfo(params.pname);
     },[]);
     useEffect(()=>{
-        //console.log(productInfo);
         if (productInfo.productMaterial && typeof productInfo.productMaterial === 'string') {
             setMaterialArr(productInfo.productMaterial.split('/'));
         } 
@@ -247,11 +410,19 @@ function ProductDetail() {
         }
     },[productInfo]);
     useEffect(()=>{
-        //console.log(similarNameArr);
-    },[materialArr,fabricArr,sizeArr,similarImgArr,detailImgArr,similarNameArr,imgCount]);
+    },[materialArr,fabricArr,sizeArr,similarImgArr,detailImgArr,similarNameArr,imgCount,totalPrice]);
     useEffect(()=>{
         renderDynamicDiv();
         renderTotal();
+        
+        let tempTotalPrice = 0;
+        for(let i=0; i<total.length;i++){
+            tempTotalPrice = tempTotalPrice+total[i].count*productInfo.price;
+        }
+        setTotalPrice(tempTotalPrice);
+
+        console.log(total);
+        console.log(productInfo);
     },[currentTab,total]);
     return (
             <main>
@@ -278,7 +449,7 @@ function ProductDetail() {
                     </div>
                     <div id="detailContentDiv">
                         <p id="pName">{productInfo.pname}</p>
-                        <p>{productInfo.price} KRW</p>
+                        <p>{productInfo.price && productInfo.price.toLocaleString('ko-KR')} KRW</p>
                         <p>{productInfo.contents}</p>
                         <div id="productInfoDiv">
                             <div id="InfoTabDiv">

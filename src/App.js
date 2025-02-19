@@ -14,16 +14,19 @@ import {useEffect, useState} from "react";
 import FindUserInfo from './page/FindUserInfo';
 import Footer from './page/Footer';
 import axios from "axios";
+import ChannelService from "./page/ChannelService";
 
 function App() {
+    ChannelService.loadScript();
+    ChannelService.boot({
+        "pluginKey": "c86651ea-1347-4943-8b79-a9ce1a65cd3e", // fill your plugin key
+    });
     const [isLogin, setIsLogin] = useState();
     const [latitude, setLatitude] = useState(37.820708667); //위도
     const [longitude, setLongitude] = useState(127.092816994); // 경도
     const [weatherInfo,setWeatherInfo] = useState([]);
     const requestWeatherApi = async() => {
         // 기상청 단기예보 서버에 요청함
-        console.log("기상청 데이터 요청함");
-
         const coordsInfo = {
             latitude : latitude,
             longitude : longitude
@@ -34,7 +37,6 @@ function App() {
         })
             .then((response) => {
                 //정상 통신후 응답온 부분
-                console.log("성공");
                 setWeatherInfo(response.data);
             })
             .catch((e) => {
@@ -44,7 +46,6 @@ function App() {
 
     }
     useEffect(() => {
-        //console.log(weatherInfo);
     }, [isLogin, latitude, longitude,weatherInfo]);
     useEffect(() => {
         if (sessionStorage.getItem("userUid") != null) {
@@ -69,7 +70,7 @@ function App() {
         geolocation.getCurrentPosition(success, error, options);
 
         //일단 주석 처리 해두고 추후 작업 예정
-        //requestWeatherApi();
+        requestWeatherApi();
     }, []);
     return (
         <div>

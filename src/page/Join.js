@@ -376,13 +376,13 @@ function Join({setIsLogin}) {
         // 이메일 인증 api 연동 후 처리 하는 함수
         e.preventDefault();
         var email = joinInfo.email1 + "@" + joinInfo.email2;
-        //console.log(email);
         if(e.target.id === "sendEmail"){
             await axios
             .get("http://localhost:8080/mailSend/" + email)
             .then((response) => {
                 //정상 통신후 응답온 부분
                 setIsEmailAuth(true);
+                alert("인증코드를 전송했습니다. 메일을 확인해주세요.");
             })
             .catch((e) => {
                 // 오류 발생시 처리부분
@@ -394,15 +394,14 @@ function Join({setIsLogin}) {
             .get("http://localhost:8080/mailCheck/" + emailAuthCode)
             .then((response) => {
                 //정상 통신후 응답온 부분
-                console.log("인증성공");
                 setValidationResult({
                     ...validationResult,
                     emailResult: "success"
                 });
+                alert("인증에 성공 하였습니다.");
             })
             .catch((e) => {
                 // 오류 발생시 처리부분
-                console.log("인증실패");
                 setValidationResult({
                     ...validationResult,
                     emailResult: "fail"
@@ -426,7 +425,6 @@ function Join({setIsLogin}) {
         }
     }
     const isDisableJoinBtn = () => {
-        //console.log(joinInfo);
         let resultId = (validationResult.idResult === "length_ok") && isExistId;
         let resultPw = validationResult.pwResult === "length_ok";
         let resultPwCheck = validationResult.pwCheckResult === "success";
@@ -439,8 +437,6 @@ function Join({setIsLogin}) {
         let resultEmailAuth = validationResult.emailResult === "success";
         let resultAggrement = joinInfo.policyAggrement;
         let resultPolicy = joinInfo.privacyPolicyAggrement;
-
-        //console.log(resultAddress);
 
         if (resultId && resultPw && resultPwCheck && resultName && resultAddress && resultPhone && resultEmail && resultEmailAuth && resultAggrement && resultPolicy) {
             joinBtnRef.current.disabled = false;
@@ -473,7 +469,6 @@ function Join({setIsLogin}) {
             "email": joinInfo.email1 + "@" + joinInfo.email2,
             "emailReception": emailReception
         };
-        console.log(requestJoinInfo);
         await axios
             .post("http://localhost:8080/users", requestJoinInfo, {
                 withCredentials: true // 쿠키 자동 처리
@@ -493,6 +488,7 @@ function Join({setIsLogin}) {
             .catch((e) => {
                 // 오류 발생시 처리부분
                 console.log(e);
+                alert("가입에 실패했습니다.");
             });
     }
     useEffect(() => {
@@ -502,8 +498,6 @@ function Join({setIsLogin}) {
         isDisableJoinBtn();
     }, [joinInfo, isExistId, checkedID,validationResult,addressInput]);
     useEffect(() => {
-        console.log(addressInput);
-        
     }, [isTermsModalOpen,emailAuthCode]);
     useEffect(()=>{
         setJoinInfo({

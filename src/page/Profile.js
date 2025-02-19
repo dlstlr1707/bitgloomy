@@ -33,6 +33,24 @@ function Profile({setIsLogin}){
             postcode : "" 
         });
     const addressRef = useRef(null);
+    const initSubAddressInput = () => {
+        setAddressInput1({
+            ...addressInput1,
+            subAddress : "",
+        });
+        setAddressInput2({
+            ...addressInput2,
+            subAddress : "",
+        });
+        setAddressInput3({
+            ...addressInput3,
+            subAddress : "",
+        });
+        setAddressInput4({
+            ...addressInput4,
+            subAddress : "",
+        });
+    }
     const handleClickedBtn = async(e) => {
         // aiox로 로그아웃 요청해서 세션 만료 시켜야 함
         if(e.target.id === "logout"){
@@ -46,16 +64,39 @@ function Profile({setIsLogin}){
             sessionStorage.clear();
             navigate("/Shop");
         }else if(e.target.id === "modifyAddress"){
-            console.log("배송지 수정");
             requestAddressInfo();
             setIsAddressMamagement(true);
         }else if(e.target.id === "addAddress"){
-            console.log("배송지 추가");
             // axios request
             requestModifyAddress();
         }else if(e.target.id === "cancle"){
             setIsAddressMamagement(false);
+        }else if(e.target.id === "selectMainAddress2"){
+            initSubAddressInput();
+            requestChangeMainAddress(e);
+        }else if(e.target.id === "selectMainAddress3"){
+            initSubAddressInput();
+            requestChangeMainAddress(e);
+        }else if(e.target.id === "selectMainAddress4"){
+            initSubAddressInput();
+            requestChangeMainAddress(e);
+        }else if(e.target.id === "selectMainAddress5"){
+            initSubAddressInput();
+            requestChangeMainAddress(e);
+        }else if(e.target.id === "deleteAddress2"){
+            initSubAddressInput();
+            requestDeleteAddress(e);
+        }else if(e.target.id === "deleteAddress3"){
+            initSubAddressInput();
+            requestDeleteAddress(e);
+        }else if(e.target.id === "deleteAddress4"){
+            initSubAddressInput();
+            requestDeleteAddress(e);
+        }else if(e.target.id === "deleteAddress5"){
+            initSubAddressInput();
+            requestDeleteAddress(e);
         }
+        
     }
     const requestAddressInfo = async() => {
         await axios.get("http://localhost:8080/address/"+sessionStorage.getItem("userUid"),{
@@ -63,8 +104,27 @@ function Profile({setIsLogin}){
         })
             .then((response) => {
                 //정상 통신후 응답온 부분
-                console.log(response.data);
                 setAddressInfo(response.data);
+                setAddressInput1({
+                    ...addressInput1,
+                    mainAddress : response.data["address2"],
+                    postcode : response.data["postcode2"]
+                });
+                setAddressInput2({
+                    ...addressInput2,
+                    mainAddress : response.data["address3"],
+                    postcode : response.data["postcode3"]
+                });
+                setAddressInput3({
+                    ...addressInput3,
+                    mainAddress : response.data["address4"],
+                    postcode : response.data["postcode4"]
+                });
+                setAddressInput4({
+                    ...addressInput4,
+                    mainAddress : response.data["address5"],
+                    postcode : response.data["postcode5"]
+                });
             })
             .catch((e) => {
                 // 오류 발생시 처리부분
@@ -72,14 +132,248 @@ function Profile({setIsLogin}){
                 setIsAddressMamagement(false);
             });
     }
+    const requestChangeMainAddress = async(e) => {
+        let tmpAddressData;
+        if(e.target.id === "selectMainAddress2"){
+            tmpAddressData = {
+                uid : addressInfo.uid,
+                userUid : addressInfo.userUid,
+                address1 : addressInfo.address2,
+                address2 : addressInfo.address1,
+                address3 : addressInfo.address3,
+                address4 : addressInfo.address4,
+                address5 : addressInfo.address5,
+                postcode1 : addressInfo.postcode2,
+                postcode2 : addressInfo.postcode1,
+                postcode3 : addressInfo.postcode3,
+                postcode4 : addressInfo.postcode4,
+                postcode5 : addressInfo.postcode5,
+            }
+            setAddressInfo(tmpAddressData);
+            await axios.patch("http://localhost:8080/address",tmpAddressData,{
+                withCredentials: true  // 쿠키 자동 처리
+            })
+                .then((response) => {
+                    //정상 통신후 응답온 부분
+                    alert("선택하신 주소가 기본 배송지로 등록 되었습니다.");
+                    setIsAddressMamagement(false);
+                })
+                .catch((e) => {
+                    // 오류 발생시 처리부분
+                    console.error(e);
+                    alert("오류");
+                });
+        }else if(e.target.id === "selectMainAddress3"){
+            tmpAddressData = {
+                uid : addressInfo.uid,
+                userUid : addressInfo.userUid,
+                address1 : addressInfo.address3,
+                address2 : addressInfo.address2,
+                address3 : addressInfo.address1,
+                address4 : addressInfo.address4,
+                address5 : addressInfo.address5,
+                postcode1 : addressInfo.postcode3,
+                postcode2 : addressInfo.postcode2,
+                postcode3 : addressInfo.postcode1,
+                postcode4 : addressInfo.postcode4,
+                postcode5 : addressInfo.postcode5,
+            }
+            setAddressInfo(tmpAddressData);
+            await axios.patch("http://localhost:8080/address",tmpAddressData,{
+                withCredentials: true  // 쿠키 자동 처리
+            })
+                .then((response) => {
+                    //정상 통신후 응답온 부분
+                    alert("선택하신 주소가 기본 배송지로 등록 되었습니다.");
+                    setIsAddressMamagement(false);
+                })
+                .catch((e) => {
+                    // 오류 발생시 처리부분
+                    console.error(e);
+                    alert("오류");
+                });
+        }else if(e.target.id === "selectMainAddress4"){
+            tmpAddressData = {
+                uid : addressInfo.uid,
+                userUid : addressInfo.userUid,
+                address1 : addressInfo.address4,
+                address2 : addressInfo.address2,
+                address3 : addressInfo.address3,
+                address4 : addressInfo.address1,
+                address5 : addressInfo.address5,
+                postcode1 : addressInfo.postcode4,
+                postcode2 : addressInfo.postcode2,
+                postcode3 : addressInfo.postcode3,
+                postcode4 : addressInfo.postcode1,
+                postcode5 : addressInfo.postcode5,
+            }
+            setAddressInfo(tmpAddressData);
+            await axios.patch("http://localhost:8080/address",tmpAddressData,{
+                withCredentials: true  // 쿠키 자동 처리
+            })
+                .then((response) => {
+                    //정상 통신후 응답온 부분
+                    alert("선택하신 주소가 기본 배송지로 등록 되었습니다.");
+                    setIsAddressMamagement(false);
+                })
+                .catch((e) => {
+                    // 오류 발생시 처리부분
+                    console.error(e);
+                    alert("오류");
+                });
+        }else if(e.target.id === "selectMainAddress5"){
+            tmpAddressData = {
+                uid : addressInfo.uid,
+                userUid : addressInfo.userUid,
+                address1 : addressInfo.address5,
+                address2 : addressInfo.address2,
+                address3 : addressInfo.address3,
+                address4 : addressInfo.address4,
+                address5 : addressInfo.address1,
+                postcode1 : addressInfo.postcode5,
+                postcode2 : addressInfo.postcode2,
+                postcode3 : addressInfo.postcode3,
+                postcode4 : addressInfo.postcode4,
+                postcode5 : addressInfo.postcode1,
+            }
+            setAddressInfo(tmpAddressData);
+            await axios.patch("http://localhost:8080/address",tmpAddressData,{
+                withCredentials: true  // 쿠키 자동 처리
+            })
+                .then((response) => {
+                    //정상 통신후 응답온 부분
+                    alert("선택하신 주소가 기본 배송지로 등록 되었습니다.");
+                    setIsAddressMamagement(false);
+                })
+                .catch((e) => {
+                    // 오류 발생시 처리부분
+                    console.error(e);
+                    alert("오류");
+                });
+        }
+    }
+    const requestDeleteAddress = async(e) => {
+        let tmpAddressData;
+        if(e.target.id === "deleteAddress2"){
+            tmpAddressData = {
+                uid : addressInfo.uid,
+                userUid : addressInfo.userUid,
+                address1 : addressInfo.address1,
+                address2 : addressInfo.address3,
+                address3 : addressInfo.address4,
+                address4 : addressInfo.address5,
+                address5 : "",
+                postcode1 : addressInfo.postcode1,
+                postcode2 : addressInfo.postcode3,
+                postcode3 : addressInfo.postcode4,
+                postcode4 : addressInfo.postcode5,
+                postcode5 : "",
+            }
+            await axios.patch("http://localhost:8080/address",tmpAddressData,{
+                withCredentials: true  // 쿠키 자동 처리
+            })
+                .then((response) => {
+                    //정상 통신후 응답온 부분
+                    alert("선택하신 주소가 삭제 되었습니다.");
+                    setIsAddressMamagement(false);
+                })
+                .catch((e) => {
+                    // 오류 발생시 처리부분
+                    console.error(e);
+                    alert("오류");
+                });
+        }else if(e.target.id === "deleteAddress3"){
+            tmpAddressData = {
+                uid : addressInfo.uid,
+                userUid : addressInfo.userUid,
+                address1 : addressInfo.address1,
+                address2 : addressInfo.address2,
+                address3 : addressInfo.address4,
+                address4 : addressInfo.address5,
+                address5 : "",
+                postcode1 : addressInfo.postcode1,
+                postcode2 : addressInfo.postcode2,
+                postcode3 : addressInfo.postcode4,
+                postcode4 : addressInfo.postcode5,
+                postcode5 : "",
+            }
+            await axios.patch("http://localhost:8080/address",tmpAddressData,{
+                withCredentials: true  // 쿠키 자동 처리
+            })
+                .then((response) => {
+                    //정상 통신후 응답온 부분
+                    alert("선택하신 주소가 삭제 되었습니다.");
+                    setIsAddressMamagement(false);
+                })
+                .catch((e) => {
+                    // 오류 발생시 처리부분
+                    console.error(e);
+                    alert("오류");
+                });
+        }else if(e.target.id === "deleteAddress4"){
+            tmpAddressData = {
+                uid : addressInfo.uid,
+                userUid : addressInfo.userUid,
+                address1 : addressInfo.address1,
+                address2 : addressInfo.address2,
+                address3 : addressInfo.address3,
+                address4 : addressInfo.address5,
+                address5 : "",
+                postcode1 : addressInfo.postcode1,
+                postcode2 : addressInfo.postcode2,
+                postcode3 : addressInfo.postcode3,
+                postcode4 : addressInfo.postcode5,
+                postcode5 : "",
+            }
+            await axios.patch("http://localhost:8080/address",tmpAddressData,{
+                withCredentials: true  // 쿠키 자동 처리
+            })
+                .then((response) => {
+                    //정상 통신후 응답온 부분
+                    alert("선택하신 주소가 삭제 되었습니다.");
+                    setIsAddressMamagement(false);
+                })
+                .catch((e) => {
+                    // 오류 발생시 처리부분
+                    console.error(e);
+                    alert("오류");
+                });
+        }else if(e.target.id === "deleteAddress5"){
+            tmpAddressData = {
+                uid : addressInfo.uid,
+                userUid : addressInfo.userUid,
+                address1 : addressInfo.address1,
+                address2 : addressInfo.address2,
+                address3 : addressInfo.address3,
+                address4 : addressInfo.address4,
+                address5 : "",
+                postcode1 : addressInfo.postcode1,
+                postcode2 : addressInfo.postcode2,
+                postcode3 : addressInfo.postcode3,
+                postcode4 : addressInfo.postcode4,
+                postcode5 : "",
+            }
+            await axios.patch("http://localhost:8080/address",tmpAddressData,{
+                withCredentials: true  // 쿠키 자동 처리
+            })
+                .then((response) => {
+                    //정상 통신후 응답온 부분
+                    alert("선택하신 주소가 삭제 되었습니다.");
+                    setIsAddressMamagement(false);
+                })
+                .catch((e) => {
+                    // 오류 발생시 처리부분
+                    console.error(e);
+                    alert("오류");
+                });
+        }
+    }
     const requestLogout = async() => {
-        console.log("로그아웃 요청함");
         await axios.get("http://localhost:8080/logout",{
             withCredentials: true  // 쿠키 자동 처리
         })
             .then((response) => {
                 //정상 통신후 응답온 부분
-                console.log("성공");
                 alert("로그아웃 되었습니다.");
             })
             .catch((e) => {
@@ -88,14 +382,11 @@ function Profile({setIsLogin}){
             });
     }
     const requestDeleteUser = async() => {
-        console.log("회원탈퇴 요청함");
-        console.log(sessionStorage.getItem("userUid"));
         await axios.delete("http://localhost:8080/users/"+parseInt(sessionStorage.getItem("userUid")),{
             withCredentials: true  // 쿠키 자동 처리
         })
             .then((response) => {
                 //정상 통신후 응답온 부분
-                console.log("성공");
                 alert("탈퇴 처리 되었습니다.");
             })
             .catch((e) => {
@@ -104,14 +395,12 @@ function Profile({setIsLogin}){
             });
     }
     const requestUserProfile = async() => {
-        console.log("회원정보 요청함");
         await axios.post("http://localhost:8080/profile/"+sessionStorage.getItem("userUid"),{
             withCredentials: true  // 쿠키 자동 처리
         })
             .then((response) => {
                 //정상 통신후 응답온 부분
                 setProfileInfo(response.data);
-                //console.log(response.data)
             })
             .catch((e) => {
                 // 오류 발생시 처리부분
@@ -125,7 +414,6 @@ function Profile({setIsLogin}){
         })
             .then((response) => {
                 //정상 통신후 응답온 부분
-                //console.log(response.data)
                 setOrderInfo(response.data);
             })
             .catch((e) => {
@@ -149,15 +437,13 @@ function Profile({setIsLogin}){
             postcode4 : addressInput3.postcode,
             postcode5 : addressInput4.postcode,
         }
-        console.log(addressInput1.postcode);
-        console.log(modifyAddressInfo);
         await axios.patch("http://localhost:8080/address",modifyAddressInfo,{
             withCredentials: true  // 쿠키 자동 처리
         })
             .then((response) => {
                 //정상 통신후 응답온 부분
-                console.log("성공");
-                renderUserProfileDiv();
+                alert("새로운 주소가 등록되었습니다.");
+                setIsAddressMamagement(false);
             })
             .catch((e) => {
                 // 오류 발생시 처리부분
@@ -179,10 +465,10 @@ function Profile({setIsLogin}){
             return(
                 <div id="userProfileInfoDiv">
                     <p>기본 배송지 : ( {addressInfo.postcode1} ) {addressInfo.address1}</p>
-                    {addressInfo.postcode2 == null ? 
+                    {(addressInfo.postcode2==="") ? 
                         <div className="additionalAddressDiv">
-                            <p>추가 배송지 1 : </p>
                             <div className="additionalAddressInputDiv">
+                                <p>추가 배송지 1 : </p>
                                 <input type="text" value={addressInput1.postcode} disabled/>
                                 <input type="text" value={addressInput1.mainAddress} disabled/>
                                 <input type="text" onChange={(e)=>setAddressInput1({
@@ -198,14 +484,26 @@ function Profile({setIsLogin}){
                                     ref={addressRef}/>
                             </div>
                         </div>
-                        :<p>추가 배송지 1 : ( {addressInfo.postcode2} ) {addressInfo.address2}</p>}
-                    
-                    {(addressInfo.postcode2!=null) || (addressInfo.postcode2!=="")  ? 
-                        (addressInfo.postcode3 != null) || (addressInfo.postcode3!=="") ?
-                        <p>추가 배송지 2 : ( {addressInfo.postcode3} ) {addressInfo.address3}</p>:
+                        :<div className="additionalAddressDiv">
+                            <p>추가 배송지 1 : ( {addressInfo.postcode2} ) {addressInfo.address2}</p>
+                            <div className="additionalAddressBtnDiv">
+                                <button onClick={handleClickedBtn} id="selectMainAddress2">선택</button>
+                                <button onClick={handleClickedBtn} id="deleteAddress2">삭제</button>
+                            </div>
+                        </div>}
+                        
+                    {(addressInfo.postcode2!=="")  ? 
+                        (addressInfo.postcode3!=="") ?
                         <div className="additionalAddressDiv">
-                            <p>추가 배송지 2 : </p>
+                            <p>추가 배송지 2 : ( {addressInfo.postcode3} ) {addressInfo.address3}</p>
+                            <div className="additionalAddressBtnDiv">
+                                <button onClick={handleClickedBtn} id="selectMainAddress3">선택</button>
+                                <button onClick={handleClickedBtn} id="deleteAddress3">삭제</button>
+                            </div>
+                        </div>:
+                        (<div className="additionalAddressDiv">
                             <div className="additionalAddressInputDiv">
+                                <p>추가 배송지 2 : </p>
                                 <input type="text" value={addressInput2.postcode} disabled/>
                                 <input type="text" value={addressInput2.mainAddress} disabled/>
                                 <input type="text" onChange={(e)=>setAddressInput2({
@@ -214,30 +512,36 @@ function Profile({setIsLogin}){
                                 })}/>
                             </div>
                             <div className="additionalAddressBtnDiv">
-                                <button>찾기</button>
+                                <button onClick={()=>setIsAddressModalOpen(!isAddressModalOpen)}>찾기</button>
                                 <DaumPostCode isModalOpen={isAddressModalOpen} addressInput = {addressInput2}
                                     changeIsModalOpen={setIsAddressModalOpen}
                                     setAddressInput = {setAddressInput2}
                                     ref={addressRef}/>
                             </div>
-                        </div>
+                        </div>)
                         : <></>
                         }
-                        {addressInfo.postcode3!=null || addressInfo.postcode3!==""  ? 
-                        addressInfo.postcode4 != null || addressInfo.postcode4!=="" ?
-                        <p>추가 배송지 3 : ( {addressInfo.postcode4} ) {addressInfo.address4}</p>:
+                         {(addressInfo.postcode3!=="")  ? 
+                        (addressInfo.postcode4!=="") ?
                         <div className="additionalAddressDiv">
-                            <p>추가 배송지 3 : </p>
+                            <p>추가 배송지 3 : ( {addressInfo.postcode4} ) {addressInfo.address4}</p>
+                            <div className="additionalAddressBtnDiv">
+                                <button onClick={handleClickedBtn} id="selectMainAddress4">선택</button>
+                                <button onClick={handleClickedBtn} id="deleteAddress4">삭제</button>
+                            </div>
+                        </div>:
+                        <div className="additionalAddressDiv">
                             <div className="additionalAddressInputDiv">
-                                <input type="text" value={addressInput4.postcode} disabled/>
-                                <input type="text" value={addressInput4.mainAddress} disabled/>
+                                <p>추가 배송지 3 : </p>
+                                <input type="text" value={addressInput3.postcode} disabled/>
+                                <input type="text" value={addressInput3.mainAddress} disabled/>
                                 <input type="text" onChange={(e)=>setAddressInput3({
                                     ...addressInput3,
                                     subAddress : e.target.value
                                 })}/>
                             </div>
                             <div className="additionalAddressBtnDiv">
-                                <button>찾기</button>
+                                <button onClick={()=>setIsAddressModalOpen(!isAddressModalOpen)}>찾기</button>
                                 <DaumPostCode isModalOpen={isAddressModalOpen} addressInput = {addressInput3}
                                     changeIsModalOpen={setIsAddressModalOpen}
                                     setAddressInput = {setAddressInput3}
@@ -246,12 +550,18 @@ function Profile({setIsLogin}){
                         </div>
                         : <></>
                         }
-                        {addressInfo.postcode4!=null || addressInfo.postcode4!==""  ? 
-                        addressInfo.postcode5 != null || addressInfo.postcode5!=="" ?
-                        <p>추가 배송지 4 : ( {addressInfo.postcode5} ) {addressInfo.address5}</p>:
+                         {(addressInfo.postcode4!=="")  ? 
+                        (addressInfo.postcode5!=="") ?
                         <div className="additionalAddressDiv">
-                            <p>추가 배송지 4 : </p>
+                            <p>추가 배송지 4 : ( {addressInfo.postcode5} ) {addressInfo.address5}</p>
+                            <div className="additionalAddressBtnDiv">
+                                <button onClick={handleClickedBtn} id="selectMainAddress5">선택</button>
+                                <button onClick={handleClickedBtn} id="deleteAddress5">삭제</button>
+                            </div>
+                        </div>:
+                        <div className="additionalAddressDiv">
                             <div className="additionalAddressInputDiv">
+                                <p>추가 배송지 4 : </p>
                                 <input type="text" value={addressInput4.postcode} disabled/>
                                 <input type="text" value={addressInput4.mainAddress} disabled/>
                                 <input type="text" onChange={(e)=>setAddressInput4({
@@ -260,7 +570,7 @@ function Profile({setIsLogin}){
                                 })}/>
                             </div>
                             <div className="additionalAddressBtnDiv">
-                                <button>찾기</button>
+                                <button onClick={()=>setIsAddressModalOpen(!isAddressModalOpen)}>찾기</button>
                                 <DaumPostCode isModalOpen={isAddressModalOpen} addressInput = {addressInput4}
                                     changeIsModalOpen={setIsAddressModalOpen}
                                     setAddressInput = {setAddressInput4}
@@ -282,7 +592,7 @@ function Profile({setIsLogin}){
                             <p>ID : {profileInfo.id}</p>
                             <p>E-mail : {profileInfo.email}</p>
                             <p>Phone : {profileInfo.phoneNum}</p>
-                            <p>기본 배송지 : ( {sessionStorage.getItem("mainPostcode")} ) {sessionStorage.getItem("mainAddress")}</p>
+                            <p>기본 배송지 : ( {addressInfo.postcode1} ) {addressInfo.address1}</p>
                             <div id="userProfileInfoBtnDiv">
                                 <div id="addressBtnDiv">
                                     <button onClick={handleClickedBtn} id="modifyAddress">배송지관리</button>
@@ -302,12 +612,10 @@ function Profile({setIsLogin}){
         requestAddressInfo();
     },[]);
     useEffect(()=>{
-        console.log(orderInfo);
         renderUserProfileDiv();
         renderOrderList();
     },[profileInfo,orderInfo,addressInfo]);
     useEffect(()=>{
-        //console.log(addressInput);
     },[isAddressModalOpen]);
     useEffect(()=>{
     },[addressInput1,addressInput2,addressInput3,addressInput4]);

@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import styled from 'styled-components';
 
 const SideIconMenuDiv = styled.div `
@@ -8,13 +9,13 @@ const SideIconMenuDiv = styled.div `
     gap: 8px;
     flex-direction: column;
     position: fixed;
-    top: 800px;
-    left: 1832px;
+    top: 790px;
+    left: 1830px;
     >img{
-    width: 42px;
-    height: 42px;
+    width: 50px;
+    height: 50px;
     border: 1px solid #c2c2c2;
-    border-radius: 999px;
+    border-radius: 20px;
     object-fit: cover;
     padding: 4px;
     box-sizing: border-box;
@@ -43,9 +44,11 @@ function SideIconMenu(){
     return(
         <SideIconMenuDiv>
             <img src={require("../img/icon/Expand_top_stop.png")} alt="" onClick={moveToTop}/>
+            {/*
             <div id="channelTalkDiv">
                 <img src={require("../img/bitgloomy_channelTalk.png")} alt=""/>
             </div>
+            */}
         </SideIconMenuDiv>
     );
 }

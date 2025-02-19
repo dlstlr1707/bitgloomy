@@ -44,6 +44,9 @@
     height: 40px;
     border-bottom: 1px solid #000000;
 }
+#cartTable thead tr{
+    height: 40px;
+}
 #cartTable thead td{
     font-size: 14px;
     text-align: center;
@@ -57,8 +60,10 @@
 }
 #cartTable tbody td{
     height: 131px;
-    text-align: center;
-    vertical-align: middle;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 #cartTable td:nth-child(1){
     width: 50px;

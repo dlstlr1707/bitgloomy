@@ -72,13 +72,9 @@ function Header({isLogin,weatherInfo}) {
         }
       };
     const excuteSearch = async() => {
-        // 내용 받아서 axios로 요청보냄
-        console.log("검색 진행중 : " + searchText);
         await axios.get("http://localhost:8080/search/"+searchText)
             .then((response) => {
             //정상 통신후 응답온 부분
-                console.log("통신 성공");
-                console.log(response.data);
                 setSearchResultArr(response.data);
                 setIsSearch(false);
                 if(location.pathname === "/Shop"){
@@ -196,14 +192,13 @@ function Header({isLogin,weatherInfo}) {
                 }
             }
         }else{
-            console.log("기상 데이터 없음");
+            //console.log("기상 데이터 없음");
         }
     }
     useEffect(()=>{
         renderWeatherDiv();
     },[]);
     useEffect(()=>{
-        console.log(searchResultArr);
         navigate("/Shop",{state:searchResultArr});
     },[searchResultArr]);
     return (

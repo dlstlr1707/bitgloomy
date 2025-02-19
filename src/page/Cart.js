@@ -22,7 +22,6 @@ function Cart() {
         return Math.floor(100000 + Math.random() * 900000).toString();
     };
     const handleOnClick = async(e) => {
-        //console.log(e.target.value);
         switch (e.target.value) {
             case "selectAllCart":
                 if(e.target.type === "submit"){
@@ -34,7 +33,6 @@ function Cart() {
                         setCheckedCartInfo(cartInfo);
                     }
                 }else if(e.target.type === "checkbox"){
-                    console.log(checkboxRef.current.checked);
                     if(checkboxRef.current.checked === true){
                         setCheckedCartInfo(cartInfo);
                     }else{
@@ -48,7 +46,6 @@ function Cart() {
                 })
                     .then((response) => {
                         //정상 통신후 응답온 부분
-                        console.log("성공");
                         toggleFlag();
                     })
                     .catch((e) => {
@@ -75,8 +72,6 @@ function Cart() {
         })
             .then((response) => {
                 //정상 통신후 응답온 부분
-                //console.log("성공");
-                //console.log(response.data);
                 setCartInfo(response.data);
             })
             .catch((e) => {
@@ -94,9 +89,6 @@ function Cart() {
         );
     }
     const requestOrder = () => {
-        console.log("주문 실행");
-        console.log(checkedCartInfo);
-        console.log(totalPrice);
 
         let tempName="";
         if(checkedCartInfo.length === 1){
@@ -121,16 +113,12 @@ function Cart() {
             buyer_addr: "서울특별시 강남구 신사동",
             buyer_postcode: "01181"
             }
-            console.log(payData);
             window.IMP.request_pay(payData, rsp => {
             if (rsp.success) {
                 // 결제 성공 시 로직
-                console.log('결제 성공');
-                console.log(rsp);
                 createOrder(rsp.imp_uid);
             } else {
               // 결제 실패 시 로직
-              console.log('Payment failed', rsp.error_msg);
               setIsOrder(false);
               // 추가로 실행할 로직을 여기에 작성
 
@@ -140,7 +128,6 @@ function Cart() {
     }
     // Axios POST 요청 함수 (주문 생성)
     const createOrder = (imp_uid) => {
-        console.log(merchantUid);
         let tempName="";
         if(checkedCartInfo.length === 1){
             tempName = checkedCartInfo[0].productName;
@@ -161,7 +148,6 @@ function Cart() {
             }
         axios.patch("http://localhost:8080/payment", payData)
             .then((orderResponse) => {
-                console.log(orderResponse);
                 if (orderResponse.status === 200) {
                 console.log('주문이 성공적으로 생성되었습니다.');
                 // 성공한 경우 사후 검증 API 호출
@@ -190,8 +176,6 @@ function Cart() {
         })
             .then((response) => {
                 //정상 통신후 응답온 부분
-                //console.log(response);
-                // 사전 검증 성공 시 결제 요청 실행
                 setMerchantUid(response.data);
             })
             .catch((e) => {
@@ -211,10 +195,6 @@ function Cart() {
         })
             .then((response) => {
                 //정상 통신후 응답온 부분
-                console.log(response);
-                // 구매시 카트에 있던 리스트 서버에 보내서 order테이블에 저장
-                // 이후 카트 목록에서 주문했던거 제거
-                // 이후 재렌더링
                 requestSaveOrderList(imp_uid);
             })
             .catch((e) => {
@@ -235,13 +215,11 @@ function Cart() {
                 size : checkedCartInfo[i].size
             });
         }
-        console.log(tmpRequestData);
         await axios.post("http://localhost:8080/save/order",tmpRequestData,{
             withCredentials: true  // 쿠키 자동 처리
         })
             .then((response) => {
                 //정상 통신후 응답온 부분
-                console.log("통신 성공");
                 requestDeleteCart();
             })
             .catch((e) => {
@@ -257,13 +235,11 @@ function Cart() {
                 uid : checkedCartInfo[i].uid
             });
         }
-        console.log(tmpInfo);
         await axios.post("http://localhost:8080/delete/carts",tmpInfo,{
             withCredentials: true  // 쿠키 자동 처리
         })
             .then((response) => {
                 //정상 통신후 응답온 부분
-                console.log("성공");
                 setCheckedCartInfo([]);
                 toggleFlag();
             })
@@ -310,7 +286,6 @@ function Cart() {
         sendPreVerificationRequest();
     }, []);
     useEffect(()=>{
-        //console.log(cartInfo);
         let tempTotalPrice = 0;
         for(let i=0; i<checkedCartInfo.length;i++){
             tempTotalPrice = tempTotalPrice+checkedCartInfo[i].price;

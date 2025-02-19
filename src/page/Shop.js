@@ -18,7 +18,6 @@ function Shop() {
             .get("http://localhost:8080/products")
             .then((response) => {
                 //정상 통신후 응답온 부분
-                //console.log(response.data);
                 setProductList(response.data);
                 setProductFilterList(response.data);
             })
@@ -48,7 +47,6 @@ function Shop() {
             setCurrentTab(e.target.id);
             setProductFilterList(productList.filter((productInfo)=>(productInfo.category === "Acc")));
         }else{
-            console.log("잘못된 인자가 넘어옴");
             setCurrentTab("All");
             setProductFilterList(productList);
         }
@@ -61,7 +59,6 @@ function Shop() {
         );
     }
     useEffect(() => {
-        console.log(state);
         if(state == null || state.length===0){
             requestProductList();
         }else{
