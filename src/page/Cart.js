@@ -89,7 +89,6 @@ function Cart() {
         );
     }
     const requestOrder = () => {
-
         let tempName="";
         if(checkedCartInfo.length === 1){
             tempName = checkedCartInfo[0].productName;
@@ -110,8 +109,8 @@ function Cart() {
             buyer_email: sessionStorage.getItem("email"),
             buyer_name: sessionStorage.getItem("name"),
             buyer_tel: sessionStorage.getItem("phoneNum"),
-            buyer_addr: "서울특별시 강남구 신사동",
-            buyer_postcode: "01181"
+            buyer_addr: sessionStorage.getItem("mainAddress"),
+            buyer_postcode: sessionStorage.getItem("mainPostcode")
             }
             window.IMP.request_pay(payData, rsp => {
             if (rsp.success) {
@@ -120,20 +119,11 @@ function Cart() {
             } else {
               // 결제 실패 시 로직
               setIsOrder(false);
-              // 추가로 실행할 로직을 여기에 작성
-
-              // spring서버에 다시 주문한 상품의 정보를 전달해서 DB에 저장
             }
           });
     }
     // Axios POST 요청 함수 (주문 생성)
     const createOrder = (imp_uid) => {
-        let tempName="";
-        if(checkedCartInfo.length === 1){
-            tempName = checkedCartInfo[0].productName;
-        }else{
-            tempName = checkedCartInfo[0].productName + "외 "+checkedCartInfo.length + "개";
-        }
         const payData = {
             pg: "html5_inicis",
             pay_method: "card",
@@ -143,8 +133,8 @@ function Cart() {
             buyer_email: sessionStorage.getItem("email"),
             buyer_name: sessionStorage.getItem("name"),
             buyer_tel: sessionStorage.getItem("phoneNum"),
-            buyer_addr: "서울특별시 강남구 신사동",
-            buyer_postcode: "01181"
+            buyer_addr: sessionStorage.getItem("mainAddress"),
+            buyer_postcode: sessionStorage.getItem("mainPostcode")
             }
         axios.patch("http://localhost:8080/payment", payData)
             .then((orderResponse) => {
@@ -265,7 +255,6 @@ function Cart() {
           script.onload = callback;
           document.head.appendChild(script);
         };
-    
         // 스크립트 로드 후 실행
         loadScript('https://code.jquery.com/jquery-1.12.4.min.js', () => {
           loadScript('https://cdn.iamport.kr/js/iamport.payment-1.2.0.js', () => {
@@ -274,7 +263,6 @@ function Cart() {
             IMP.init("imp82833256");
           });
         });
-    
         // 컴포넌트가 언마운트될 때 스크립트를 제거하기 위한 정리 함수
         return () => {
           const scripts = document.querySelectorAll('script[src^="https://"]');
