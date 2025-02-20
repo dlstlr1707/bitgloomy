@@ -17,6 +17,13 @@ function ProductDetail() {
     const [currentTab,setCurrentTab] = useState("PRODUCT");
     const [total,setTotal] = useState([]);
     const [imgCount,setImgCount] = useState(1);
+    const sizeInfo = [
+        "1(M) 허리단면: 41cm, 밑위: 32.5cm, 허벅지단면: 36cm, 엉덩이둘레: 52.5cm, 밑단: 24.5cm, 총장: 102cm",
+        "2(L) 허리단면: 44cm, 밑위: 33.5cm, 허벅지단면: 38cm, 엉덩이둘레: 55cm, 밑단: 26cm, 총장: 106cm",
+        "3(XL) 허리단면: 47cm, 밑위: 34.5cm, 허벅지단면: 40cm, 엉덩이둘레: 57.5cm, 밑단: 27.5cm, 총장: 110cm",
+        "",
+        "- 측정 방법에 따라 1~2cm 정도 오차가 발생할 수 있습니다."
+    ];
 
     const [isOrder,setIsOrder] = useState(false);
     const [merchantUid, setMerchantUid] = useState(null);
@@ -322,8 +329,13 @@ function ProductDetail() {
                 </>
             );
         }else if(currentTab === "SIZE_INFO"){
+
             return(
-                <p className="infoDivP">- 사이즈 표 들어갈 자리</p>
+                <>
+                {Array.isArray(sizeArr)&&sizeArr.map((item,idx) => (<p key={idx} className="infoDivP">- {sizeInfo[idx]}</p>))}
+                <br/>
+                <p className="infoDivP">{sizeInfo[4]}</p>
+                </>
             );
         }else{
             console.log("잘못된 인자 넘어옴!");

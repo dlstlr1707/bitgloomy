@@ -274,6 +274,7 @@ function Management(){
     const requestUpload = async(e) => {
         // 이미지는 form-data로 정보는 json으로 전달
         e.preventDefault();
+        console.log(productImgArr);
         if(productImgArr == null || productMainImg == null){
             alert("사진을 최소 1장 선택해주세요.");
         }else{

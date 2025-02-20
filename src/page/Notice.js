@@ -172,9 +172,12 @@ function Notice(){
                 }).then((response) => {
                     //정상 통신후 응답온 부분
                         console.log("공지 등록 성공");
+                        alert(type+"가 등록되었습니다.");
+                        setIsManagement(false);
                     }).catch((e) => {
                         // 오류 발생시 처리부분
                         console.error(e);
+                        alert(type+" 등록에 실패 했습니다.");
                     });
             }else if(e.target.id === "modifyNotice"){
                 const requestNoticeInfo = {
@@ -188,9 +191,12 @@ function Notice(){
                 }).then((response) => {
                     //정상 통신후 응답온 부분
                         console.log("공지 수정 성공");
+                        alert(type+"가 수정되었습니다.");
+                        setIsManagement(false);
                     }).catch((e) => {
                         // 오류 발생시 처리부분
                         console.error(e);
+                        alert(type+" 수정에 실패 했습니다.");
                     });
             }else if(e.target.id === "deleteNotice"){
                 await axios.delete("http://localhost:8080/notice/"+type+"/"+noticeNumber,{
@@ -198,9 +204,12 @@ function Notice(){
                 }).then((response) => {
                     //정상 통신후 응답온 부분
                         console.log("공지 삭제 성공");
+                        alert(type+"가 삭제되었습니다.");
+                        setIsManagement(false);
                     }).catch((e) => {
                         // 오류 발생시 처리부분
                         console.error(e);
+                        alert(type+" 삭제에 실패 했습니다.");
                     });
             }
         }else{
@@ -410,6 +419,13 @@ function Notice(){
         renderPageBtn();
     },[currentBtn,noticeInfoArr,pageNumArr,currentPageNum,currentPageNumArr]);
     useEffect(()=>{
+        if(currentTab === "noticeTab"){
+            setCurrentPageNum(1);
+            requestNotice();
+        }else if(currentTab === "eventTab"){
+            setCurrentPageNum(1);
+            requestEvent();
+        }
         renderNoticeContents();
     },[isManagement]);
     useEffect(()=>{
